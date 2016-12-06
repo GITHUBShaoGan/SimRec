@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">SimRec</string>
+
+    <!--MainActivity-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="tab_main_pswd">Password</string>
+    <string name="msg_dialog_master_not_set">Your master password have not been set,do you want to set it now?</string>
+
+    <!--MasterTypeActivity-->
+    <string name="title_activity_master_type">Set Master Password</string>
+    <string name="title_master_type_tips">Please select a way to set master password!</string>
+    <string name="btn_master_type_grid">Grid Password（Just Like IOS）</string>
+
+    <!--GridPassActivity-->
+    <string name="title_activity_grid_pass">Set Grid Password</string>
+    <string name="tips_grid_pass_first_input">Please input your password</string>
+    <string name="tips_grid_pass_confirm_input">Please input again</string>
+    <string name="cb_grid_pass_show">Show Password</string>
+    <string name="action_menu_reset">Reset</string>
+    <string name="error_pass_length">Length of password is illegal</string>
+
+    <!--GridUnLockActivity-->
+    <string name="title_activity_grid_unlock">Unlock</string>
+    <string name="tips_grid_unlock">Please input your password to unlock</string>
+
+    <string name="error_exception_happened">Sorry,some exceptions happened,please try again</string>
+    <string name="error_data_tamper">Error,data may be tampered,all data will be clear!!!</string>
+    <string name="error_unknown_exception_happen">Sorry,Unknown exception happened</string>
+    <string name="error_pass_not_equal">Two input inconsistencies</string>
+    <string name="pass_validate_failed">Validate failed</string>
+
+    <string name="toast_master_set_successfully">Master password set successfully</string>
+
+    <string name="or_use_fingerprint">Or Use Fingerprint</string>
+
+    <string name="title_dialog_warning">Warning</string>
+    <string name="title_dialog_error">Error</string>
+    <string name="title_dialog_tips">Tips</string>
+    <string name="action_dialog_ok">OK</string>
+    <string name="action_dialog_yes">YES</string>
+    <string name="action_dialog_no">NO</string>
+    <string name="action_dialog_cancel">CANCEL</string>
+    <string name="action_dialog_getit">OK,I got it</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
