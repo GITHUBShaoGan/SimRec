@@ -24,6 +24,18 @@
     <string name="title_activity_grid_unlock">Unlock</string>
     <string name="tips_grid_unlock">Please input your password to unlock</string>
 
+    <!--DefaultCatActivity-->
+    <string name="title_activity_default_cat">Select A Website</string>
+    <string name="action_menu_skip">SKIP</string>
+
+    <!--PswdNewActivity-->
+    <string name="title_activity_pswd_new">New Password</string>
+    <string name="hint_pswd_new_title">Title</string>
+    <string name="hint_pswd_new_account">Account</string>
+    <string name="hint_pswd_new_password">Password</string>
+    <string name="hint_pswd_new_website">Website</string>
+    <string name="hint_pswd_new_remark">Remark</string>
+
     <string name="error_exception_happened">Sorry,some exceptions happened,please try again</string>
     <string name="error_data_tamper">Error,data may be tampered,all data will be clear!!!</string>
     <string name="error_unknown_exception_happen">Sorry,Unknown exception happened</string>

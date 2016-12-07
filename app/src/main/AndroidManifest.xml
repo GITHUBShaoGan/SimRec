@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.slut.simrec">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -25,7 +27,10 @@
         <activity
             android:name=".pswd.unlock.grid.v.GridUnlockActivity"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
-        <activity android:name=".pswd.create.PswdNewActivity"></activity>
+        <activity
+            android:name=".pswd.create.PswdNewActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+        <activity android:name=".pswd.defaultcat.v.DefaultCatActivity"></activity>
     </application>
 
 </manifest>

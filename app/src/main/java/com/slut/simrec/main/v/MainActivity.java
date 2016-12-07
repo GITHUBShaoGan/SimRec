@@ -24,6 +24,7 @@ import com.slut.simrec.main.fragment.pswd.PswdFragment;
 import com.slut.simrec.main.p.MainPresenter;
 import com.slut.simrec.main.p.MainPresenterImpl;
 import com.slut.simrec.pswd.create.PswdNewActivity;
+import com.slut.simrec.pswd.defaultcat.v.DefaultCatActivity;
 import com.slut.simrec.pswd.master.MasterTypeActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.utils.ResUtils;
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPswdFuncUnlock(PassConfig passConfig) {
         //未被锁定
-        Intent intent = new Intent(this, PswdNewActivity.class);
+        Intent intent = new Intent(this, DefaultCatActivity.class);
         startActivity(intent);
     }
 
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                     //创建成功
                     break;
                 case REQUEST_GRID_UNLOCK:
-                    Intent intent = new Intent(this, PswdNewActivity.class);
+                    Intent intent = new Intent(this, DefaultCatActivity.class);
                     startActivity(intent);
                     break;
             }

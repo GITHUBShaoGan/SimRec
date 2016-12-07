@@ -13,4 +13,8 @@ public class ResUtils {
         return App.getContext().getString(id);
     }
 
+    public static String [] getStringArray(int id){
+        return App.getContext().getResources().getStringArray(id);
+    }
+
 }
