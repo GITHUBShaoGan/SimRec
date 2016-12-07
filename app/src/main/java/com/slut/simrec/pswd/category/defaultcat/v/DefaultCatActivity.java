@@ -1,6 +1,5 @@
-package com.slut.simrec.pswd.defaultcat.v;
+package com.slut.simrec.pswd.category.defaultcat.v;
 
-import android.bluetooth.le.AdvertiseData;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.slut.simrec.R;
-import com.slut.simrec.pswd.create.PswdNewActivity;
-import com.slut.simrec.pswd.defaultcat.adapter.DefaultCatAdapter;
-import com.slut.simrec.pswd.defaultcat.bean.DefaultCatBean;
-import com.slut.simrec.pswd.defaultcat.p.DefaultCatPresenter;
-import com.slut.simrec.pswd.defaultcat.p.DefaultCatPresenterImpl;
+import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.pswd.category.defaultcat.adapter.DefaultCatAdapter;
+import com.slut.simrec.pswd.category.defaultcat.bean.DefaultCatBean;
+import com.slut.simrec.pswd.category.defaultcat.p.DefaultCatPresenter;
+import com.slut.simrec.pswd.category.defaultcat.p.DefaultCatPresenterImpl;
+import com.slut.simrec.pswd.create.v.PswdNewActivity;
 import com.slut.simrec.utils.ToastUtils;
 
 import java.util.List;
@@ -83,6 +83,13 @@ public class DefaultCatActivity extends AppCompatActivity implements DefaultCatV
     }
 
     @Override
+    public void onItemClick(PassCat passCat, int position) {
+        Intent intent = new Intent(this, PswdNewActivity.class);
+        intent.putExtra(PswdNewActivity.EXTRA_DEFAULT_CAT, passCat);
+        startActivityForResult(intent, REQUEST_CREATE_PSWD);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.default_cat, menu);
         return super.onCreateOptionsMenu(menu);
@@ -102,9 +109,7 @@ public class DefaultCatActivity extends AppCompatActivity implements DefaultCatV
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, PswdNewActivity.class);
-        intent.putExtra(PswdNewActivity.EXTRA_DEFAULT_CAT, adapter.getDefaultCatBeanList().get(position));
-        startActivityForResult(intent, REQUEST_CREATE_PSWD);
+        presenter.insertCat(position, adapter.getDefaultCatBeanList().get(position));
     }
 
     @Override

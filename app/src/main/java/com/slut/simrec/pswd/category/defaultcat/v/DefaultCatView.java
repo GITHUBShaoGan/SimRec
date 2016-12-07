@@ -1,6 +1,7 @@
-package com.slut.simrec.pswd.defaultcat.v;
+package com.slut.simrec.pswd.category.defaultcat.v;
 
-import com.slut.simrec.pswd.defaultcat.bean.DefaultCatBean;
+import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.pswd.category.defaultcat.bean.DefaultCatBean;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface DefaultCatView {
     void onDataLoadSuccess(List<DefaultCatBean> defaultCatBeanList);
 
     void onDataLoadError(String msg);
+
+    void onItemClick(PassCat passCat, int position);
 
 }

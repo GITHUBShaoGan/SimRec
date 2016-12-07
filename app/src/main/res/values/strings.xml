@@ -35,12 +35,32 @@
     <string name="hint_pswd_new_password">Password</string>
     <string name="hint_pswd_new_website">Website</string>
     <string name="hint_pswd_new_remark">Remark</string>
+    <string name="title_pswd_new_exitwithoutsave">Save Change?</string>
+    <string name="msg_pswd_new_exitwithoutsave">We find that you edited something on the UI,do you want to save change?</string>
+    <string name="action_menu_done">DONE</string>
+    <string name="action_menu_cat">CATEGORY</string>
+    <string name="error_pswd_new_titleaccount_null">The title and account cannot be empty at the same time</string>
+    <string name="error_pswd_new_password_null">The password cannot be empty</string>
+    <string name="msg_pswd_new_category_change">We find that you changed the category,do you want to change the value of title and website EditText?</string>
+
+    <!--CategoryOptionActivity-->
+    <string name="title_activity_category_option">Select A Category</string>
+    <string name="action_menu_add">New Category</string>
+    <string name="hint_category_options_title">Title</string>
+    <string name="hint_category_options_url">Website URL(Can be empty)</string>
+    <string name="hint_category_options_iconurl">Icon Url(Can be empty)</string>
+    <string name="title_dialog_add">New Category</string>
+    <string name="error_category_options_empty_title">Title cannot be empty</string>
+    <string name="error_category_already_exists">Category already exists</string>
 
     <string name="error_exception_happened">Sorry,some exceptions happened,please try again</string>
     <string name="error_data_tamper">Error,data may be tampered,all data will be clear!!!</string>
     <string name="error_unknown_exception_happen">Sorry,Unknown exception happened</string>
     <string name="error_pass_not_equal">Two input inconsistencies</string>
     <string name="pass_validate_failed">Validate failed</string>
+    <string name="error_illegal_request">Illegal request</string>
+    <string name="error_size">Result list size cannot above pageSize</string>
+    <string name="error_query_failed">Query failed</string>
 
     <string name="toast_master_set_successfully">Master password set successfully</string>
 

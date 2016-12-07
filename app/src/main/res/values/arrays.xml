@@ -24,7 +24,7 @@
     </string-array>
 
     <string-array name="icon_website">
-        <item>https://www.google.com/favicon.ico</item>
+        <item>https://www.google.com.hk/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png</item>
         <item>https://ssl.gstatic.com/ui/v1/icons/mail/favicon.ico</item>
         <item>https://ssl.gstatic.com/images/branding/product/ico/google_plus_alldp.ico</item>
         <item>http://www.apple.com/favicon.ico</item>

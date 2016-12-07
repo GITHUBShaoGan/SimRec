@@ -36,6 +36,12 @@ public class PassDao {
         dao = App.getDbHelper().getDao(Password.class);
     }
 
+    public void insertSingle(Password password)throws Exception {
+        if (password != null) {
+            dao.create(password);
+        }
+    }
+
     public void deleteAll() throws SQLException {
         DeleteBuilder<Password, Integer> builder = dao.deleteBuilder();
         for (Password password : dao) {

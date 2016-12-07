@@ -3,6 +3,8 @@
     package="com.slut.simrec">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -28,9 +30,10 @@
             android:name=".pswd.unlock.grid.v.GridUnlockActivity"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
-            android:name=".pswd.create.PswdNewActivity"
+            android:name=".pswd.create.v.PswdNewActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
-        <activity android:name=".pswd.defaultcat.v.DefaultCatActivity"></activity>
+        <activity android:name=".pswd.category.defaultcat.v.DefaultCatActivity" />
+        <activity android:name=".pswd.category.select.v.CategoryOptionsActivity"></activity>
     </application>
 
 </manifest>

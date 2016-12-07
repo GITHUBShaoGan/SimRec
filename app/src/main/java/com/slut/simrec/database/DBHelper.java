@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.slut.simrec.App;
+import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.database.pswd.bean.Password;
 
@@ -43,6 +44,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, PassConfig.class);
+            TableUtils.createTable(connectionSource, PassCat.class);
             TableUtils.createTable(connectionSource, Password.class);
         } catch (SQLException e) {
             e.printStackTrace();

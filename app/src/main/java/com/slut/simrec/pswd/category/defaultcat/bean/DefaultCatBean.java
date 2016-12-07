@@ -1,4 +1,4 @@
-package com.slut.simrec.pswd.defaultcat.bean;
+package com.slut.simrec.pswd.category.defaultcat.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

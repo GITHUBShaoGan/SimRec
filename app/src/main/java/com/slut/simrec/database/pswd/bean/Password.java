@@ -22,10 +22,111 @@ public class Password {
     @DatabaseField
     private String remark;
     @DatabaseField
+    private String passCatUUID;
+    @DatabaseField
     private long createStamp;
     @DatabaseField
     private long updateStamp;
 
     public Password() {
+    }
+
+    public Password(String uuid, String title, String account, String password, String websiteUrl, String remark, String passCatUUID, long createStamp, long updateStamp) {
+        this.uuid = uuid;
+        this.title = title;
+        this.account = account;
+        this.password = password;
+        this.websiteUrl = websiteUrl;
+        this.remark = remark;
+        this.passCatUUID = passCatUUID;
+        this.createStamp = createStamp;
+        this.updateStamp = updateStamp;
+    }
+
+    @Override
+    public String toString() {
+        return "Password{" +
+                "uuid='" + uuid + '\'' +
+                ", title='" + title + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", websiteUrl='" + websiteUrl + '\'' +
+                ", remark='" + remark + '\'' +
+                ", passCatUUID='" + passCatUUID + '\'' +
+                ", createStamp=" + createStamp +
+                ", updateStamp=" + updateStamp +
+                '}';
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getPassCatUUID() {
+        return passCatUUID;
+    }
+
+    public void setPassCatUUID(String passCatUUID) {
+        this.passCatUUID = passCatUUID;
+    }
+
+    public long getCreateStamp() {
+        return createStamp;
+    }
+
+    public void setCreateStamp(long createStamp) {
+        this.createStamp = createStamp;
+    }
+
+    public long getUpdateStamp() {
+        return updateStamp;
+    }
+
+    public void setUpdateStamp(long updateStamp) {
+        this.updateStamp = updateStamp;
     }
 }

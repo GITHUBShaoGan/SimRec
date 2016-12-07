@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.slut.simrec.database.DBHelper;
+import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.utils.FileUtils;
@@ -72,7 +73,7 @@ public class App extends Application {
         });
     }
 
-    private void initUniversalImageLoader(){
+    private void initUniversalImageLoader() {
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .threadPriority(Thread.NORM_PRIORITY - 2)//璁剧疆绾跨▼浼樺厛绾?
                 .threadPoolSize(4)//绾跨▼姹犲唴鍔犺浇鐨勬暟閲?鎺ㄨ崘鑼冨洿1-5鍐呫€?
@@ -116,6 +117,7 @@ public class App extends Application {
     private void initDaoes() {
         PassConfigDao.getInstances().init();
         PassDao.getInstances().init();
+        PassCatDao.getInstances().init();
     }
 
 }

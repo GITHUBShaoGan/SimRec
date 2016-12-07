@@ -1,16 +1,17 @@
-package com.slut.simrec.pswd.defaultcat.adapter;
+package com.slut.simrec.pswd.category.select.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slut.simrec.App;
 import com.slut.simrec.R;
-import com.slut.simrec.pswd.defaultcat.bean.DefaultCatBean;
+import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ImgLoaderOptions;
 import com.slut.simrec.widget.CircleTextImageView;
 
@@ -19,38 +20,42 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+
 /**
  * Created by 七月在线科技 on 2016/12/7.
  */
 
-public class DefaultCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0, TYPE_FOOTER = 1;
-    private int footerSize = 0;
-    private List<DefaultCatBean> defaultCatBeanList;
+
+    private int footerSize;
+    private List<PassCat> passCatList;
+
     private OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public DefaultCatAdapter() {
+    public OptionAdapter() {
     }
 
-    public List<DefaultCatBean> getDefaultCatBeanList() {
-        return defaultCatBeanList;
-    }
-
-    public void setDefaultCatBeanList(List<DefaultCatBean> defaultCatBeanList) {
-        this.defaultCatBeanList = defaultCatBeanList;
-    }
-
-    public void addFooterView() {
+    public void addFooter() {
         footerSize = 1;
     }
 
     public void removeFooter() {
         footerSize = 0;
+    }
+
+    public List<PassCat> getPassCatList() {
+        return passCatList;
+    }
+
+    public void setPassCatList(List<PassCat> passCatList) {
+        this.passCatList = passCatList;
     }
 
     @Override
@@ -71,28 +76,33 @@ public class DefaultCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (defaultCatBeanList != null && !defaultCatBeanList.isEmpty() && position < defaultCatBeanList.size()) {
-            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            DefaultCatBean defaultCatBean = defaultCatBeanList.get(position);
-            String website = defaultCatBean.getWebsite();
-            final String title = defaultCatBean.getTitle();
-            itemViewHolder.title.setText(title + "");
-            itemViewHolder.website.setText(website + "");
-            ImageLoader.getInstance().displayImage(defaultCatBean.getIconUrl(), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
-            itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClickListener.onItemClick(view, position);
+        if (passCatList != null && position < passCatList.size()) {
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            PassCat passCat = passCatList.get(position);
+            if (passCat != null) {
+                ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
+                itemViewHolder.title.setText(RSAUtils.decrypt(passCat.getCatTitle()) + "");
+                String url = passCat.getCatUrl();
+                if (TextUtils.isEmpty(url)) {
+                    itemViewHolder.url.setText("Empty URL");
+                } else {
+                    itemViewHolder.url.setText(RSAUtils.decrypt(passCat.getCatUrl()));
                 }
-            });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickListener.onItemClick(view, position);
+                    }
+                });
+            }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         int type = TYPE_ITEM;
-        if (defaultCatBeanList != null && !defaultCatBeanList.isEmpty()) {
-            if (position == defaultCatBeanList.size()) {
+        if (passCatList != null && !passCatList.isEmpty()) {
+            if (position == passCatList.size()) {
                 type = TYPE_FOOTER;
             }
         }
@@ -101,8 +111,8 @@ public class DefaultCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        if (defaultCatBeanList != null && !defaultCatBeanList.isEmpty()) {
-            return defaultCatBeanList.size() + footerSize;
+        if (passCatList != null && !passCatList.isEmpty()) {
+            return passCatList.size() + footerSize;
         }
         return 0;
     }
@@ -114,17 +124,15 @@ public class DefaultCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.website)
-        TextView website;
+        TextView url;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
-
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
