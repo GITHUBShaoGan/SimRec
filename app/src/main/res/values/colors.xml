@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF0042</color>
 
     <color name="colorCanvas">#F4F4F4</color>
+
+    <color name="colorPrimaryYellow">#FFC800</color>
+    <color name="colorPrimaryOrange">#fa952f</color>
+    <color name="colorPrimaryGreen">#1dc988</color>
 </resources>

@@ -15,7 +15,7 @@ import static android.R.attr.path;
 
 public class FileUtils {
 
-    public static File createImageCacheSavePath(Context context) {
+    public static File createImageCacheSavePath() {
         String path = App.getContext().getExternalCacheDir() + File.separator + "imageCache";
         File file = new File(path);
         if (!file.exists()) {

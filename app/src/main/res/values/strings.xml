@@ -6,6 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="tab_main_pswd">Password</string>
     <string name="msg_dialog_master_not_set">Your master password have not been set,do you want to set it now?</string>
+    <string name="action_menu_sort">Sort</string>
 
     <!--MasterTypeActivity-->
     <string name="title_activity_master_type">Set Master Password</string>
@@ -61,6 +62,30 @@
     <string name="error_illegal_request">Illegal request</string>
     <string name="error_size">Result list size cannot above pageSize</string>
     <string name="error_query_failed">Query failed</string>
+    <string name="error_time_end_below_start">1970-01-01</string>
+
+    <string name="time_interval_just_now">just now</string>
+    <string name="time_interval_seconds_ago">\tseconds ago</string>
+    <string name="time_interval_second_ago">\tsecond ago</string>
+    <string name="time_interval_minutes_ago">\tminutes ago</string>
+    <string name="time_interval_minute_ago">\tminute ago</string>
+    <string name="time_interval_hours_ago">\thours ago</string>
+    <string name="time_interval_hour_ago">\thour ago</string>
+    <string name="time_interval_days_ago">\tdays ago</string>
+    <string name="time_interval_day_ago">\tday ago</string>
+
+    <string name="empty_title">Empty Title</string>
+    <string name="empty_account">Empty Account</string>
+
+    <string name="title_default_category">Unspecific</string>
+    <string name="url_default_category">www.example.com</string>
+    <string name="iconurl_default_category"></string>
+
+    <string name="action_menu_copy_account">Copy Account</string>
+    <string name="action_menu_copy_password">Copy Password</string>
+    <string name="action_menu_copy_both">Copy Account and Password</string>
+
+    <string name="copy_success">Copy Success</string>
 
     <string name="toast_master_set_successfully">Master password set successfully</string>
 

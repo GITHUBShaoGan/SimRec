@@ -15,25 +15,35 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".main.v.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".pswd.master.MasterTypeActivity" />
+        <activity
+            android:name=".pswd.master.MasterTypeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".pswd.master.grid.v.GridPassActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
             android:name=".pswd.unlock.grid.v.GridUnlockActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
             android:name=".pswd.create.v.PswdNewActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
-        <activity android:name=".pswd.category.defaultcat.v.DefaultCatActivity" />
-        <activity android:name=".pswd.category.select.v.CategoryOptionsActivity"></activity>
+        <activity
+            android:name=".pswd.category.defaultcat.v.DefaultCatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pswd.category.select.v.CategoryOptionsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

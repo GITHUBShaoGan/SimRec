@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.create.p.PswdNewPresenter;
 import com.slut.simrec.pswd.create.p.PswdNewPresenterImpl;
@@ -45,7 +46,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
     public static final String EXTRA_DEFAULT_CAT = "default_cat";
     private PassCat originPassCat = null;
 
-    private String originPassUUID = "";
+    private String originPassUUID = CategoryConst.UUID_UNSPECIFIC;
 
     private PswdNewPresenter presenter;
 
@@ -75,7 +76,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                 originPassUUID = originPassCat.getUuid();
             } else {
                 //传过来没有目录信息
-                originPassUUID = "";
+                originPassUUID = CategoryConst.UUID_UNSPECIFIC;
             }
         }
         setSupportActionBar(toolbar);

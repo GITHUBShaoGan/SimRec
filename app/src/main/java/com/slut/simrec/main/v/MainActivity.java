@@ -20,7 +20,8 @@ import android.view.MenuItem;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.main.adapter.MainPagerAdapter;
-import com.slut.simrec.main.fragment.pswd.PswdFragment;
+import com.slut.simrec.main.fragment.pswd.m.PassSortType;
+import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.main.p.MainPresenter;
 import com.slut.simrec.main.p.MainPresenterImpl;
 import com.slut.simrec.pswd.category.defaultcat.v.DefaultCatActivity;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_CREATE_MASTER = 1000;
     private static final int REQUEST_GRID_UNLOCK = 2000;
+    private static final int REQUEST_CREATE_PASSWORD = 3000;
+
+    public static final int REQUEST_UNLOCK_COPY = 4000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
     private List<Fragment> initFragments() {
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new PswdFragment());
+        fragmentList.add(PswdFragment.getInstances());
         return fragmentList;
     }
 
@@ -148,7 +152,21 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        int currentPageId = viewPager.getCurrentItem();
+        if (currentPageId == 0) {
+            //密码页面
+            switch (item.getItemId()) {
+                case R.id.sortbycreate:
+                    PswdFragment.getInstances().switchSortType(PassSortType.CREATE_TIME);
+                    break;
+                case R.id.sortbyupdate:
+                    PswdFragment.getInstances().switchSortType(PassSortType.UPDATE_TIME);
+                    break;
+                case R.id.sortbycategory:
+                    PswdFragment.getInstances().switchSortType(PassSortType.CATEGORY);
+                    break;
+            }
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -163,19 +181,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -251,11 +256,14 @@ public class MainActivity extends AppCompatActivity
                 case REQUEST_CREATE_MASTER:
                     //创建成功
                     Intent intent1 = new Intent(this, DefaultCatActivity.class);
-                    startActivity(intent1);
+                    startActivityForResult(intent1, REQUEST_CREATE_PASSWORD);
                     break;
                 case REQUEST_GRID_UNLOCK:
                     Intent intent = new Intent(this, DefaultCatActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
+                    break;
+                case REQUEST_CREATE_PASSWORD:
+                    PswdFragment.getInstances().onRefresh();
                     break;
             }
         }

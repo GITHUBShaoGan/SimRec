@@ -81,7 +81,7 @@ public class App extends Application {
                 .memoryCacheExtraOptions(480, 800)//鍐呭瓨缂撳瓨鏂囦欢鐨勬渶澶ч暱搴?
                 .memoryCache(new LruMemoryCache(10 * 1024 * 1024))//鍐呭瓨缂撳瓨鏂瑰紡,杩欓噷鍙互鎹㈡垚鑷繁鐨勫唴瀛樼紦瀛樺疄鐜般€?鎺ㄨ崘LruMemoryCache,閬撶悊鑷繁鎳傜殑)
                 .memoryCacheSize(10 * 1024 * 1024)//鍐呭瓨缂撳瓨鐨勬渶澶у€?
-                .diskCache(new UnlimitedDiskCache(FileUtils.createImageCacheSavePath(context)))//鍙互鑷畾涔夌紦瀛樿矾寰?
+                .diskCache(new UnlimitedDiskCache(FileUtils.createImageCacheSavePath()))//鍙互鑷畾涔夌紦瀛樿矾寰?
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())//瀵逛繚瀛樼殑URL杩涜鍔犲瘑淇濆瓨
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), 5 * 1000, 30 * 1000))//璁剧疆杩炴帴鏃堕棿5s,瓒呮椂鏃堕棿30s
