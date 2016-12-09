@@ -3,6 +3,7 @@ package com.slut.simrec.database.pswd.dao;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 import com.slut.simrec.App;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.database.pswd.bean.Password;
@@ -45,9 +46,17 @@ public class PassDao {
         }
     }
 
+    public void updateCat(String passUUID,String newCatUUID)throws SQLException{
+        UpdateBuilder<Password,Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid",passUUID);
+        builder.updateColumnValue("passCatUUID",newCatUUID);
+        builder.update();
+    }
+
     public List<Password> queryByCatUUID(String cat_id) throws Exception {
         QueryBuilder<Password, Integer> builder = dao.queryBuilder();
         builder.where().eq("passCatUUID", cat_id);
+        builder.orderBy("updateStamp", false);
         return builder.query();
     }
 

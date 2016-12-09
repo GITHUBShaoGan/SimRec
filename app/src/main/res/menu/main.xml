@@ -16,9 +16,6 @@
                 <item
                     android:id="@+id/sortbycreate"
                     android:title="Sort By Create Time" />
-                <item
-                    android:id="@+id/sortbycategory"
-                    android:title="Sort By Category" />
             </group>
         </menu>
 

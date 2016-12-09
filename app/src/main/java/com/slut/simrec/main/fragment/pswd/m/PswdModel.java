@@ -11,16 +11,6 @@ import java.util.List;
 
 public interface PswdModel {
 
-    interface OnPassLoadListener {
-
-        void onLoadSuccess(int type, List<Password> passwordList);
-
-        void onLoadError(String msg);
-
-    }
-
-    void loadPass(int sortType,long pageNo, long pageSize, OnPassLoadListener onPassLoadListener);
-
     interface OnPassCatLoadListener {
 
         void onPassCatLoadSuccess(int type, List<PassCat> passCatList, List<List<Password>> passwordList);

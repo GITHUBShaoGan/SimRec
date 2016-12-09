@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 import com.slut.simrec.App;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
@@ -56,6 +57,12 @@ public class PassCatDao {
         builder.delete();
     }
 
+    public void deleteByUUID(String uuid) throws SQLException {
+        DeleteBuilder<PassCat, Integer> builder = dao.deleteBuilder();
+        builder.where().eq("uuid", uuid);
+        builder.delete();
+    }
+
     public List<PassCat> queryByPage(long pageNo, long pageSize) throws Exception {
         QueryBuilder<PassCat, Integer> builder = dao.queryBuilder();
         long offset = (pageNo - 1) * pageSize;
@@ -63,6 +70,13 @@ public class PassCatDao {
         builder.limit(pageSize);
         builder.orderBy("createStamp", false);
         return builder.query();
+    }
+
+    public void updateTime(String uuid)throws SQLException{
+        UpdateBuilder<PassCat,Integer> builder  = dao.updateBuilder();
+        builder.where().eq("uuid",uuid);
+        builder.updateColumnValue("updateStamp",System.currentTimeMillis());
+        builder.update();
     }
 
 }

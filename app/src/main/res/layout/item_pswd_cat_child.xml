@@ -20,7 +20,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="72dp"
-            app:citv_fill_color="@color/colorPrimary"
+            app:citv_fill_color="@color/colorPrimaryOrange"
+            app:citv_text_size="20sp"
             app:citv_text_color="@android:color/white" />
 
         <LinearLayout
@@ -28,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
+            android:layout_marginRight="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -42,6 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@android:color/secondary_text_dark"
                 android:textSize="14sp" />
         </LinearLayout>

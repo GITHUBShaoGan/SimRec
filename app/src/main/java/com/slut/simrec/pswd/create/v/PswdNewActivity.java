@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.create.p.PswdNewPresenter;
@@ -67,13 +68,17 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
             if (intent.hasExtra(EXTRA_DEFAULT_CAT)) {
                 //传过来有目录信息
                 originPassCat = intent.getParcelableExtra(EXTRA_DEFAULT_CAT);
-                toolbar.setTitle(RSAUtils.decrypt(originPassCat.getCatTitle()) + "");
-                tilTitle.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
-                tilWebSite.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
-                tilAccount.requestFocus();
-                category.setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
+                if (originPassCat != null) {
+                    toolbar.setTitle(RSAUtils.decrypt(originPassCat.getCatTitle()) + "");
+                    tilTitle.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
+                    tilWebSite.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
+                    tilAccount.requestFocus();
+                    category.setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
 
-                originPassUUID = originPassCat.getUuid();
+                    originPassUUID = originPassCat.getUuid();
+                }else{
+                    originPassUUID = CategoryConst.UUID_UNSPECIFIC;
+                }
             } else {
                 //传过来没有目录信息
                 originPassUUID = CategoryConst.UUID_UNSPECIFIC;
@@ -125,7 +130,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.title_pswd_new_exitwithoutsave);
         builder.setMessage(R.string.msg_pswd_new_exitwithoutsave);
-        builder.setIcon(R.drawable.ic_warning_amber_36dp);
+        builder.setIcon(R.drawable.ic_warning_amber_24dp);
         builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -152,6 +157,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
         Intent intent = getIntent();
         if (intent != null) {
             setResult(RESULT_OK, intent);
+            PswdFragment.getInstances().onRefresh();
             finish();
         }
     }
@@ -193,7 +199,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             //如果选择的
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setTitle(R.string.title_dialog_tips);
-                            builder.setIcon(R.drawable.ic_warning_amber_36dp);
+                            builder.setIcon(R.drawable.ic_warning_amber_24dp);
                             builder.setMessage(R.string.msg_pswd_new_category_change);
                             builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override

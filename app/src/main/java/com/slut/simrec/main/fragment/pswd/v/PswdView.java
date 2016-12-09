@@ -11,10 +11,6 @@ import java.util.List;
 
 public interface PswdView {
 
-    void onLoadSuccess(int type, List<Password> passwordList);
-
-    void onLoadError(String msg);
-
     void onPassCatLoadSuccess(int type, List<PassCat> passCatList, List<List<Password>> passwordList);
 
     void onPassCatLoadError(String msg);

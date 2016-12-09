@@ -27,6 +27,7 @@ public class App extends Application {
     private static Context context;
     private static DBHelper dbHelper;
     private static boolean isPswdFunctionLocked = true;
+    private static int activityCount = 0;
 
     @Override
     public void onCreate() {
@@ -43,7 +44,7 @@ public class App extends Application {
 
             @Override
             public void onActivityStarted(Activity activity) {
-
+                activityCount++;
             }
 
             @Override
@@ -58,7 +59,10 @@ public class App extends Application {
 
             @Override
             public void onActivityStopped(Activity activity) {
-
+                activityCount--;
+                if (activityCount == 0) {
+                    setIsPswdFunctionLocked(true);
+                }
             }
 
             @Override

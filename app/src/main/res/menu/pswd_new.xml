@@ -5,10 +5,11 @@
     <item
         android:id="@+id/category"
         app:showAsAction="always"
+        android:icon="@drawable/ic_sort_white_24dp"
         android:title="@string/action_menu_cat" />
     <item
         android:id="@+id/done"
         app:showAsAction="always"
-        android:icon="@drawable/ic_done_white_36dp"
+        android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/action_menu_done" />
 </menu>

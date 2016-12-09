@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.main.adapter.MainPagerAdapter;
+import com.slut.simrec.main.fragment.note.NoteFragment;
+import com.slut.simrec.main.fragment.pay.PayFragment;
 import com.slut.simrec.main.fragment.pswd.m.PassSortType;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.main.p.MainPresenter;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_CREATE_MASTER = 1000;
     private static final int REQUEST_GRID_UNLOCK = 2000;
-    private static final int REQUEST_CREATE_PASSWORD = 3000;
+    public static final int REQUEST_CREATE_PASSWORD = 3000;
 
     public static final int REQUEST_UNLOCK_COPY = 4000;
 
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
+        initListener();
     }
 
     private void initView() {
@@ -96,7 +99,10 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
-
+                switch (position) {
+                    case 0:
+                        break;
+                }
             }
 
             @Override
@@ -120,12 +126,16 @@ public class MainActivity extends AppCompatActivity
     private List<String> initTitles() {
         List<String> titleList = new ArrayList<>();
         titleList.add(ResUtils.getString(R.string.tab_main_pswd));
+        titleList.add(ResUtils.getString(R.string.tab_main_note));
+        titleList.add(ResUtils.getString(R.string.tab_main_pay));
         return titleList;
     }
 
     private List<Fragment> initFragments() {
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(PswdFragment.getInstances());
+        fragmentList.add(new NoteFragment());
+        fragmentList.add(new PayFragment());
         return fragmentList;
     }
 
@@ -157,13 +167,8 @@ public class MainActivity extends AppCompatActivity
             //密码页面
             switch (item.getItemId()) {
                 case R.id.sortbycreate:
-                    PswdFragment.getInstances().switchSortType(PassSortType.CREATE_TIME);
                     break;
                 case R.id.sortbyupdate:
-                    PswdFragment.getInstances().switchSortType(PassSortType.UPDATE_TIME);
-                    break;
-                case R.id.sortbycategory:
-                    PswdFragment.getInstances().switchSortType(PassSortType.CATEGORY);
                     break;
             }
         }
@@ -209,7 +214,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMasterNotSetBefore() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_error_red_36dp);
+        builder.setIcon(R.drawable.ic_error_red_24dp);
         builder.setTitle(R.string.title_dialog_tips);
         builder.setMessage(R.string.msg_dialog_master_not_set);
         builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
@@ -231,7 +236,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDataTamper() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_error_red_36dp);
+        builder.setIcon(R.drawable.ic_error_red_24dp);
         builder.setTitle(R.string.title_dialog_error);
         builder.setMessage(R.string.error_data_tamper);
         builder.setPositiveButton(R.string.action_dialog_getit, new DialogInterface.OnClickListener() {

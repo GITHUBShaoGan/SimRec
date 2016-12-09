@@ -43,6 +43,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".pswd.category.select.v.CategoryOptionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pswd.category.detail.v.PassCatDetailActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

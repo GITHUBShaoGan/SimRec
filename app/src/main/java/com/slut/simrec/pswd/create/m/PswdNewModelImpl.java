@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
+import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.defaultcat.bean.DefaultCatBean;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ResUtils;
@@ -25,7 +27,7 @@ public class PswdNewModelImpl implements PswdNewModel {
                     && TextUtils.isEmpty(password)
                     && TextUtils.isEmpty(website)
                     && TextUtils.isEmpty(remark)
-                    && TextUtils.equals(originPassUUID, "")) {
+                    && TextUtils.equals(originPassUUID, CategoryConst.UUID_UNSPECIFIC)) {
                 onBackOnClickListener.onUINotChange();
             } else {
                 onBackOnClickListener.onUIChange();
@@ -65,6 +67,7 @@ public class PswdNewModelImpl implements PswdNewModel {
         Password pwd = new Password(uuid, newTitle, newAccount, newPassword, newWebsite, newRemark, passCatUUID, stamp, stamp);
         try {
             PassDao.getInstances().insertSingle(pwd);
+            PassCatDao.getInstances().updateTime(passCatUUID);
             onSavePswdListener.onPswdSaveSuccess();
         } catch (Exception e) {
             if (e != null && !TextUtils.isEmpty(e.getLocalizedMessage())) {

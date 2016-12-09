@@ -12,7 +12,7 @@ import java.util.List;
  * Created by 七月在线科技 on 2016/12/8.
  */
 
-public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassLoadListener, PswdModel.OnPassCatLoadListener {
+public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoadListener {
 
     private PswdModel pswdModel;
     private PswdView pswdView;
@@ -30,21 +30,6 @@ public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassLoadLis
     @Override
     public void onPassCatLoadError(String msg) {
         pswdView.onPassCatLoadError(msg);
-    }
-
-    @Override
-    public void onLoadSuccess(int type, List<Password> passwordList) {
-        pswdView.onLoadSuccess(type, passwordList);
-    }
-
-    @Override
-    public void onLoadError(String msg) {
-        pswdView.onLoadError(msg);
-    }
-
-    @Override
-    public void loadPass(int sortType,long pageNo, long pageSize) {
-        pswdModel.loadPass(sortType,pageNo, pageSize, this);
     }
 
     @Override

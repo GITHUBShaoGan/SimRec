@@ -15,8 +15,8 @@ public class ImgLoaderOptions {
         DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
         builder.cacheInMemory(true);
         builder.cacheOnDisk(true);
-        builder.showImageForEmptyUri(R.drawable.empty);
-        builder.showImageOnFail(R.drawable.empty);
+        builder.showImageForEmptyUri(R.drawable.error);
+        builder.showImageOnFail(R.drawable.error);
         builder.bitmapConfig(Bitmap.Config.RGB_565);
         return builder.build();
     }

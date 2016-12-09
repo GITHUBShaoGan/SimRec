@@ -27,7 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.slut.simrec.main.v.MainActivity.REQUEST_GRID_UNLOCK;
 import static com.slut.simrec.main.v.MainActivity.REQUEST_UNLOCK_COPY;
 
 /**
@@ -89,7 +88,7 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (TextUtils.isEmpty(title)) {
                         itemViewHolder.avatar.setText(ResUtils.getString(R.string.empty_title).charAt(0) + "");
                     } else {
-                        itemViewHolder.avatar.setText(title.charAt(0) + "");
+                        itemViewHolder.avatar.setText(title);
                     }
                 } else {
                     itemViewHolder.avatar.setText(account.charAt(0) + "");
@@ -106,7 +105,6 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
-
                                     switch (item.getItemId()) {
                                         case R.id.action_copy_account:
                                             SystemUtils.copy("account", account);

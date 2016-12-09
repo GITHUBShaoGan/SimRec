@@ -6,8 +6,6 @@ package com.slut.simrec.main.fragment.pswd.p;
 
 public interface PswdPresenter {
 
-    void loadPass(int sortType,long pageNo, long pageSize);
-
     void loadPassCat(long pageNo, long pageSize);
 
 }

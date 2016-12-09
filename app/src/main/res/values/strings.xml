@@ -5,6 +5,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="tab_main_pswd">Password</string>
+    <string name="tab_main_note">Note</string>
+    <string name="tab_main_pay">Pay</string>
     <string name="msg_dialog_master_not_set">Your master password have not been set,do you want to set it now?</string>
     <string name="action_menu_sort">Sort</string>
 
@@ -54,6 +56,18 @@
     <string name="error_category_options_empty_title">Title cannot be empty</string>
     <string name="error_category_already_exists">Category already exists</string>
 
+    <!-- PassCatDetailActivity -->
+    <string name="title_activity_passcat_detail">Category Detail</string>
+    <string name="title_dialog_delete">Delete</string>
+    <string name="msg_dialog_delete">Are you sure to delete this category?All passwords under it will remove to Others!</string>
+    <string name="error_delete_cat_null">Error,null category</string>
+    <string name="title_dialog_edit">Edit Category</string>
+    <string name="error_delete_cat_default">Error,default category cannot be deleted</string>
+    <string name="error_edit_null_cat">Category cannot be null</string>
+
+    <string name="delete_success">Delete success</string>
+    <string name="delete_failed">Delete failed</string>
+
     <string name="error_exception_happened">Sorry,some exceptions happened,please try again</string>
     <string name="error_data_tamper">Error,data may be tampered,all data will be clear!!!</string>
     <string name="error_unknown_exception_happen">Sorry,Unknown exception happened</string>
@@ -77,7 +91,7 @@
     <string name="empty_title">Empty Title</string>
     <string name="empty_account">Empty Account</string>
 
-    <string name="title_default_category">Unspecific</string>
+    <string name="title_default_category">Others</string>
     <string name="url_default_category">www.example.com</string>
     <string name="iconurl_default_category"></string>
 
@@ -100,5 +114,8 @@
     <string name="action_dialog_cancel">CANCEL</string>
     <string name="action_dialog_getit">OK,I got it</string>
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Coming Soon!!!</string>
 
 </resources>
