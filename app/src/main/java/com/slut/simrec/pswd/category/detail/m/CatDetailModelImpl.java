@@ -8,6 +8,7 @@ import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.pswd.category.CategoryConst;
+import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ResUtils;
 
 import java.util.List;
@@ -75,7 +76,21 @@ public class CatDetailModelImpl implements CatDetailModel {
             onEditListener.onEditError(ResUtils.getString(R.string.error_category_options_empty_title));
             return;
         }
-
+        String uuid = passCat.getUuid();
+        String newTitle = RSAUtils.encrypt(title);
+        String newURL = RSAUtils.encrypt(url);
+        String newIconURL = RSAUtils.encrypt(iconURL);
+        try {
+            PassCatDao.getInstances().update(uuid, newTitle, newURL, newIconURL);
+            PassCat newCat = new PassCat(uuid, newTitle, newURL, newIconURL, passCat.getCreateStamp(), System.currentTimeMillis());
+            onEditListener.onEditSuccess(newCat);
+        } catch (Exception e) {
+            if (e != null && !TextUtils.isEmpty(e.getLocalizedMessage())) {
+                onEditListener.onEditError(e.getLocalizedMessage());
+            } else {
+                onEditListener.onEditError(ResUtils.getString(R.string.error_unknown_exception_happen));
+            }
+        }
     }
 
 }

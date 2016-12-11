@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="title_lock_type">
+        <item>FingerPrint</item>
+        <item>Grid</item>
+        <item>Pattern</item>
+        <item>Text</item>
+    </string-array>
+
+    <string-array name="description_lock_type">
+        <item>Unlock the fingerprint</item>
+        <item>Six numbers</item>
+        <item>Unlock the pattern</item>
+        <item>Password length should between 4 and 128</item>
+    </string-array>
+
     <string-array name="url_website">
         <item>www.google.com</item>
         <item>mail.google.com</item>

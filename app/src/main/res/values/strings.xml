@@ -11,9 +11,11 @@
     <string name="action_menu_sort">Sort</string>
 
     <!--MasterTypeActivity-->
-    <string name="title_activity_master_type">Set Master Password</string>
+    <string name="title_activity_master_type">Choose Lock Type</string>
     <string name="title_master_type_tips">Please select a way to set master password!</string>
     <string name="btn_master_type_grid">Grid Password（Just Like IOS）</string>
+    <string name="btn_master_type_pattern">Pattern Password</string>
+    <string name="btn_master_type_text">Text Password</string>
 
     <!--GridPassActivity-->
     <string name="title_activity_grid_pass">Set Grid Password</string>
@@ -64,6 +66,14 @@
     <string name="title_dialog_edit">Edit Category</string>
     <string name="error_delete_cat_default">Error,default category cannot be deleted</string>
     <string name="error_edit_null_cat">Category cannot be null</string>
+
+    <!--TextPassActivity-->
+    <string name="title_activity_text_pass">Set Text Password</string>
+    <string name="hint_text_pass_password">Password</string>
+    <string name="hint_text_pass_confirm">Confirm</string>
+    <string name="btn_text_pass_ok">OK</string>
+    <string name="error_password_length">length must between 4 and 128</string>
+    <string name="error_two_input_notequal">two input not equal</string>
 
     <string name="delete_success">Delete success</string>
     <string name="delete_failed">Delete failed</string>

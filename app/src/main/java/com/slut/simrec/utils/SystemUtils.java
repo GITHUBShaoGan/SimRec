@@ -1,8 +1,13 @@
 package com.slut.simrec.utils;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;

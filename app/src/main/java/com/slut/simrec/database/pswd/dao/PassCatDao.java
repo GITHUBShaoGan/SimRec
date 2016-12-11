@@ -45,6 +45,16 @@ public class PassCatDao {
         dao.create(passCat);
     }
 
+    public void update(String uuid,String title,String url,String iconURL)throws SQLException{
+        UpdateBuilder<PassCat,Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid",uuid);
+        builder.updateColumnValue("catTitle",title);
+        builder.updateColumnValue("catUrl",url);
+        builder.updateColumnValue("catIconUrl",iconURL);
+        builder.updateColumnValue("updateStamp",System.currentTimeMillis());
+        builder.update();
+    }
+
     public List<PassCat> queryByTitle(String title) throws SQLException {
         QueryBuilder<PassCat, Integer> builder = dao.queryBuilder();
         builder.where().eq("catTitle", title);

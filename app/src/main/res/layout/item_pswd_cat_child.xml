@@ -7,7 +7,7 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <include layout="@layout/divider" />
+    <include layout="@layout/divider_ml_88dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -260,7 +260,15 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
 
     @Override
     public void onEditSuccess(PassCat passCat) {
-
+        if (passCat != null) {
+            this.passCat = passCat;
+            toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()));
+            ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), avatar, ImgLoaderOptions.init404Options());
+            website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
+            create.setText(TimeUtils.calInterval(passCat.getCreateStamp(), System.currentTimeMillis()));
+            update.setText(TimeUtils.calInterval(passCat.getUpdateStamp(), System.currentTimeMillis()));
+        }
+        PswdFragment.getInstances().onRefresh();
     }
 
     @Override
