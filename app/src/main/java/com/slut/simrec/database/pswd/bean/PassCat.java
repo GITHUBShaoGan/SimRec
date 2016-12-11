@@ -21,6 +21,8 @@ public class PassCat implements Parcelable{
     @DatabaseField
     private String catIconUrl;
     @DatabaseField
+    private boolean isExpand;
+    @DatabaseField
     private long createStamp;
     @DatabaseField
     private long updateStamp;
@@ -28,11 +30,12 @@ public class PassCat implements Parcelable{
     public PassCat() {
     }
 
-    public PassCat(String uuid, String catTitle, String catUrl, String catIconUrl, long createStamp, long updateStamp) {
+    public PassCat(String uuid, String catTitle, String catUrl, String catIconUrl, boolean isExpand, long createStamp, long updateStamp) {
         this.uuid = uuid;
         this.catTitle = catTitle;
         this.catUrl = catUrl;
         this.catIconUrl = catIconUrl;
+        this.isExpand = isExpand;
         this.createStamp = createStamp;
         this.updateStamp = updateStamp;
     }
@@ -42,8 +45,25 @@ public class PassCat implements Parcelable{
         catTitle = in.readString();
         catUrl = in.readString();
         catIconUrl = in.readString();
+        isExpand = in.readByte() != 0;
         createStamp = in.readLong();
         updateStamp = in.readLong();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(catTitle);
+        dest.writeString(catUrl);
+        dest.writeString(catIconUrl);
+        dest.writeByte((byte) (isExpand ? 1 : 0));
+        dest.writeLong(createStamp);
+        dest.writeLong(updateStamp);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PassCat> CREATOR = new Creator<PassCat>() {
@@ -57,18 +77,6 @@ public class PassCat implements Parcelable{
             return new PassCat[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "PassCat{" +
-                "uuid='" + uuid + '\'' +
-                ", catTitle='" + catTitle + '\'' +
-                ", catUrl='" + catUrl + '\'' +
-                ", catIconUrl='" + catIconUrl + '\'' +
-                ", createStamp=" + createStamp +
-                ", updateStamp=" + updateStamp +
-                '}';
-    }
 
     public String getUuid() {
         return uuid;
@@ -102,6 +110,14 @@ public class PassCat implements Parcelable{
         this.catIconUrl = catIconUrl;
     }
 
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
+    }
+
     public long getCreateStamp() {
         return createStamp;
     }
@@ -119,17 +135,15 @@ public class PassCat implements Parcelable{
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(uuid);
-        parcel.writeString(catTitle);
-        parcel.writeString(catUrl);
-        parcel.writeString(catIconUrl);
-        parcel.writeLong(createStamp);
-        parcel.writeLong(updateStamp);
+    public String toString() {
+        return "PassCat{" +
+                "uuid='" + uuid + '\'' +
+                ", catTitle='" + catTitle + '\'' +
+                ", catUrl='" + catUrl + '\'' +
+                ", catIconUrl='" + catIconUrl + '\'' +
+                ", isExpand=" + isExpand +
+                ", createStamp=" + createStamp +
+                ", updateStamp=" + updateStamp +
+                '}';
     }
 }

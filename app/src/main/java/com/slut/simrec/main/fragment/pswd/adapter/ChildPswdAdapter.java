@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slut.simrec.App;
 import com.slut.simrec.R;
+import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.rsa.RSAUtils;
+import com.slut.simrec.utils.ImgLoaderOptions;
 import com.slut.simrec.utils.ResUtils;
 import com.slut.simrec.utils.SystemUtils;
 import com.slut.simrec.widget.CircleTextImageView;
@@ -39,6 +42,15 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<Password> passwordList;
     private int footerViewSize = 0;
     private Context context;
+    private PassCat passCat;
+
+    public PassCat getPassCat() {
+        return passCat;
+    }
+
+    public void setPassCat(PassCat passCat) {
+        this.passCat = passCat;
+    }
 
     public ChildPswdAdapter(Context context) {
         this.context = context;
@@ -84,14 +96,8 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (password != null) {
                 String title = RSAUtils.decrypt(password.getTitle());
                 final String account = RSAUtils.decrypt(password.getAccount());
-                if (TextUtils.isEmpty(account)) {
-                    if (TextUtils.isEmpty(title)) {
-                        itemViewHolder.avatar.setText(ResUtils.getString(R.string.empty_title).charAt(0) + "");
-                    } else {
-                        itemViewHolder.avatar.setText(title);
-                    }
-                } else {
-                    itemViewHolder.avatar.setText(account.charAt(0) + "");
+                if (passCat != null) {
+                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
                 }
                 itemViewHolder.account.setText(account + "");
                 itemViewHolder.title.setText(title + "");
@@ -143,6 +149,9 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
+        if (passCat != null && !passCat.isExpand()) {
+            return 0;
+        }
         if (passwordList != null) {
             return passwordList.size() + footerViewSize;
         }

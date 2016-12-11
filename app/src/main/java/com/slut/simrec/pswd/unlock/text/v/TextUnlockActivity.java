@@ -1,4 +1,4 @@
-package com.slut.simrec.pswd.master.text.v;
+package com.slut.simrec.pswd.unlock.text.v;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -12,34 +12,29 @@ import android.widget.Button;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
-import com.slut.simrec.pswd.master.text.p.TextPassPresenter;
-import com.slut.simrec.pswd.master.text.p.TextPassPresenterImpl;
-import com.slut.simrec.utils.ResUtils;
+import com.slut.simrec.pswd.unlock.text.p.TextUnlockPresenter;
+import com.slut.simrec.pswd.unlock.text.p.TextUnlockPresenterImpl;
 import com.slut.simrec.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.password;
-
-public class TextPassActivity extends AppCompatActivity implements TextPassView {
+public class TextUnlockActivity extends AppCompatActivity implements TextUnlockView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.til_password)
-    TextInputLayout tilPassword;
-    @BindView(R.id.til_confirm)
-    TextInputLayout tilConfirm;
     @BindView(R.id.submit)
     Button submit;
+    @BindView(R.id.til_password)
+    TextInputLayout tilPassword;
 
-    private TextPassPresenter presenter;
+    private TextUnlockPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_pass);
+        setContentView(R.layout.activity_text_unlock);
         ButterKnife.bind(this);
         initView();
         initListener();
@@ -49,7 +44,7 @@ public class TextPassActivity extends AppCompatActivity implements TextPassView 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        presenter = new TextPassPresenterImpl(this);
+        presenter = new TextUnlockPresenterImpl(this);
     }
 
     private void initListener() {
@@ -72,48 +67,12 @@ public class TextPassActivity extends AppCompatActivity implements TextPassView 
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String password = tilConfirm.getEditText().getText().toString();
-                String confirm = editable.toString();
                 if (editable.length() >= 4 && editable.length() <= 128) {
-                    tilPassword.setError("");
-                    if (password.equals(confirm)) {
-                        submit.setClickable(true);
-                        submit.setEnabled(true);
-                    } else {
-                        submit.setClickable(false);
-                        submit.setEnabled(false);
-                    }
-                } else {
-                    tilPassword.setError(ResUtils.getString(R.string.error_password_length));
-                    submit.setClickable(false);
-                    submit.setEnabled(false);
-                }
-
-            }
-        });
-        tilConfirm.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String password = tilPassword.getEditText().getText().toString();
-                String confirm = editable.toString();
-                if (password.equals(confirm) && editable.length() >= 4 && editable.length() <= 128) {
                     submit.setClickable(true);
                     submit.setEnabled(true);
-                    tilConfirm.setError("");
                 } else {
                     submit.setClickable(false);
                     submit.setEnabled(false);
-                    tilConfirm.setError(ResUtils.getString(R.string.error_two_input_notequal));
                 }
             }
         });
@@ -122,11 +81,11 @@ public class TextPassActivity extends AppCompatActivity implements TextPassView 
     @OnClick(R.id.submit)
     void onSubmitClick() {
         String password = tilPassword.getEditText().getText().toString().trim();
-        presenter.createPass(password);
+        presenter.validate(password);
     }
 
     @Override
-    public void onCreateSuccess() {
+    public void onValidateSuccess() {
         App.setIsPswdFunctionLocked(false);
         Intent intent = getIntent();
         if (intent != null) {
@@ -136,7 +95,12 @@ public class TextPassActivity extends AppCompatActivity implements TextPassView 
     }
 
     @Override
-    public void onCreateError(String msg) {
+    public void onValidateFailed() {
+        ToastUtils.showShort("failed");
+    }
+
+    @Override
+    public void onValidateError(String msg) {
         ToastUtils.showShort(msg);
     }
 }

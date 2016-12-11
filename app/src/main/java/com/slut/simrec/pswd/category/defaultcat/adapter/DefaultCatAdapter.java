@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -109,7 +110,7 @@ public class DefaultCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.avatar)
-        CircleTextImageView avatar;
+        ImageView avatar;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.website)

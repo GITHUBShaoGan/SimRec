@@ -28,6 +28,8 @@ import com.slut.simrec.main.p.MainPresenterImpl;
 import com.slut.simrec.pswd.category.defaultcat.v.DefaultCatActivity;
 import com.slut.simrec.pswd.master.type.MasterTypeActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
+import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
+import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 import com.slut.simrec.utils.ResUtils;
 import com.slut.simrec.utils.ToastUtils;
 
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     private MainPresenter presenter;
 
     private static final int REQUEST_CREATE_MASTER = 1000;
-    private static final int REQUEST_GRID_UNLOCK = 2000;
+    private static final int REQUEST_UNLOCK = 2000;
     public static final int REQUEST_CREATE_PASSWORD = 3000;
 
     public static final int REQUEST_UNLOCK_COPY = 4000;
@@ -161,16 +163,7 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        int currentPageId = viewPager.getCurrentItem();
-        if (currentPageId == 0) {
-            //密码页面
-            switch (item.getItemId()) {
-                case R.id.sortbycreate:
-                    break;
-                case R.id.sortbyupdate:
-                    break;
-            }
-        }
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -198,7 +191,15 @@ public class MainActivity extends AppCompatActivity
             case PassConfig.LockType.GRID:
                 //网格密码解锁
                 Intent intent = new Intent(this, GridUnlockActivity.class);
-                startActivityForResult(intent, REQUEST_GRID_UNLOCK);
+                startActivityForResult(intent, REQUEST_UNLOCK);
+                break;
+            case PassConfig.LockType.TEXT:
+                Intent textUnlock = new Intent(this, TextUnlockActivity.class);
+                startActivityForResult(textUnlock, REQUEST_UNLOCK);
+                break;
+            case PassConfig.LockType.PATTERN:
+                Intent patternUnlock = new Intent(this, PatternUnlockActivity.class);
+                startActivityForResult(patternUnlock, REQUEST_UNLOCK);
                 break;
         }
     }
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity
                     Intent intent1 = new Intent(this, DefaultCatActivity.class);
                     startActivityForResult(intent1, REQUEST_CREATE_PASSWORD);
                     break;
-                case REQUEST_GRID_UNLOCK:
+                case REQUEST_UNLOCK:
                     Intent intent = new Intent(this, DefaultCatActivity.class);
                     startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
                     break;

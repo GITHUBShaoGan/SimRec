@@ -191,13 +191,13 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
     public void onLoadMoreSuccess(int type, List<PassCat> passCatList) {
         this.passCatList.addAll(passCatList);
         adapter.setPassCatList(this.passCatList);
-        adapter.notifyDataSetChanged();
         if (type == LoadMoreType.TYPE_END) {
             //没有数据了
             adapter.addFooter();
         } else {
             adapter.removeFooter();
         }
+        adapter.notifyDataSetChanged();
         pageNo++;
         refreshLayout.setRefreshing(false);
     }

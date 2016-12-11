@@ -15,7 +15,7 @@ import java.util.UUID;
  * Created by 七月在线科技 on 2016/12/7.
  */
 
-public class OptionModelImpl implements OptionModel {
+public class  OptionModelImpl implements OptionModel {
 
     @Override
     public void create(String title, String url, String iconUrl, OnCreateCatListener onCreateCatListener) {
@@ -28,7 +28,7 @@ public class OptionModelImpl implements OptionModel {
         String newTitle = RSAUtils.encrypt(title);
         String newUrl = RSAUtils.encrypt(url);
         String newIconUrl = RSAUtils.encrypt(iconUrl);
-        PassCat passCat = new PassCat(uuid, newTitle, newUrl, newIconUrl, stamp, stamp);
+        PassCat passCat = new PassCat(uuid, newTitle, newUrl, newIconUrl,true, stamp, stamp);
         List<PassCat> passCatList = null;
         try {
             passCatList = PassCatDao.getInstances().queryByTitle(newTitle);

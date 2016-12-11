@@ -5,4 +5,7 @@ package com.slut.simrec.pswd.master.text.p;
  */
 
 public interface TextPassPresenter {
+
+    void createPass(String password);
+
 }

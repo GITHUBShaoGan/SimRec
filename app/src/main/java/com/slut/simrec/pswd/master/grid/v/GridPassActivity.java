@@ -69,10 +69,10 @@ public class GridPassActivity extends AppCompatActivity implements GridPassView 
                 if (psw.length() < 6) {
                     tips.setTextColor(Color.BLACK);
                     if (count == 1) {
-                        tips.setText(R.string.tips_grid_pass_first_input);
+                        tips.setText(R.string.tips_grid_pass_confirm_input);
                     }
                     if (count == 2) {
-                        tips.setText(R.string.tips_grid_pass_confirm_input);
+                        tips.setText(R.string.tips_grid_pass_first_input);
                     }
                 }
             }

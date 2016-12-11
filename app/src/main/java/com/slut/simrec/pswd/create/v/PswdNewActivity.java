@@ -204,6 +204,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle())+"");
                                     tilTitle.getEditText().setText(RSAUtils.decrypt(passCat.getCatTitle()));
                                     tilWebSite.getEditText().setText(RSAUtils.decrypt(passCat.getCatUrl()));
                                     tilAccount.getEditText().requestFocus();

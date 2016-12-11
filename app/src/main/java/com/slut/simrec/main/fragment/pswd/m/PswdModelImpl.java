@@ -42,8 +42,8 @@ public class PswdModelImpl implements PswdModel {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (passConfig != null) {
-                    PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.decrypt(CategoryConst.ICONURL_UNSPECIFIC), System.currentTimeMillis(), System.currentTimeMillis());
+                if (passConfig != null && !passCatList.isEmpty()) {
+                    PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC),true, System.currentTimeMillis(), System.currentTimeMillis());
                     passCatList.add(0, unspecificCat);
                 }
             }

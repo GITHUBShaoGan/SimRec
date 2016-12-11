@@ -5,4 +5,15 @@ package com.slut.simrec.pswd.master.text.m;
  */
 
 public interface TextPassModel {
+
+    interface OnCreatePassListener{
+
+        void onCreateSuccess();
+
+        void onCreateError(String msg);
+
+    }
+
+    void createPass(String password,OnCreatePassListener onCreatePassListener);
+
 }

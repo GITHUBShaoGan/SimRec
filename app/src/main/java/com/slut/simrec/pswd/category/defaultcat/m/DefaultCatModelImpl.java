@@ -45,7 +45,7 @@ public class DefaultCatModelImpl implements DefaultCatModel {
         String iconUrl = RSAUtils.encrypt(defaultCatBean.getIconUrl());
         String uuid = UUID.randomUUID().toString();
         long stamp = System.currentTimeMillis();
-        PassCat passCat = new PassCat(uuid, title, url, iconUrl, stamp, stamp);
+        PassCat passCat = new PassCat(uuid, title, url, iconUrl, true, stamp, stamp);
         List<PassCat> passCatList = null;
         try {
             passCatList = PassCatDao.getInstances().queryByTitle(title);

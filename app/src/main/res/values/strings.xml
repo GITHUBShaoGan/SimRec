@@ -75,6 +75,12 @@
     <string name="error_password_length">length must between 4 and 128</string>
     <string name="error_two_input_notequal">two input not equal</string>
 
+    <!--TextUnlockActivity-->
+    <string name="title_activity_text_unlock">Text Unlock</string>
+    <string name="hint_text_unlock_password">Password</string>
+    <string name="btn_text_unlock_submit">UnLock</string>
+    <string name="error_text_unlock_length">Password length must between 4 and 128</string>
+
     <string name="delete_success">Delete success</string>
     <string name="delete_failed">Delete failed</string>
 
@@ -103,7 +109,7 @@
 
     <string name="title_default_category">Others</string>
     <string name="url_default_category">www.example.com</string>
-    <string name="iconurl_default_category"></string>
+    <string name="iconurl_default_category">https://dn-8l5l1lef.qbox.me/b7d23ca9040714094a13.png</string>
 
     <string name="action_menu_copy_account">Copy Account</string>
     <string name="action_menu_copy_password">Copy Password</string>

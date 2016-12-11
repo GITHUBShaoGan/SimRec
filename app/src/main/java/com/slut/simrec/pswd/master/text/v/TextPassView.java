@@ -5,4 +5,9 @@ package com.slut.simrec.pswd.master.text.v;
  */
 
 public interface TextPassView {
+
+    void onCreateSuccess();
+
+    void onCreateError(String msg);
+
 }

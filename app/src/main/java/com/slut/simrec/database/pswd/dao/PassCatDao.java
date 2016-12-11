@@ -45,14 +45,25 @@ public class PassCatDao {
         dao.create(passCat);
     }
 
-    public void update(String uuid,String title,String url,String iconURL)throws SQLException{
-        UpdateBuilder<PassCat,Integer> builder = dao.updateBuilder();
-        builder.where().eq("uuid",uuid);
-        builder.updateColumnValue("catTitle",title);
-        builder.updateColumnValue("catUrl",url);
-        builder.updateColumnValue("catIconUrl",iconURL);
-        builder.updateColumnValue("updateStamp",System.currentTimeMillis());
+    public void update(String uuid, String title, String url, String iconURL) throws SQLException {
+        UpdateBuilder<PassCat, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", uuid);
+        builder.updateColumnValue("catTitle", title);
+        builder.updateColumnValue("catUrl", url);
+        builder.updateColumnValue("catIconUrl", iconURL);
+        builder.updateColumnValue("updateStamp", System.currentTimeMillis());
         builder.update();
+    }
+
+    public void updateExpand(boolean flag, String uuid) {
+        try {
+            UpdateBuilder<PassCat, Integer> builder = dao.updateBuilder();
+            builder.where().eq("uuid", uuid);
+            builder.updateColumnValue("isExpand", flag);
+            builder.update();
+        } catch (Exception e) {
+
+        }
     }
 
     public List<PassCat> queryByTitle(String title) throws SQLException {
@@ -82,10 +93,10 @@ public class PassCatDao {
         return builder.query();
     }
 
-    public void updateTime(String uuid)throws SQLException{
-        UpdateBuilder<PassCat,Integer> builder  = dao.updateBuilder();
-        builder.where().eq("uuid",uuid);
-        builder.updateColumnValue("updateStamp",System.currentTimeMillis());
+    public void updateTime(String uuid) throws SQLException {
+        UpdateBuilder<PassCat, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", uuid);
+        builder.updateColumnValue("updateStamp", System.currentTimeMillis());
         builder.update();
     }
 

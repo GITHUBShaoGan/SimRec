@@ -16,6 +16,8 @@ import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.database.pswd.dao.PassCatDao;
+import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ImgLoaderOptions;
@@ -94,8 +96,8 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (passCatList != null && position < passCatList.size()) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            PassCat passCat = passCatList.get(position);
+            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            final PassCat passCat = passCatList.get(position);
             ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
             itemViewHolder.title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
             itemViewHolder.website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
@@ -112,10 +114,30 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
             if (passwordList != null && position < passwordList.size()) {
-                ChildPswdAdapter adapter = new ChildPswdAdapter(context);
+                final ChildPswdAdapter adapter = new ChildPswdAdapter(context);
                 adapter.setPasswordList(passwordList.get(position));
+                adapter.setPassCat(passCatList.get(position));
                 itemViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(App.getContext()));
                 itemViewHolder.recyclerView.setAdapter(adapter);
+                itemViewHolder.lessOrMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (passCat.isExpand()) {
+                            itemViewHolder.lessOrMore.setImageResource(R.drawable.ic_expand_more_grey600_24dp);
+                        } else {
+                            itemViewHolder.lessOrMore.setImageResource(R.drawable.ic_expand_less_grey600_24dp);
+                        }
+                        PassCatDao.getInstances().updateExpand(!passCat.isExpand(),passCat.getUuid());
+                        passCat.setExpand(!passCat.isExpand());
+                        adapter.setPassCat(passCat);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                if (passCat.isExpand()) {
+                    itemViewHolder.lessOrMore.setImageResource(R.drawable.ic_expand_less_grey600_24dp);
+                } else {
+                    itemViewHolder.lessOrMore.setImageResource(R.drawable.ic_expand_more_grey600_24dp);
+                }
             }
         }
     }
@@ -141,7 +163,7 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.avatar)
-        CircleTextImageView avatar;
+        ImageView avatar;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.website)
@@ -150,6 +172,8 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView recyclerView;
         @BindView(R.id.add)
         ImageView add;
+        @BindView(R.id.lessormore)
+        ImageView lessOrMore;
 
         public ItemViewHolder(View itemView) {
             super(itemView);

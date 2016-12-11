@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.pswd.category.defaultcat.adapter.DefaultCatAdapter;
 import com.slut.simrec.pswd.category.defaultcat.bean.DefaultCatBean;
 import com.slut.simrec.pswd.category.defaultcat.p.DefaultCatPresenter;

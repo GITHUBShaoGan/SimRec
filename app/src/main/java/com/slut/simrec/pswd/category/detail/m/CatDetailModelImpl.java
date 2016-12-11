@@ -80,9 +80,10 @@ public class CatDetailModelImpl implements CatDetailModel {
         String newTitle = RSAUtils.encrypt(title);
         String newURL = RSAUtils.encrypt(url);
         String newIconURL = RSAUtils.encrypt(iconURL);
+        boolean isExpand = passCat.isExpand();
         try {
             PassCatDao.getInstances().update(uuid, newTitle, newURL, newIconURL);
-            PassCat newCat = new PassCat(uuid, newTitle, newURL, newIconURL, passCat.getCreateStamp(), System.currentTimeMillis());
+            PassCat newCat = new PassCat(uuid, newTitle, newURL, newIconURL, isExpand, passCat.getCreateStamp(), System.currentTimeMillis());
             onEditListener.onEditSuccess(newCat);
         } catch (Exception e) {
             if (e != null && !TextUtils.isEmpty(e.getLocalizedMessage())) {
