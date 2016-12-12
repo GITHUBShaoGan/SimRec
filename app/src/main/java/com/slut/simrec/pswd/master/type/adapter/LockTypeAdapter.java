@@ -1,4 +1,4 @@
-package com.slut.simrec.pswd.master.type;
+package com.slut.simrec.pswd.master.type.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
+import com.slut.simrec.pswd.master.type.bean.LockType;
 
 import java.util.List;
 
@@ -53,7 +54,6 @@ public class LockTypeAdapter extends RecyclerView.Adapter<LockTypeAdapter.ViewHo
             holder.avatar.setImageResource(lockType.getImageID());
             holder.title.setText(lockType.getTitle());
             holder.description.setText(lockType.getDescription());
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

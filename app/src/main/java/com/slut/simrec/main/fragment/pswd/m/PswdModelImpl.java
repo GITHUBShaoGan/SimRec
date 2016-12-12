@@ -42,9 +42,22 @@ public class PswdModelImpl implements PswdModel {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (passConfig != null && !passCatList.isEmpty()) {
-                    PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC),true, System.currentTimeMillis(), System.currentTimeMillis());
-                    passCatList.add(0, unspecificCat);
+                if (passConfig != null) {
+                    if (!passCatList.isEmpty()) {
+                        PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC), true, System.currentTimeMillis(), System.currentTimeMillis());
+                        passCatList.add(0, unspecificCat);
+                    } else {
+                        //判断others目录下是否还有课程
+                        try {
+                            List<Password> passwords = PassDao.getInstances().queryByCatUUID(CategoryConst.UUID_UNSPECIFIC);
+                            if (passwords != null && !passwords.isEmpty()) {
+                                PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC), true, System.currentTimeMillis(), System.currentTimeMillis());
+                                passCatList.add(0, unspecificCat);
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
                 }
             }
             List<List<Password>> listList = new ArrayList<>();

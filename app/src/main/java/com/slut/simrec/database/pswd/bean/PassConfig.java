@@ -14,6 +14,7 @@ public class PassConfig {
         public static final int GRID = 1;
         public static final int PATTERN = 2;
         public static final int TEXT = 3;
+        public static final int FINGERPRINT = 4;
     }
 
     @DatabaseField(id = true)

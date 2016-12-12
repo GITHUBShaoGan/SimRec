@@ -69,15 +69,7 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 String account = RSAUtils.decrypt(password.getAccount());
                 itemViewHolder.title.setText(title);
                 itemViewHolder.account.setText(account);
-                if (TextUtils.isEmpty(title)) {
-                    if (TextUtils.isEmpty(account)) {
-                        itemViewHolder.avatar.setText("X");
-                    } else {
-                        itemViewHolder.avatar.setText(account.charAt(0)+"");
-                    }
-                } else {
-                    itemViewHolder.avatar.setText(title.charAt(0)+"");
-                }
+                itemViewHolder.avatar.setText(passwordList.size()-position+"");
             }
         }
     }
@@ -103,7 +95,7 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.avatar)
-        CircleTextImageView avatar;
+        TextView avatar;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.account)

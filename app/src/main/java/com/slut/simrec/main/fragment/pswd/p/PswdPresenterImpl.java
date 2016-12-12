@@ -36,4 +36,5 @@ public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoad
     public void loadPassCat(long pageNo, long pageSize) {
         pswdModel.loadPassCat(pageNo, pageSize, this);
     }
+
 }

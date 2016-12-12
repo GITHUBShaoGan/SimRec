@@ -1,10 +1,17 @@
 package com.slut.simrec.main.v;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -14,11 +21,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassConfig;
+import com.slut.simrec.fingerprint.CryptoObjectHelper;
+import com.slut.simrec.fingerprint.MyAuthCallback;
+import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.main.adapter.MainPagerAdapter;
 import com.slut.simrec.main.fragment.note.NoteFragment;
 import com.slut.simrec.main.fragment.pay.PayFragment;
@@ -26,7 +41,7 @@ import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.main.p.MainPresenter;
 import com.slut.simrec.main.p.MainPresenterImpl;
 import com.slut.simrec.pswd.category.defaultcat.v.DefaultCatActivity;
-import com.slut.simrec.pswd.master.type.MasterTypeActivity;
+import com.slut.simrec.pswd.master.type.v.MasterTypeActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
@@ -56,6 +71,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+    private AlertDialog dialog;
+
     private MainPagerAdapter pagerAdapter;
     private MainPresenter presenter;
 
@@ -64,6 +81,9 @@ public class MainActivity extends AppCompatActivity
     public static final int REQUEST_CREATE_PASSWORD = 3000;
 
     public static final int REQUEST_UNLOCK_COPY = 4000;
+
+    private FingerprintManager.CryptoObject cryptoObject;
+    private CancellationSignal cancellationSignal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +170,55 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void validateFingerPrint(final TextView message) {
+        FingerprintManager manager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        try {
+            cryptoObject = new CryptoObjectHelper().buildCryptoObject();
+        } catch (Exception e) {
+
+        }
+        cancellationSignal = new CancellationSignal();
+        manager.authenticate(cryptoObject, cancellationSignal, 0, new MyAuthCallback(new OnFingerPrintAuthListener() {
+            @Override
+            public void onAuthenticationError(int errorCode, CharSequence errString) {
+                message.setTextColor(Color.RED);
+                message.setText(errString);
+            }
+
+            @Override
+            public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                message.setTextColor(Color.parseColor("#2A3245"));
+                message.setText(helpString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                App.setIsPswdFunctionLocked(false);
+                message.setTextColor(Color.parseColor("#2A3245"));
+                message.setText(R.string.fingerprint_validate_success);
+                Intent intent = new Intent(MainActivity.this, DefaultCatActivity.class);
+                startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                message.setTextColor(Color.RED);
+                message.setText(R.string.fingerprint_validate_failed);
+            }
+        }), null);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -186,21 +255,46 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPswdFuncLock(PassConfig passConfig) {
-        //已经锁定
-        switch (passConfig.getPreferLockType()) {
-            case PassConfig.LockType.GRID:
-                //网格密码解锁
-                Intent intent = new Intent(this, GridUnlockActivity.class);
-                startActivityForResult(intent, REQUEST_UNLOCK);
-                break;
-            case PassConfig.LockType.TEXT:
-                Intent textUnlock = new Intent(this, TextUnlockActivity.class);
-                startActivityForResult(textUnlock, REQUEST_UNLOCK);
-                break;
-            case PassConfig.LockType.PATTERN:
-                Intent patternUnlock = new Intent(this, PatternUnlockActivity.class);
-                startActivityForResult(patternUnlock, REQUEST_UNLOCK);
-                break;
+        if (passConfig.isFingerPrintAgreed()) {
+            //指纹解锁
+            View v = LayoutInflater.from(this).inflate(R.layout.view_dialog_fingerprint, new LinearLayout(this), false);
+            TextView message = (TextView) v.findViewById(R.id.message);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(R.drawable.ic_fp_40px);
+            builder.setTitle(R.string.title_dialog_fingerprint);
+            builder.setView(v);
+            builder.setNegativeButton(R.string.action_dialog_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    cancellationSignal.cancel();
+                }
+            });
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    cancellationSignal.cancel();
+                }
+            });
+            dialog = builder.create();
+            validateFingerPrint(message);
+            dialog.show();
+        } else {
+            //已经锁定
+            switch (passConfig.getPreferLockType()) {
+                case PassConfig.LockType.GRID:
+                    //网格密码解锁
+                    Intent intent = new Intent(this, GridUnlockActivity.class);
+                    startActivityForResult(intent, REQUEST_UNLOCK);
+                    break;
+                case PassConfig.LockType.TEXT:
+                    Intent textUnlock = new Intent(this, TextUnlockActivity.class);
+                    startActivityForResult(textUnlock, REQUEST_UNLOCK);
+                    break;
+                case PassConfig.LockType.PATTERN:
+                    Intent patternUnlock = new Intent(this, PatternUnlockActivity.class);
+                    startActivityForResult(patternUnlock, REQUEST_UNLOCK);
+                    break;
+            }
         }
     }
 

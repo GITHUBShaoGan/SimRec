@@ -43,6 +43,11 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int footerViewSize = 0;
     private Context context;
     private PassCat passCat;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public PassCat getPassCat() {
         return passCat;
@@ -89,19 +94,25 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (passwordList != null && position < passwordList.size()) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             final Password password = passwordList.get(position);
             if (password != null) {
                 String title = RSAUtils.decrypt(password.getTitle());
                 final String account = RSAUtils.decrypt(password.getAccount());
-                if (passCat != null) {
-                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
+                if (TextUtils.isEmpty(account)) {
+                    itemViewHolder.title.setText(title + "");
+                } else {
+                    itemViewHolder.title.setText(account + "");
                 }
-                itemViewHolder.account.setText(account + "");
-                itemViewHolder.title.setText(title + "");
-
+                itemViewHolder.number.setText(passwordList.size() - position + "");
+                itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickListener.onItemClick(view, position);
+                    }
+                });
                 itemViewHolder.copy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -160,14 +171,12 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.account)
-        TextView account;
-        @BindView(R.id.avatar)
-        CircleTextImageView avatar;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.copy)
         ImageView copy;
+        @BindView(R.id.number)
+        TextView number;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +188,12 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+
+        void onItemClick(View view, int position);
+
     }
 
 }

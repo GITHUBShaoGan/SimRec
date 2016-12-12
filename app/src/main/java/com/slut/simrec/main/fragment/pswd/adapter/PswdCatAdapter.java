@@ -117,6 +117,12 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 final ChildPswdAdapter adapter = new ChildPswdAdapter(context);
                 adapter.setPasswordList(passwordList.get(position));
                 adapter.setPassCat(passCatList.get(position));
+                adapter.setOnItemClickListener(new ChildPswdAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int pos) {
+                        onItemClickListener.onPasswordItemClick(view, position,pos);
+                    }
+                });
                 itemViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(App.getContext()));
                 itemViewHolder.recyclerView.setAdapter(adapter);
                 itemViewHolder.lessOrMore.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +133,7 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         } else {
                             itemViewHolder.lessOrMore.setImageResource(R.drawable.ic_expand_less_grey600_24dp);
                         }
-                        PassCatDao.getInstances().updateExpand(!passCat.isExpand(),passCat.getUuid());
+                        PassCatDao.getInstances().updateExpand(!passCat.isExpand(), passCat.getUuid());
                         passCat.setExpand(!passCat.isExpand());
                         adapter.setPassCat(passCat);
                         adapter.notifyDataSetChanged();
@@ -192,6 +198,8 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onAddClick(View view, int position);
 
         void onCatItemClick(View view, int position);
+
+        void onPasswordItemClick(View view,int catPosition, int passPosition);
 
     }
 }

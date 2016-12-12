@@ -1,23 +1,34 @@
 package com.slut.simrec.pswd.unlock.grid.v;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jungly.gridpasswordview.GridPasswordView;
 import com.jungly.gridpasswordview.PasswordType;
 import com.slut.simrec.App;
 import com.slut.simrec.R;
+import com.slut.simrec.fingerprint.Status;
+import com.slut.simrec.fingerprint.Utils;
 import com.slut.simrec.pswd.unlock.grid.p.GridUnlockPresenter;
 import com.slut.simrec.pswd.unlock.grid.p.GridUnlockPresenterImpl;
+import com.slut.simrec.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +45,8 @@ public class GridUnlockActivity extends AppCompatActivity implements GridUnlockV
     GridPasswordView passwordView;
 
     private GridUnlockPresenter presenter;
+
+    private static final int REQUEST_GET_FINGERPRINT_PERMISSION = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,4 +138,5 @@ public class GridUnlockActivity extends AppCompatActivity implements GridUnlockV
         tips.setText(msg);
         tips.setTextColor(Color.RED);
     }
+
 }

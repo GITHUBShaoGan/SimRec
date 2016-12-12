@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pswd.master.type.MasterTypeActivity"
+            android:name=".pswd.master.type.v.MasterTypeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".pswd.master.grid.v.GridPassActivity"
@@ -57,7 +57,8 @@
             android:name=".pswd.unlock.text.v.TextUnlockActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
-        <activity android:name=".pswd.unlock.pattern.PatternUnlockActivity"></activity>
+        <activity android:name=".pswd.unlock.pattern.PatternUnlockActivity" />
+        <activity android:name=".pswd.detail.PassDetailActivity"></activity>
     </application>
 
 </manifest>

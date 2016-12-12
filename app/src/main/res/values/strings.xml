@@ -16,6 +16,15 @@
     <string name="btn_master_type_grid">Grid Password（Just Like IOS）</string>
     <string name="btn_master_type_pattern">Pattern Password</string>
     <string name="btn_master_type_text">Text Password</string>
+    <string name="title_dialog_no_fingerprint">No Fingerprint</string>
+    <string name="msg_dialog_no_fingerprint">No fingerprint saved in your device,please add at least one,add it now?</string>
+    <string name="title_dialog_keyguard_notsecure">Keyguard Not Secure</string>
+    <string name="msg_dialog_keyguard_notsecure">Your keyguard is not secure,set it now?</string>
+    <string name="title_dialog_not_support">Fingerprint Not Support</string>
+    <string name="msg_dialog_not_support">Your device does not support fingerprint</string>
+    <string name="msg_dialog_validate">Please put your finger on the fingerprint sensor</string>
+    <string name="fingerprint_validate_success">Fingerprint validate success</string>
+    <string name="fingerprint_validate_failed">Fingerprint validate failed</string>
 
     <!--GridPassActivity-->
     <string name="title_activity_grid_pass">Set Grid Password</string>
@@ -23,6 +32,8 @@
     <string name="tips_grid_pass_confirm_input">Please input again</string>
     <string name="cb_grid_pass_show">Show Password</string>
     <string name="action_menu_reset">Reset</string>
+    <string name="action_menu_fingerprint">Fingerprint</string>
+    <string name="title_dialog_fingerprint">Fingerprint Unlock</string>
     <string name="error_pass_length">Length of password is illegal</string>
 
     <!--GridUnLockActivity-->
@@ -52,8 +63,8 @@
     <string name="title_activity_category_option">Select A Category</string>
     <string name="action_menu_add">New Category</string>
     <string name="hint_category_options_title">Title</string>
-    <string name="hint_category_options_url">Website URL(Can be empty)</string>
-    <string name="hint_category_options_iconurl">Icon Url(Can be empty)</string>
+    <string name="hint_category_options_url">Website URL</string>
+    <string name="hint_category_options_iconurl">Icon Url</string>
     <string name="title_dialog_add">New Category</string>
     <string name="error_category_options_empty_title">Title cannot be empty</string>
     <string name="error_category_already_exists">Category already exists</string>
@@ -103,6 +114,8 @@
     <string name="time_interval_hour_ago">\thour ago</string>
     <string name="time_interval_days_ago">\tdays ago</string>
     <string name="time_interval_day_ago">\tday ago</string>
+
+    <string name="permission_denied">Permission denied</string>
 
     <string name="empty_title">Empty Title</string>
     <string name="empty_account">Empty Account</string>

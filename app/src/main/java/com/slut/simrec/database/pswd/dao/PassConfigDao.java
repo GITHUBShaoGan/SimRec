@@ -2,6 +2,7 @@ package com.slut.simrec.database.pswd.dao;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 import com.slut.simrec.App;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 
@@ -33,6 +34,15 @@ public class PassConfigDao {
 
     }
 
+    public void update(PassConfig passConfig) throws SQLException {
+        UpdateBuilder<PassConfig, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", passConfig.getUuid());
+        builder.updateColumnValue("isFingerPrintAgreed", true);
+        builder.updateColumnValue("createStamp", passConfig.getCreateStamp());
+        builder.updateColumnValue("updateStamp", passConfig.getUpdateStamp());
+        builder.update();
+    }
+
     public void init() {
         dao = App.getDbHelper().getDao(PassConfig.class);
     }
@@ -43,6 +53,21 @@ public class PassConfigDao {
 
     public void updateSingle(PassConfig passConfig) throws SQLException {
         dao.update(passConfig);
+    }
+
+    public int queryLockType() {
+        try {
+            PassConfig passConfig = querySingleConfig();
+            if (passConfig == null) {
+                return PassConfig.LockType.NOT_SET;
+            }
+            if (passConfig.isFingerPrintAgreed()) {
+                return PassConfig.LockType.FINGERPRINT;
+            }
+            return passConfig.getPreferLockType();
+        } catch (Exception e) {
+            return PassConfig.LockType.NOT_SET;
+        }
     }
 
     public PassConfig querySingleConfig() throws SQLException {

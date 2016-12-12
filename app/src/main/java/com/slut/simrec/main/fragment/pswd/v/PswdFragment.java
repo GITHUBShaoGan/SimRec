@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.main.fragment.pswd.adapter.PswdCatAdapter;
 import com.slut.simrec.main.fragment.pswd.m.DataLoadType;
 import com.slut.simrec.main.fragment.pswd.p.PswdPresenter;
@@ -24,7 +26,10 @@ import com.slut.simrec.main.fragment.pswd.p.PswdPresenterImpl;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.detail.v.PassCatDetailActivity;
 import com.slut.simrec.pswd.create.v.PswdNewActivity;
+import com.slut.simrec.pswd.detail.PassDetailActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
+import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
+import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 import com.slut.simrec.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -32,6 +37,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.R.attr.data;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,10 +68,12 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private PassCat selectAddPassCat = null;
     private PassCat selectItemPassCat = null;
+    private Password selectPassword = null;
 
     private static final int REQUEST_CREATE_PASSWORD = 1000;
     private static final int REQUEST_ADD_UNLOCK = 2000;
-    private static final int REQUEST_ITEM_UNLOCK = 3000;
+    private static final int REQUEST_CAT_ITEM_UNLOCK = 3000;
+    private static final int REQUEST_PASS_ITEM_UNLOCK = 4000;
 
     private int lastVisibleItem = 0;
 
@@ -202,7 +211,21 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         } else {
-            Intent intent = new Intent(getActivity(), GridUnlockActivity.class);
+            Intent intent = null;
+            int lockType = PassConfigDao.getInstances().queryLockType();
+            switch (lockType) {
+                case PassConfig.LockType.GRID:
+                    intent = new Intent(getActivity(), GridUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.PATTERN:
+                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.TEXT:
+                    intent = new Intent(getActivity(), TextUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.FINGERPRINT:
+                    break;
+            }
             startActivityForResult(intent, REQUEST_ADD_UNLOCK);
         }
     }
@@ -218,8 +241,52 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 startActivity(intent);
             }
         } else {
-            Intent intent = new Intent(getActivity(), GridUnlockActivity.class);
-            startActivityForResult(intent, REQUEST_ITEM_UNLOCK);
+            Intent intent = null;
+            int lockType = PassConfigDao.getInstances().queryLockType();
+            switch (lockType) {
+                case PassConfig.LockType.GRID:
+                    intent = new Intent(getActivity(), GridUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.PATTERN:
+                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.TEXT:
+                    intent = new Intent(getActivity(), TextUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.FINGERPRINT:
+                    break;
+            }
+            startActivityForResult(intent, REQUEST_CAT_ITEM_UNLOCK);
+        }
+    }
+
+    @Override
+    public void onPasswordItemClick(View view, int catPosition, int passPos) {
+        Password password = pswdCatAdapter.getPasswordList().get(catPosition).get(passPos);
+        selectPassword = password;
+        if (!App.isPswdFunctionLocked()) {
+            if (password != null) {
+                Intent intent = new Intent(getActivity(), PassDetailActivity.class);
+                intent.putExtra(PassDetailActivity.EXTRA_PASSWORD, password);
+                startActivity(intent);
+            }
+        } else {
+            Intent intent = null;
+            int lockType = PassConfigDao.getInstances().queryLockType();
+            switch (lockType) {
+                case PassConfig.LockType.GRID:
+                    intent = new Intent(getActivity(), GridUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.PATTERN:
+                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.TEXT:
+                    intent = new Intent(getActivity(), TextUnlockActivity.class);
+                    break;
+                case PassConfig.LockType.FINGERPRINT:
+                    break;
+            }
+            startActivityForResult(intent, REQUEST_PASS_ITEM_UNLOCK);
         }
     }
 
@@ -238,10 +305,15 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     }
                     startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
                     break;
-                case REQUEST_ITEM_UNLOCK:
+                case REQUEST_CAT_ITEM_UNLOCK:
                     Intent intentForCatDetail = new Intent(getActivity(), PassCatDetailActivity.class);
                     intentForCatDetail.putExtra(PassCatDetailActivity.EXTRA_PASS_CAT, selectItemPassCat);
                     startActivity(intentForCatDetail);
+                    break;
+                case REQUEST_PASS_ITEM_UNLOCK:
+                    Intent intentForPassDetail = new Intent(getActivity(), PassDetailActivity.class);
+                    intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, selectPassword);
+                    startActivity(intentForPassDetail);
                     break;
             }
         }
