@@ -2,6 +2,7 @@ package com.slut.simrec.main.fragment.pswd.v;
 
 
 import android.content.Intent;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassConfigDao;
+import com.slut.simrec.fingerprint.FingerprintHelper;
+import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.main.fragment.pswd.adapter.PswdCatAdapter;
 import com.slut.simrec.main.fragment.pswd.m.DataLoadType;
 import com.slut.simrec.main.fragment.pswd.p.PswdPresenter;
@@ -26,7 +29,7 @@ import com.slut.simrec.main.fragment.pswd.p.PswdPresenterImpl;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.detail.v.PassCatDetailActivity;
 import com.slut.simrec.pswd.create.v.PswdNewActivity;
-import com.slut.simrec.pswd.detail.PassDetailActivity;
+import com.slut.simrec.pswd.detail.v.PassDetailActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
@@ -37,8 +40,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.R.attr.data;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,6 +70,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private PassCat selectAddPassCat = null;
     private PassCat selectItemPassCat = null;
     private Password selectPassword = null;
+    private PassCat selectPassItemCat = null;
 
     private static final int REQUEST_CREATE_PASSWORD = 1000;
     private static final int REQUEST_ADD_UNLOCK = 2000;
@@ -211,22 +213,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         } else {
-            Intent intent = null;
-            int lockType = PassConfigDao.getInstances().queryLockType();
-            switch (lockType) {
-                case PassConfig.LockType.GRID:
-                    intent = new Intent(getActivity(), GridUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.PATTERN:
-                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.TEXT:
-                    intent = new Intent(getActivity(), TextUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.FINGERPRINT:
-                    break;
-            }
-            startActivityForResult(intent, REQUEST_ADD_UNLOCK);
+            startUnlock(REQUEST_ADD_UNLOCK);
         }
     }
 
@@ -241,22 +228,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 startActivity(intent);
             }
         } else {
-            Intent intent = null;
-            int lockType = PassConfigDao.getInstances().queryLockType();
-            switch (lockType) {
-                case PassConfig.LockType.GRID:
-                    intent = new Intent(getActivity(), GridUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.PATTERN:
-                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.TEXT:
-                    intent = new Intent(getActivity(), TextUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.FINGERPRINT:
-                    break;
-            }
-            startActivityForResult(intent, REQUEST_CAT_ITEM_UNLOCK);
+            startUnlock(REQUEST_CAT_ITEM_UNLOCK);
         }
     }
 
@@ -264,29 +236,86 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onPasswordItemClick(View view, int catPosition, int passPos) {
         Password password = pswdCatAdapter.getPasswordList().get(catPosition).get(passPos);
         selectPassword = password;
+        selectPassItemCat = pswdCatAdapter.getPassCatList().get(catPosition);
         if (!App.isPswdFunctionLocked()) {
             if (password != null) {
                 Intent intent = new Intent(getActivity(), PassDetailActivity.class);
                 intent.putExtra(PassDetailActivity.EXTRA_PASSWORD, password);
+                intent.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
                 startActivity(intent);
             }
         } else {
-            Intent intent = null;
-            int lockType = PassConfigDao.getInstances().queryLockType();
-            switch (lockType) {
-                case PassConfig.LockType.GRID:
-                    intent = new Intent(getActivity(), GridUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.PATTERN:
-                    intent = new Intent(getActivity(), PatternUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.TEXT:
-                    intent = new Intent(getActivity(), TextUnlockActivity.class);
-                    break;
-                case PassConfig.LockType.FINGERPRINT:
-                    break;
-            }
-            startActivityForResult(intent, REQUEST_PASS_ITEM_UNLOCK);
+            startUnlock(REQUEST_PASS_ITEM_UNLOCK);
+        }
+    }
+
+    /**
+     * 开始进行解锁
+     *
+     * @param requestCode
+     */
+    private void startUnlock(final int requestCode) {
+        Intent intent = null;
+        int lockType = PassConfigDao.getInstances().queryLockType();
+        switch (lockType) {
+            case PassConfig.LockType.GRID:
+                intent = new Intent(getActivity(), GridUnlockActivity.class);
+                startActivityForResult(intent, requestCode);
+                break;
+            case PassConfig.LockType.PATTERN:
+                intent = new Intent(getActivity(), PatternUnlockActivity.class);
+                startActivityForResult(intent, requestCode);
+                break;
+            case PassConfig.LockType.TEXT:
+                intent = new Intent(getActivity(), TextUnlockActivity.class);
+                startActivityForResult(intent, requestCode);
+                break;
+            case PassConfig.LockType.FINGERPRINT:
+                FingerprintHelper.getInstances().validate(getActivity(), new OnFingerPrintAuthListener() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+
+                    }
+
+                    @Override
+                    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                        App.setIsPswdFunctionLocked(false);
+                        switch (requestCode) {
+                            case REQUEST_CREATE_PASSWORD:
+                                onRefresh();
+                                break;
+                            case REQUEST_ADD_UNLOCK:
+                                Intent intent = new Intent(getActivity(), PswdNewActivity.class);
+                                if (selectAddPassCat != null && selectAddPassCat.getUuid() != CategoryConst.UUID_UNSPECIFIC) {
+                                    intent.putExtra(PswdNewActivity.EXTRA_DEFAULT_CAT, selectAddPassCat);
+                                }
+                                startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
+                                break;
+                            case REQUEST_CAT_ITEM_UNLOCK:
+                                Intent intentForCatDetail = new Intent(getActivity(), PassCatDetailActivity.class);
+                                intentForCatDetail.putExtra(PassCatDetailActivity.EXTRA_PASS_CAT, selectItemPassCat);
+                                startActivity(intentForCatDetail);
+                                break;
+                            case REQUEST_PASS_ITEM_UNLOCK:
+                                Intent intentForPassDetail = new Intent(getActivity(), PassDetailActivity.class);
+                                intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, selectPassword);
+                                intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
+                                startActivity(intentForPassDetail);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+
+                    }
+                });
+                break;
         }
     }
 
@@ -313,6 +342,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 case REQUEST_PASS_ITEM_UNLOCK:
                     Intent intentForPassDetail = new Intent(getActivity(), PassDetailActivity.class);
                     intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, selectPassword);
+                    intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
                     startActivity(intentForPassDetail);
                     break;
             }
@@ -334,4 +364,5 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             empty.setVisibility(View.VISIBLE);
         }
     }
+
 }

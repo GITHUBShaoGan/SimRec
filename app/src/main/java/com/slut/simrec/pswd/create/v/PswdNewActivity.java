@@ -12,8 +12,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
@@ -22,6 +24,7 @@ import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.create.p.PswdNewPresenter;
 import com.slut.simrec.pswd.create.p.PswdNewPresenterImpl;
 import com.slut.simrec.rsa.RSAUtils;
+import com.slut.simrec.utils.ImgLoaderOptions;
 import com.slut.simrec.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -41,8 +44,12 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
     TextInputLayout tilWebSite;
     @BindView(R.id.til_remark)
     TextInputLayout tilRemark;
-    @BindView(R.id.category)
-    TextView category;
+    @BindView(R.id.cat_title)
+    TextView catTitle;
+    @BindView(R.id.cat_url)
+    TextView catURL;
+    @BindView(R.id.cat_avatar)
+    ImageView catAvatar;
 
     public static final String EXTRA_DEFAULT_CAT = "default_cat";
     private PassCat originPassCat = null;
@@ -73,15 +80,25 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                     tilTitle.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
                     tilWebSite.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
                     tilAccount.requestFocus();
-                    category.setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
+                    catTitle.setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
+                    catURL.setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
+                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(originPassCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
 
                     originPassUUID = originPassCat.getUuid();
-                }else{
+                } else {
                     originPassUUID = CategoryConst.UUID_UNSPECIFIC;
+
+                    catTitle.setText(CategoryConst.TITLE_UNSPECIFIC);
+                    catURL.setText(CategoryConst.URL_UNSPECIFIC);
+                    ImageLoader.getInstance().displayImage(CategoryConst.ICONURL_UNSPECIFIC, catAvatar, ImgLoaderOptions.init404Options());
                 }
             } else {
                 //传过来没有目录信息
                 originPassUUID = CategoryConst.UUID_UNSPECIFIC;
+
+                catTitle.setText(CategoryConst.TITLE_UNSPECIFIC);
+                catURL.setText(CategoryConst.URL_UNSPECIFIC);
+                ImageLoader.getInstance().displayImage(CategoryConst.ICONURL_UNSPECIFIC, catAvatar, ImgLoaderOptions.init404Options());
             }
         }
         setSupportActionBar(toolbar);
@@ -204,7 +221,7 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle())+"");
+                                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()) + "");
                                     tilTitle.getEditText().setText(RSAUtils.decrypt(passCat.getCatTitle()));
                                     tilWebSite.getEditText().setText(RSAUtils.decrypt(passCat.getCatUrl()));
                                     tilAccount.getEditText().requestFocus();
@@ -219,7 +236,9 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             builder.show();
                         }
                         originPassUUID = passCat.getUuid();
-                        category.setText(RSAUtils.decrypt(passCat.getCatTitle()));
+                        catTitle.setText(RSAUtils.decrypt(passCat.getCatTitle()));
+                        catURL.setText(RSAUtils.decrypt(passCat.getCatUrl()));
+                        ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
                     }
                     break;
             }

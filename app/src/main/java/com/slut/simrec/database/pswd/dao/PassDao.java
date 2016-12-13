@@ -1,5 +1,7 @@
 package com.slut.simrec.database.pswd.dao;
 
+import android.content.Intent;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -40,16 +42,32 @@ public class PassDao {
         dao = App.getDbHelper().getDao(Password.class);
     }
 
+    public void update(Password password) throws SQLException {
+        if (password == null) {
+            return;
+        }
+        UpdateBuilder<Password, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", password.getUuid());
+        builder.updateColumnValue("title", password.getTitle());
+        builder.updateColumnValue("account", password.getAccount());
+        builder.updateColumnValue("password", password.getPassword());
+        builder.updateColumnValue("websiteUrl", password.getWebsiteUrl());
+        builder.updateColumnValue("remark", password.getRemark());
+        builder.updateColumnValue("passCatUUID", password.getPassCatUUID());
+        builder.updateColumnValue("updateStamp", password.getUpdateStamp());
+        builder.update();
+    }
+
     public void insertSingle(Password password) throws Exception {
         if (password != null) {
             dao.create(password);
         }
     }
 
-    public void updateCat(String passUUID,String newCatUUID)throws SQLException{
-        UpdateBuilder<Password,Integer> builder = dao.updateBuilder();
-        builder.where().eq("uuid",passUUID);
-        builder.updateColumnValue("passCatUUID",newCatUUID);
+    public void updateCat(String passUUID, String newCatUUID) throws SQLException {
+        UpdateBuilder<Password, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", passUUID);
+        builder.updateColumnValue("passCatUUID", newCatUUID);
         builder.update();
     }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/category"
+        android:icon="@drawable/menu_pass_detail_cat"
+        android:title="@string/action_menu_cat"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
+        android:title="@string/action_menu_edit"
+        app:showAsAction="always" />
+</menu>

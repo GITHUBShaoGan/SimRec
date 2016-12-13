@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.fingerprint.CryptoObjectHelper;
+import com.slut.simrec.fingerprint.FingerprintHelper;
 import com.slut.simrec.fingerprint.MyAuthCallback;
 import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.fingerprint.Status;
@@ -45,7 +46,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MasterTypeActivity extends AppCompatActivity implements LockTypeAdapter.OnItemClickListener, MasterTypeView {
+public class MasterTypeActivity extends AppCompatActivity implements LockTypeAdapter.OnItemClickListener, MasterTypeView, OnFingerPrintAuthListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -54,9 +55,6 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
 
     private LockTypeAdapter adapter;
     private LinearLayoutManager layoutManager;
-
-    private CancellationSignal cancellationSignal;
-    private FingerprintManager.CryptoObject cryptoObject;
 
     private static final int REQUEST_SET_MASTER = 10000;
     private static final int REQUEST_GET_PERMISSION = 1000;
@@ -83,8 +81,6 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        cancellationSignal = new CancellationSignal();
 
         presenter = new MasterTypePresenterImpl(this);
     }
@@ -124,75 +120,6 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
         }
     }
 
-    private void validate(final TextView message) {
-        FingerprintManager manager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        try {
-            cryptoObject = new CryptoObjectHelper().buildCryptoObject();
-        } catch (Exception e) {
-
-        }
-        cancellationSignal = new CancellationSignal();
-        manager.authenticate(cryptoObject, cancellationSignal, 0, new MyAuthCallback(new OnFingerPrintAuthListener() {
-            @Override
-            public void onAuthenticationError(int errorCode, CharSequence errString) {
-                message.setTextColor(Color.RED);
-                message.setText(errString);
-            }
-
-            @Override
-            public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
-                message.setTextColor(Color.parseColor("#2A3245"));
-                message.setText(helpString);
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-                message.setTextColor(Color.parseColor("#2A3245"));
-                message.setText(R.string.fingerprint_validate_success);
-                presenter.setPass();
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                message.setTextColor(Color.RED);
-                message.setText(R.string.fingerprint_validate_failed);
-            }
-        }), null);
-    }
-
-    private void showFingerprintValidateDialog() {
-        View v = LayoutInflater.from(this).inflate(R.layout.view_dialog_fingerprint, new LinearLayout(this), false);
-        TextView message = (TextView) v.findViewById(R.id.message);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_fp_40px);
-        builder.setTitle(R.string.title_dialog_fingerprint);
-        builder.setView(v);
-        builder.setNegativeButton(R.string.action_dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                cancellationSignal.cancel();
-            }
-        });
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                cancellationSignal.cancel();
-            }
-        });
-        validate(message);
-        builder.show();
-    }
-
     @Override
     public void onItemClick(View view, int position) {
         switch (position) {
@@ -213,7 +140,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
                     builder.show();
                 }
                 if (status == Status.SUPPORT) {
-                    showFingerprintValidateDialog();
+                    FingerprintHelper.getInstances().validate(this, this);
                 }
                 if (status == Status.PERMISSION_DENY) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.USE_FINGERPRINT}, REQUEST_GET_PERMISSION);
@@ -278,7 +205,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
         if (requestCode == REQUEST_GET_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission Granted
-                showFingerprintValidateDialog();
+                FingerprintHelper.getInstances().validate(this, this);
             } else {
                 // Permission Denied
                 ToastUtils.showShort(R.string.permission_denied);
@@ -299,5 +226,25 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
     @Override
     public void onSetPassError(String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    @Override
+    public void onAuthenticationError(int errorCode, CharSequence errString) {
+
+    }
+
+    @Override
+    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+
+    }
+
+    @Override
+    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+        presenter.setPass();
+    }
+
+    @Override
+    public void onAuthenticationFailed() {
+
     }
 }

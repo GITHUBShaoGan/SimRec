@@ -54,6 +54,8 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
 
     private int lastVisibleItem = 0;
 
+    public static final String EXTRA_ROOT_PATH = "root_path";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,7 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
                 CategoryOptionsActivity.this.onRefresh();
             }
         }, 200);
+
     }
 
     private void initListener() {
