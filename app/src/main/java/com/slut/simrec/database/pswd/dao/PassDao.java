@@ -58,6 +58,18 @@ public class PassDao {
         builder.update();
     }
 
+    public void deleteByCatUUID(String catUUID) throws SQLException {
+        DeleteBuilder<Password, Integer> builder = dao.deleteBuilder();
+        builder.where().eq("passCatUUID", catUUID);
+        builder.delete();
+    }
+
+    public void deleteByUUID(String uuid)throws SQLException{
+        DeleteBuilder<Password, Integer> builder = dao.deleteBuilder();
+        builder.where().eq("uuid", uuid);
+        builder.delete();
+    }
+
     public void insertSingle(Password password) throws Exception {
         if (password != null) {
             dao.create(password);

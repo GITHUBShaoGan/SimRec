@@ -38,8 +38,8 @@ public class CatDetailPresenterImpl implements CatDetailPresenter, CatDetailMode
     }
 
     @Override
-    public void delete(PassCat passCat) {
-        catDetailModel.delete(passCat, this);
+    public void delete(int deleteType,PassCat passCat) {
+        catDetailModel.delete(deleteType,passCat, this);
     }
 
     @Override

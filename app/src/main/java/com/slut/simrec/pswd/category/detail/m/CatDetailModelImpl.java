@@ -8,6 +8,7 @@ import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.pswd.category.CategoryConst;
+import com.slut.simrec.pswd.category.detail.v.CatDeleteType;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ResUtils;
 
@@ -40,7 +41,7 @@ public class CatDetailModelImpl implements CatDetailModel {
     }
 
     @Override
-    public void delete(PassCat passCat, OnDeleteListener onDeleteListener) {
+    public void delete(int deleteType, PassCat passCat, OnDeleteListener onDeleteListener) {
         if (passCat == null) {
             onDeleteListener.onDeleteError(ResUtils.getString(R.string.error_delete_cat_null));
             return;
@@ -52,8 +53,12 @@ public class CatDetailModelImpl implements CatDetailModel {
         try {
             List<Password> passwordList = PassDao.getInstances().queryByCatUUID(passCat.getUuid());
             PassCatDao.getInstances().deleteByUUID(passCat.getUuid());
-            for (Password password : passwordList) {
-                PassDao.getInstances().updateCat(password.getUuid(), CategoryConst.UUID_UNSPECIFIC);
+            if (deleteType == CatDeleteType.DELETE_CAT_ONLY) {
+                for (Password password : passwordList) {
+                    PassDao.getInstances().updateCat(password.getUuid(), CategoryConst.UUID_UNSPECIFIC);
+                }
+            } else {
+                PassDao.getInstances().deleteByCatUUID(passCat.getUuid());
             }
             onDeleteListener.onDeleteSuccess();
         } catch (Exception e) {

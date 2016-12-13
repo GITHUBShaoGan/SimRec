@@ -10,7 +10,7 @@ public interface CatDetailPresenter {
 
     void loadData(PassCat passCat);
 
-    void delete(PassCat passCat);
+    void delete(int deleteType,PassCat passCat);
 
     void edit(PassCat passCat,String title,String url,String iconURL);
 

@@ -27,11 +27,16 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0, TYPE_FOOTER = 1;
     private List<Password> passwordList;
     private int footerSize = 0;
+    private PswdAdapter.OnItemClickListener onItemClickListener;
 
     public PswdAdapter() {
     }
 
-    public void addFooter(){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void addFooter() {
         footerSize = 1;
     }
 
@@ -60,7 +65,7 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (passwordList != null && position < passwordList.size()) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             Password password = passwordList.get(position);
@@ -69,7 +74,13 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 String account = RSAUtils.decrypt(password.getAccount());
                 itemViewHolder.title.setText(title);
                 itemViewHolder.account.setText(account);
-                itemViewHolder.avatar.setText(passwordList.size()-position+"");
+                itemViewHolder.avatar.setText(passwordList.size() - position + "");
+                itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickListener.onItemClick(view, position);
+                    }
+                });
             }
         }
     }
@@ -111,6 +122,12 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+
+        void onItemClick(View view, int position);
+
     }
 
 }

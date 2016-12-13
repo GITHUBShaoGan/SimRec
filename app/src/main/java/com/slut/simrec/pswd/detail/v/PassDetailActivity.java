@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,17 +22,21 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.detail.p.PassDetailPresenter;
 import com.slut.simrec.pswd.detail.p.PassDetailPresenterImpl;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ImgLoaderOptions;
+import com.slut.simrec.utils.SystemUtils;
 import com.slut.simrec.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+import static android.webkit.WebSettings.PluginState.ON;
 import static com.slut.simrec.pswd.create.v.PswdNewActivity.EXTRA_DEFAULT_CAT;
 
 public class PassDetailActivity extends AppCompatActivity implements PassDetailView {
@@ -54,6 +59,14 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
     TextInputLayout tilRemark;
     @BindView(R.id.til_title)
     TextInputLayout tilTitle;
+    @BindView(R.id.title_copy)
+    Button copyTitle;
+    @BindView(R.id.account_copy)
+    Button copyAccount;
+    @BindView(R.id.password_copy)
+    Button passwordCopy;
+    @BindView(R.id.browser)
+    ImageView browser;
 
     private Password password;
     private PassCat passCat;
@@ -120,6 +133,30 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
         });
     }
 
+    @OnClick(R.id.title_copy)
+    void onTitleCopy() {
+        String title = tilTitle.getEditText().getText().toString().trim();
+        SystemUtils.copy("account", title);
+    }
+
+    @OnClick(R.id.account_copy)
+    void onAccountCopy() {
+        String account = tilAccount.getEditText().getText().toString().trim();
+        SystemUtils.copy("account", account);
+    }
+
+    @OnClick(R.id.password_copy)
+    void onPasswordCopy() {
+        String password = tilPassword.getEditText().getText().toString().trim();
+        SystemUtils.copy("account", password);
+    }
+
+    @OnClick(R.id.browser)
+    void onBrowserClick() {
+        String url = tilURL.getEditText().getText().toString().trim();
+        SystemUtils.openWebsite(this, url);
+    }
+
     private void update() {
         String title = tilTitle.getEditText().getText().toString().trim();
         String account = tilAccount.getEditText().getText().toString().trim();
@@ -176,6 +213,30 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
                     }
                 }
                 break;
+            case R.id.delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.title_dialog_delete);
+                builder.setMessage(R.string.msg_pass_detail_delete);
+                builder.setIcon(R.drawable.ic_warning_amber_24dp);
+                builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            PassDao.getInstances().deleteByUUID(password.getUuid());
+                            finish();
+                        } catch (Exception e) {
+                            ToastUtils.showShort(R.string.delete_failed);
+                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.action_dialog_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                builder.show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,6 +289,6 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
 
     @Override
     public void onUpdateError(String msg) {
-
+        ToastUtils.showShort(msg);
     }
 }

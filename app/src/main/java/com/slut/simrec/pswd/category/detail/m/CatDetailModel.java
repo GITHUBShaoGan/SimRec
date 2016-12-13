@@ -29,7 +29,7 @@ public interface CatDetailModel {
 
     }
 
-    void delete(PassCat passCat, OnDeleteListener onDeleteListener);
+    void delete(int deleteType,PassCat passCat, OnDeleteListener onDeleteListener);
 
     interface OnEditListener {
 

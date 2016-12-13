@@ -72,7 +72,7 @@
     <!-- PassCatDetailActivity -->
     <string name="title_activity_passcat_detail">Category Detail</string>
     <string name="title_dialog_delete">Delete</string>
-    <string name="msg_dialog_delete">Are you sure to delete this category?All passwords under it will remove to Others!</string>
+    <string name="msg_dialog_delete">Do you also want to delete all passwords under this category?If you choose YES,all passwords will be deleted,else if you choose NO,all passwords will move to the Others category.</string>
     <string name="error_delete_cat_null">Error,null category</string>
     <string name="title_dialog_edit">Edit Category</string>
     <string name="error_delete_cat_default">Error,default category cannot be deleted</string>
@@ -93,10 +93,13 @@
     <string name="error_text_unlock_length">Password length must between 4 and 128</string>
 
     <!--PassDetailActivity-->
+    <string name="msg_pass_detail_delete">Are you sure to delete this password?</string>
 
     <string name="delete_success">Delete success</string>
     <string name="delete_failed">Delete failed</string>
     <string name="update_success">Update Successfully</string>
+
+    <string name="title_select_browser">Please select a browser</string>
 
     <string name="error_exception_happened">Sorry,some exceptions happened,please try again</string>
     <string name="error_data_tamper">Error,data may be tampered,all data will be clear!!!</string>
@@ -133,6 +136,8 @@
     <string name="action_menu_copy_password">Copy Password</string>
     <string name="action_menu_copy_both">Copy Account and Password</string>
     <string name="action_menu_edit">Edit</string>
+    <string name="action_menu_delete">Delete</string>
+    <string name="action_menu_search">Search</string>
 
     <string name="copy_success">Copy Success</string>
 

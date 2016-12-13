@@ -31,6 +31,7 @@ import com.slut.simrec.pswd.category.detail.adapter.PswdAdapter;
 import com.slut.simrec.pswd.category.detail.p.CatDetailPresenter;
 import com.slut.simrec.pswd.category.detail.p.CatDetailPresenterImpl;
 import com.slut.simrec.pswd.create.v.PswdNewActivity;
+import com.slut.simrec.pswd.detail.v.PassDetailActivity;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ImgLoaderOptions;
 import com.slut.simrec.utils.TimeUtils;
@@ -43,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PassCatDetailActivity extends AppCompatActivity implements CatDetailView, SwipeRefreshLayout.OnRefreshListener {
+public class PassCatDetailActivity extends AppCompatActivity implements CatDetailView, SwipeRefreshLayout.OnRefreshListener, PswdAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -51,10 +52,8 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
     CircleTextImageView avatar;
     @BindView(R.id.website)
     TextView website;
-    @BindView(R.id.create)
-    TextView create;
-    @BindView(R.id.update)
-    TextView update;
+    @BindView(R.id.title)
+    TextView title;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recyclerview)
@@ -90,8 +89,7 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
                     toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()));
                     ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), avatar, ImgLoaderOptions.init404Options());
                     website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-                    create.setText(TimeUtils.calInterval(passCat.getCreateStamp(), System.currentTimeMillis()));
-                    update.setText(TimeUtils.calInterval(passCat.getUpdateStamp(), System.currentTimeMillis()));
+                    title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
                 }
             }
         }
@@ -101,6 +99,7 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         pswdAdapter = new PswdAdapter();
+        pswdAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(pswdAdapter);
 
         refreshLayout.setOnRefreshListener(this);
@@ -157,13 +156,19 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
                 builder.setIcon(R.drawable.ic_warning_amber_24dp);
                 builder.setTitle(R.string.title_dialog_delete);
                 builder.setMessage(R.string.msg_dialog_delete);
-                builder.setPositiveButton(R.string.action_dialog_ok, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.delete(passCat);
+                        presenter.delete(CatDeleteType.DELETE_CAT_AND_PASSWORD, passCat);
                     }
                 });
-                builder.setNegativeButton(R.string.action_dialog_cancel, new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.action_dialog_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.delete(CatDeleteType.DELETE_CAT_ONLY, passCat);
+                    }
+                });
+                builder.setNeutralButton(R.string.action_dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -255,7 +260,6 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
     @Override
     public void onDeleteError(String msg) {
         ToastUtils.showShort(msg);
-
     }
 
     @Override
@@ -265,8 +269,7 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
             toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()));
             ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), avatar, ImgLoaderOptions.init404Options());
             website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-            create.setText(TimeUtils.calInterval(passCat.getCreateStamp(), System.currentTimeMillis()));
-            update.setText(TimeUtils.calInterval(passCat.getUpdateStamp(), System.currentTimeMillis()));
+            title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
         }
         PswdFragment.getInstances().onRefresh();
     }
@@ -307,5 +310,14 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
                     break;
             }
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Password password = pswdAdapter.getPasswordList().get(position);
+        Intent intentForPassDetail = new Intent(this, PassDetailActivity.class);
+        intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, password);
+        intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT, passCat);
+        startActivity(intentForPassDetail);
     }
 }

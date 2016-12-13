@@ -1,17 +1,11 @@
 package com.slut.simrec.main.v;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -21,19 +15,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassConfig;
-import com.slut.simrec.fingerprint.CryptoObjectHelper;
 import com.slut.simrec.fingerprint.FingerprintHelper;
-import com.slut.simrec.fingerprint.MyAuthCallback;
 import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.main.adapter.MainPagerAdapter;
 import com.slut.simrec.main.fragment.note.NoteFragment;
@@ -43,6 +32,7 @@ import com.slut.simrec.main.p.MainPresenter;
 import com.slut.simrec.main.p.MainPresenterImpl;
 import com.slut.simrec.pswd.category.defaultcat.v.DefaultCatActivity;
 import com.slut.simrec.pswd.master.type.v.MasterTypeActivity;
+import com.slut.simrec.pswd.search.v.PassSearchActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
 import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
@@ -185,7 +175,14 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        if (id == R.id.search) {
+            switch (viewPager.getCurrentItem()) {
+                case 0:
+                    Intent intent = new Intent(this, PassSearchActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -209,7 +206,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPswdFuncLock(PassConfig passConfig) {
         if (passConfig.isFingerPrintAgreed()) {
-            FingerprintHelper.getInstances().validate(this,this);
+            FingerprintHelper.getInstances().validate(this, this);
         } else {
             //已经锁定
             switch (passConfig.getPreferLockType()) {

@@ -58,8 +58,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity android:name=".pswd.unlock.pattern.PatternUnlockActivity" />
-        <activity android:name=".pswd.detail.v.PassDetailActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".pswd.detail.v.PassDetailActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".pswd.search.v.PassSearchActivity"></activity>
     </application>
 
 </manifest>
