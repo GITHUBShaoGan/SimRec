@@ -15,4 +15,12 @@ public interface PswdView {
 
     void onPassCatLoadError(String msg);
 
+    void onInsertSingleCatSuccess(List<PassCat> passCatList,List<List<Password>> passwords);
+
+    void onInsertSingleCatError(String msg);
+
+    void onDeleteSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords,int deletePosition);
+
+    void onDeleteSingleCatError(String msg);
+
 }

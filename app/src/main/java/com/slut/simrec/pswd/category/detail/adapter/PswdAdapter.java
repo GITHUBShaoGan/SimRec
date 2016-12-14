@@ -70,8 +70,8 @@ public class PswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             Password password = passwordList.get(position);
             if (password != null) {
-                String title = RSAUtils.decrypt(password.getTitle());
-                String account = RSAUtils.decrypt(password.getAccount());
+                String title = password.getTitle();
+                String account =password.getAccount();
                 itemViewHolder.title.setText(title);
                 itemViewHolder.account.setText(account);
                 itemViewHolder.avatar.setText(passwordList.size() - position + "");

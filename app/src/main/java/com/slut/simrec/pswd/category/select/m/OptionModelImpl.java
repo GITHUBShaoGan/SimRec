@@ -25,9 +25,9 @@ public class  OptionModelImpl implements OptionModel {
         }
         String uuid = UUID.randomUUID().toString();
         long stamp = System.currentTimeMillis();
-        String newTitle = RSAUtils.encrypt(title);
-        String newUrl = RSAUtils.encrypt(url);
-        String newIconUrl = RSAUtils.encrypt(iconUrl);
+        String newTitle = title;
+        String newUrl = url;
+        String newIconUrl = iconUrl;
         PassCat passCat = new PassCat(uuid, newTitle, newUrl, newIconUrl,true, stamp, stamp);
         List<PassCat> passCatList = null;
         try {

@@ -99,8 +99,8 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             final Password password = passwordList.get(position);
             if (password != null) {
-                String title = RSAUtils.decrypt(password.getTitle());
-                final String account = RSAUtils.decrypt(password.getAccount());
+                String title = password.getTitle();
+                final String account = password.getAccount();
                 if (TextUtils.isEmpty(account)) {
                     itemViewHolder.title.setText(title + "");
                 } else {
@@ -130,7 +130,7 @@ public class ChildPswdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                             SystemUtils.copy("password", RSAUtils.decrypt(password.getPassword()));
                                             break;
                                         case R.id.action_copy_both:
-                                            SystemUtils.copy("both", RSAUtils.decrypt(password.getAccount() + " " + password.getPassword()));
+                                            SystemUtils.copy("both", password.getAccount() + " " + password.getPassword());
                                             break;
                                     }
 

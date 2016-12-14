@@ -86,10 +86,10 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
             if (intent.hasExtra(EXTRA_PASS_CAT)) {
                 passCat = intent.getParcelableExtra(EXTRA_PASS_CAT);
                 if (passCat != null) {
-                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()));
-                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), avatar, ImgLoaderOptions.init404Options());
-                    website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-                    title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
+                    toolbar.setTitle(passCat.getCatTitle());
+                    ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), avatar, ImgLoaderOptions.init404Options());
+                    website.setText(passCat.getCatUrl());
+                    title.setText(passCat.getCatTitle());
                 }
             }
         }
@@ -182,9 +182,9 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
                     final TextInputLayout tilTitle = (TextInputLayout) newDialogView.findViewById(R.id.til_title);
                     final TextInputLayout tilUrl = (TextInputLayout) newDialogView.findViewById(R.id.til_url);
                     final TextInputLayout tilIconUrl = (TextInputLayout) newDialogView.findViewById(R.id.til_iconurl);
-                    tilTitle.getEditText().setText(RSAUtils.decrypt(passCat.getCatTitle()) + "");
-                    tilUrl.getEditText().setText(RSAUtils.decrypt(passCat.getCatUrl()) + "");
-                    tilIconUrl.getEditText().setText(RSAUtils.decrypt(passCat.getCatIconUrl()) + "");
+                    tilTitle.getEditText().setText(passCat.getCatTitle() + "");
+                    tilUrl.getEditText().setText(passCat.getCatUrl() + "");
+                    tilIconUrl.getEditText().setText(passCat.getCatIconUrl() + "");
                     final AlertDialog.Builder editBuilder = new AlertDialog.Builder(this);
                     editBuilder.setView(newDialogView);
                     editBuilder.setTitle(R.string.title_dialog_edit);
@@ -252,9 +252,9 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
     }
 
     @Override
-    public void onDeleteSuccess() {
-        PswdFragment.getInstances().onRefresh();
+    public void onDeleteSuccess(PassCat passCat, int deleteType) {
         finish();
+        PswdFragment.getInstances().deleteSingleCat(passCat, deleteType);
     }
 
     @Override
@@ -266,10 +266,10 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
     public void onEditSuccess(PassCat passCat) {
         if (passCat != null) {
             this.passCat = passCat;
-            toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()));
-            ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), avatar, ImgLoaderOptions.init404Options());
-            website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-            title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
+            toolbar.setTitle(passCat.getCatTitle());
+            ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), avatar, ImgLoaderOptions.init404Options());
+            website.setText(passCat.getCatUrl());
+            title.setText(passCat.getCatTitle());
         }
         PswdFragment.getInstances().onRefresh();
     }

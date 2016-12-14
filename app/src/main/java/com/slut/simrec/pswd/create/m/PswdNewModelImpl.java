@@ -33,11 +33,11 @@ public class PswdNewModelImpl implements PswdNewModel {
                 onBackOnClickListener.onUIChange();
             }
         } else {
-            if (TextUtils.equals(title, RSAUtils.decrypt(passCat.getCatTitle()))
+            if (TextUtils.equals(title, passCat.getCatTitle())
                     && TextUtils.isEmpty(account)
                     && TextUtils.isEmpty(password)
                     && TextUtils.isEmpty(remark)
-                    && TextUtils.equals(website, RSAUtils.decrypt(passCat.getCatUrl()))
+                    && TextUtils.equals(website, passCat.getCatUrl())
                     && TextUtils.equals(originPassUUID.trim(), passCat.getUuid())) {
                 onBackOnClickListener.onUINotChange();
             } else {
@@ -56,11 +56,11 @@ public class PswdNewModelImpl implements PswdNewModel {
             onSavePswdListener.onPswdSaveError(ResUtils.getString(R.string.error_pswd_new_password_null));
             return;
         }
-        String newTitle = RSAUtils.encrypt(title);
-        String newAccount = RSAUtils.encrypt(account);
+        String newTitle = title;
+        String newAccount = account;
         String newPassword = RSAUtils.encrypt(password);
-        String newWebsite = RSAUtils.encrypt(website);
-        String newRemark = RSAUtils.encrypt(remark);
+        String newWebsite = website;
+        String newRemark = remark;
 
         String uuid = UUID.randomUUID().toString();
         long stamp = System.currentTimeMillis();

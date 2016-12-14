@@ -8,11 +8,14 @@ import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.pswd.category.CategoryConst;
+import com.slut.simrec.pswd.category.detail.v.CatDeleteType;
 import com.slut.simrec.rsa.RSAUtils;
 import com.slut.simrec.utils.ResUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.slut.simrec.rsa.RSAUtils.encrypt;
 
 /**
  * Created by 七月在线科技 on 2016/12/8.
@@ -44,14 +47,14 @@ public class PswdModelImpl implements PswdModel {
                 }
                 if (passConfig != null) {
                     if (!passCatList.isEmpty()) {
-                        PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC), true, System.currentTimeMillis(), System.currentTimeMillis());
+                        PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, CategoryConst.TITLE_UNSPECIFIC, CategoryConst.URL_UNSPECIFIC, CategoryConst.ICONURL_UNSPECIFIC, true, System.currentTimeMillis(), System.currentTimeMillis());
                         passCatList.add(0, unspecificCat);
                     } else {
                         //判断others目录下是否还有课程
                         try {
                             List<Password> passwords = PassDao.getInstances().queryByCatUUID(CategoryConst.UUID_UNSPECIFIC);
                             if (passwords != null && !passwords.isEmpty()) {
-                                PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, RSAUtils.encrypt(CategoryConst.TITLE_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.URL_UNSPECIFIC), RSAUtils.encrypt(CategoryConst.ICONURL_UNSPECIFIC), true, System.currentTimeMillis(), System.currentTimeMillis());
+                                PassCat unspecificCat = new PassCat(CategoryConst.UUID_UNSPECIFIC, CategoryConst.TITLE_UNSPECIFIC, CategoryConst.URL_UNSPECIFIC, CategoryConst.ICONURL_UNSPECIFIC, true, System.currentTimeMillis(), System.currentTimeMillis());
                                 passCatList.add(0, unspecificCat);
                             }
                         } catch (Exception e) {
@@ -80,5 +83,57 @@ public class PswdModelImpl implements PswdModel {
                 onPassCatLoadListener.onPassCatLoadSuccess(DataLoadType.FINISH, passCatList, listList);
             }
         }
+    }
+
+    @Override
+    public void insertSingleCat(PassCat passCat, List<PassCat> passCatList, List<List<Password>> passwords, InsertSingleCatListener insertSingleCatListener) {
+        if (passCatList == null || passCat == null) {
+            return;
+        }
+        boolean isDefaultExists = false;
+        for (PassCat cat : passCatList) {
+            if (cat.getUuid().equals(CategoryConst.UUID_UNSPECIFIC)) {
+                isDefaultExists = true;
+                break;
+            }
+        }
+        List<PassCat> newList = new ArrayList<>(passCatList);
+        List<List<Password>> newPasswordList = new ArrayList<>(passwords);
+        if (!isDefaultExists) {
+            newPasswordList.add(0, new ArrayList<Password>());
+            newPasswordList.add(0, new ArrayList<Password>());
+            newList.add(0, passCat);
+            newList.add(0, new PassCat(CategoryConst.UUID_UNSPECIFIC, CategoryConst.TITLE_UNSPECIFIC, CategoryConst.URL_UNSPECIFIC, CategoryConst.ICONURL_UNSPECIFIC, true, System.currentTimeMillis(), System.currentTimeMillis()));
+        } else {
+            newList.add(1, passCat);
+            newPasswordList.add(1, new ArrayList<Password>());
+        }
+        insertSingleCatListener.onInsertSingleCatSuccess(newList, newPasswordList);
+    }
+
+    @Override
+    public void deleteSingleCat(PassCat passCat, int deleteType, List<PassCat> passCatList, List<List<Password>> passwords, DeleteSingleCatListener deleteSingleCatListener) {
+        if (passCat == null || passCatList == null || passwords == null) {
+            return;
+        }
+        List<PassCat> newCatList = new ArrayList<>(passCatList);
+        List<List<Password>> newPasswordList = new ArrayList<>(passwords);
+        int deletePosition = -1;
+        for (int i = 0; i < passCatList.size(); i++) {
+            if (passCat.getUuid().equals(passCatList.get(i).getUuid())) {
+                deletePosition = i;
+                break;
+            }
+        }
+        if (deletePosition != -1) {
+            newPasswordList.remove(deletePosition);
+            newCatList.remove(deletePosition);
+            if (deleteType == CatDeleteType.DELETE_CAT_ONLY) {
+                for (int i = passwords.get(deletePosition).size()-1; i >= 0; i--) {
+                    newPasswordList.get(0).add(0, passwords.get(deletePosition).get(i));
+                }
+            }
+        }
+        deleteSingleCatListener.onDeleteSingleCatSuccess(newCatList, newPasswordList, deletePosition);
     }
 }

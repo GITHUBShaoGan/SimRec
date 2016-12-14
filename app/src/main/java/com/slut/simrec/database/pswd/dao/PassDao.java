@@ -10,8 +10,10 @@ import com.slut.simrec.App;
 import com.slut.simrec.database.pswd.bean.PassConfig;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.main.fragment.pswd.m.PassSortType;
+import com.slut.simrec.rsa.RSAUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +66,7 @@ public class PassDao {
         builder.delete();
     }
 
-    public void deleteByUUID(String uuid)throws SQLException{
+    public void deleteByUUID(String uuid) throws SQLException {
         DeleteBuilder<Password, Integer> builder = dao.deleteBuilder();
         builder.where().eq("uuid", uuid);
         builder.delete();
@@ -103,6 +105,60 @@ public class PassDao {
         }
         builder.limit(pageSize);
         return builder.query();
+    }
+
+    public List<Password> queryByRegex(String regex) throws SQLException {
+        List<Password> passwordList = new ArrayList<>();
+        regex = "%" + regex + "%";
+        QueryBuilder<Password, Integer> builderTitle = dao.queryBuilder();
+        builderTitle.where().like("title", regex);
+        passwordList.addAll(builderTitle.query());
+
+        QueryBuilder<Password, Integer> builderAccount = dao.queryBuilder();
+        builderAccount.where().like("account", regex);
+        List<Password> accountList = builderAccount.query();
+        for (Password password : accountList) {
+            boolean flag = false;
+            for (Password password1 : passwordList) {
+                if (password1.getUuid().equals(password.getUuid())) {
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                passwordList.add(password);
+            }
+        }
+
+        QueryBuilder<Password, Integer> builderURL = dao.queryBuilder();
+        builderURL.where().like("websiteUrl", regex);
+        List<Password> accountURL = builderURL.query();
+        for (Password password : accountURL) {
+            boolean flag = false;
+            for (Password password1 : passwordList) {
+                if (password1.getUuid().equals(password.getUuid())) {
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                passwordList.add(password);
+            }
+        }
+
+        QueryBuilder<Password, Integer> builderRemark = dao.queryBuilder();
+        builderRemark.where().like("remark", regex);
+        List<Password> remarkList = builderRemark.query();
+        for (Password password : remarkList) {
+            boolean flag = false;
+            for (Password password1 : passwordList) {
+                if (password1.getUuid().equals(password.getUuid())) {
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                passwordList.add(password);
+            }
+        }
+        return passwordList;
     }
 
     public void deleteAll() throws SQLException {

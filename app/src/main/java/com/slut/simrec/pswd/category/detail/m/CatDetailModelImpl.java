@@ -60,7 +60,7 @@ public class CatDetailModelImpl implements CatDetailModel {
             } else {
                 PassDao.getInstances().deleteByCatUUID(passCat.getUuid());
             }
-            onDeleteListener.onDeleteSuccess();
+            onDeleteListener.onDeleteSuccess(passCat,deleteType);
         } catch (Exception e) {
             e.printStackTrace();
             if (e != null && !TextUtils.isEmpty(e.getLocalizedMessage())) {
@@ -82,9 +82,9 @@ public class CatDetailModelImpl implements CatDetailModel {
             return;
         }
         String uuid = passCat.getUuid();
-        String newTitle = RSAUtils.encrypt(title);
-        String newURL = RSAUtils.encrypt(url);
-        String newIconURL = RSAUtils.encrypt(iconURL);
+        String newTitle = title;
+        String newURL = url;
+        String newIconURL = iconURL;
         boolean isExpand = passCat.isExpand();
         try {
             PassCatDao.getInstances().update(uuid, newTitle, newURL, newIconURL);

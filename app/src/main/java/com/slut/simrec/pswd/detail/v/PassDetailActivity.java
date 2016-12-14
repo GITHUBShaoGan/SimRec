@@ -94,9 +94,9 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
             if (intent.hasExtra(EXTRA_CAT)) {
                 passCat = intent.getParcelableExtra(EXTRA_CAT);
                 if (passCat != null) {
-                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
-                    catTitle.setText(RSAUtils.decrypt(passCat.getCatTitle()));
-                    catURL.setText(RSAUtils.decrypt(passCat.getCatUrl()));
+                    ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), catAvatar, ImgLoaderOptions.init404Options());
+                    catTitle.setText(passCat.getCatTitle());
+                    catURL.setText(passCat.getCatUrl());
 
                     originPassUUID = passCat.getUuid();
                 }
@@ -104,8 +104,8 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
             if (intent.hasExtra(EXTRA_PASSWORD)) {
                 password = intent.getParcelableExtra(EXTRA_PASSWORD);
                 if (password != null) {
-                    String title = RSAUtils.decrypt(password.getTitle());
-                    String account = RSAUtils.decrypt(password.getAccount());
+                    String title = password.getTitle();
+                    String account = password.getAccount();
                     if (TextUtils.isEmpty(title)) {
                         toolbar.setTitle(account);
                     } else {
@@ -113,9 +113,9 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
                     }
                     tilAccount.getEditText().setText(account);
                     tilPassword.getEditText().setText(RSAUtils.decrypt(password.getPassword()));
-                    tilRemark.getEditText().setText(RSAUtils.decrypt(password.getRemark()));
-                    tilURL.getEditText().setText(RSAUtils.decrypt(password.getWebsiteUrl()));
-                    tilTitle.getEditText().setText(RSAUtils.decrypt(password.getTitle()));
+                    tilRemark.getEditText().setText(password.getRemark());
+                    tilURL.getEditText().setText(password.getWebsiteUrl());
+                    tilTitle.getEditText().setText(password.getTitle());
                 }
             }
         }
@@ -258,9 +258,9 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
                             builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()) + "");
-                                    tilTitle.getEditText().setText(RSAUtils.decrypt(passCat.getCatTitle()));
-                                    tilURL.getEditText().setText(RSAUtils.decrypt(passCat.getCatUrl()));
+                                    toolbar.setTitle(passCat.getCatTitle() + "");
+                                    tilTitle.getEditText().setText(passCat.getCatTitle());
+                                    tilURL.getEditText().setText(passCat.getCatUrl());
                                     tilAccount.getEditText().requestFocus();
                                 }
                             });
@@ -273,9 +273,9 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
                             builder.show();
                         }
                         originPassUUID = passCat.getUuid();
-                        catTitle.setText(RSAUtils.decrypt(passCat.getCatTitle()));
-                        catURL.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-                        ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
+                        catTitle.setText(passCat.getCatTitle());
+                        catURL.setText(passCat.getCatUrl());
+                        ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), catAvatar, ImgLoaderOptions.init404Options());
                     }
                     break;
             }

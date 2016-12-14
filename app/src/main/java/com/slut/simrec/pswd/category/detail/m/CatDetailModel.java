@@ -23,7 +23,7 @@ public interface CatDetailModel {
 
     interface OnDeleteListener {
 
-        void onDeleteSuccess();
+        void onDeleteSuccess(PassCat passCat,int deleteType);
 
         void onDeleteError(String msg);
 

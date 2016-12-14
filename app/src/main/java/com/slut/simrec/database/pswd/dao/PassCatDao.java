@@ -100,4 +100,10 @@ public class PassCatDao {
         builder.update();
     }
 
+    public PassCat querySingleByUUID(String uuid)throws SQLException{
+        QueryBuilder<PassCat,Integer> builder = dao.queryBuilder();
+        builder.where().eq("uuid",uuid);
+        return builder.queryForFirst();
+    }
+
 }

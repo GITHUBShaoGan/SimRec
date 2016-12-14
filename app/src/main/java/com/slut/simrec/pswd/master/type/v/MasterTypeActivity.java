@@ -130,6 +130,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
                     //不支持指纹识别
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.title_dialog_not_support);
+                    builder.setIcon(R.drawable.ic_error_red_24dp);
                     builder.setMessage(R.string.msg_dialog_not_support);
                     builder.setPositiveButton(R.string.action_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -148,6 +149,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
                 if (status == Status.FINGERPRINT_NONE) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.title_dialog_no_fingerprint);
+                    builder.setIcon(R.drawable.ic_warning_amber_24dp);
                     builder.setMessage(R.string.msg_dialog_no_fingerprint);
                     builder.setPositiveButton(R.string.action_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -167,6 +169,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
                 if (status == Status.KEYGUARD_NOT_SECURE) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.title_dialog_keyguard_notsecure);
+                    builder.setIcon(R.drawable.ic_warning_amber_24dp);
                     builder.setMessage(R.string.msg_dialog_keyguard_notsecure);
                     builder.setPositiveButton(R.string.action_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override

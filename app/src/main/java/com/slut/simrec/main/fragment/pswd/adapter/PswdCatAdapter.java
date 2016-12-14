@@ -98,9 +98,9 @@ public class PswdCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (passCatList != null && position < passCatList.size()) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             final PassCat passCat = passCatList.get(position);
-            ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
-            itemViewHolder.title.setText(RSAUtils.decrypt(passCat.getCatTitle()));
-            itemViewHolder.website.setText(RSAUtils.decrypt(passCat.getCatUrl()));
+            ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
+            itemViewHolder.title.setText(passCat.getCatTitle());
+            itemViewHolder.website.setText(passCat.getCatUrl());
             itemViewHolder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

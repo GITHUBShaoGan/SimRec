@@ -83,8 +83,15 @@ public class DefaultCatActivity extends AppCompatActivity implements DefaultCatV
         ToastUtils.showShort(msg);
     }
 
+    /**
+     * 用户点击列表，此时应该刷新主界面PswdFragment
+     *
+     * @param passCat
+     * @param position
+     */
     @Override
     public void onItemClick(PassCat passCat, int position) {
+        PswdFragment.getInstances().insertSingleCat(passCat);
         Intent intent = new Intent(this, PswdNewActivity.class);
         intent.putExtra(PswdNewActivity.EXTRA_DEFAULT_CAT, passCat);
         startActivityForResult(intent, REQUEST_CREATE_PSWD);

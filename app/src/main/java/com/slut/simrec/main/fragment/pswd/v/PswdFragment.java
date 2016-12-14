@@ -197,6 +197,59 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         switchUI();
     }
 
+    public void insertSingleCat(PassCat passCat) {
+        presenter.insertSingleCat(passCat, pswdCatAdapter.getPassCatList(),pswdCatAdapter.getPasswordList());
+    }
+
+    @Override
+    public void onInsertSingleCatSuccess(List<PassCat> passCatList,List<List<Password>> passwords) {
+        List<PassCat> passCats = pswdCatAdapter.getPassCatList();
+        if (passCats != null && passCatList != null) {
+            int count = passCatList.size() - passCats.size();
+            this.passCatList = passCatList;
+            pswdCatAdapter.setPassCatList(this.passCatList);
+            switch (count) {
+                case 1:
+                    pswdCatAdapter.notifyItemInserted(1);
+                    break;
+                case 2:
+                    pswdCatAdapter.notifyItemInserted(0);
+                    pswdCatAdapter.notifyItemInserted(1);
+                    break;
+            }
+        }
+        switchUI();
+    }
+
+    @Override
+    public void onInsertSingleCatError(String msg) {
+
+    }
+
+    /**
+     * 删除单条分类
+     *
+     * @param passCat
+     * @param deleteType
+     */
+    public void deleteSingleCat(PassCat passCat, int deleteType) {
+        presenter.deleteSingleCat(passCat, deleteType, pswdCatAdapter.getPassCatList(), pswdCatAdapter.getPasswordList());
+    }
+
+    @Override
+    public void onDeleteSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords, int deletePosition) {
+        this.passwordLists = passwords;
+        this.passCatList = passCatList;
+        pswdCatAdapter.setPassCatList(this.passCatList);
+        pswdCatAdapter.setPasswordList(this.passwordLists);
+        pswdCatAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDeleteSingleCatError(String msg) {
+        ToastUtils.showShort(msg);
+    }
+
     @Override
     public void onAddClick(View view, int position) {
         PassCat passCat = pswdCatAdapter.getPassCatList().get(position);
@@ -241,7 +294,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             if (password != null) {
                 Intent intent = new Intent(getActivity(), PassDetailActivity.class);
                 intent.putExtra(PassDetailActivity.EXTRA_PASSWORD, password);
-                intent.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
+                intent.putExtra(PassDetailActivity.EXTRA_CAT, selectPassItemCat);
                 startActivity(intent);
             }
         } else {
@@ -304,7 +357,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             case REQUEST_PASS_ITEM_UNLOCK:
                                 Intent intentForPassDetail = new Intent(getActivity(), PassDetailActivity.class);
                                 intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, selectPassword);
-                                intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
+                                intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT, selectPassItemCat);
                                 startActivity(intentForPassDetail);
                                 break;
                         }
@@ -318,6 +371,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 break;
         }
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -342,7 +396,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 case REQUEST_PASS_ITEM_UNLOCK:
                     Intent intentForPassDetail = new Intent(getActivity(), PassDetailActivity.class);
                     intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, selectPassword);
-                    intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT,selectPassItemCat);
+                    intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT, selectPassItemCat);
                     startActivity(intentForPassDetail);
                     break;
             }

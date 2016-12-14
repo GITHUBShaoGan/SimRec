@@ -21,4 +21,23 @@ public interface PswdModel {
 
     void loadPassCat(long pageNo, long pageSize, OnPassCatLoadListener onPassCatLoadListener);
 
+    interface InsertSingleCatListener {
+
+        void onInsertSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords);
+
+        void onInsertSingleCatError(String msg);
+
+    }
+
+    void insertSingleCat(PassCat passCat, List<PassCat> passCatList, List<List<Password>> passwords, InsertSingleCatListener insertSingleCatListener);
+
+    interface DeleteSingleCatListener {
+
+        void onDeleteSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords, int deletePosition);
+
+        void onDeleteSingleCatError(String msg);
+
+    }
+
+    void deleteSingleCat(PassCat passCat, int deleteType, List<PassCat> passCatList, List<List<Password>> passwords, DeleteSingleCatListener deleteSingleCatListener);
 }

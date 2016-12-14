@@ -81,13 +81,13 @@ public class OptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             PassCat passCat = passCatList.get(position);
             if (passCat != null) {
-                ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
-                itemViewHolder.title.setText(RSAUtils.decrypt(passCat.getCatTitle()) + "");
+                ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), itemViewHolder.avatar, ImgLoaderOptions.init404Options());
+                itemViewHolder.title.setText(passCat.getCatTitle() + "");
                 String url = passCat.getCatUrl();
                 if (TextUtils.isEmpty(url)) {
                     itemViewHolder.url.setText("Empty URL");
                 } else {
-                    itemViewHolder.url.setText(RSAUtils.decrypt(passCat.getCatUrl()));
+                    itemViewHolder.url.setText(passCat.getCatUrl());
                 }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

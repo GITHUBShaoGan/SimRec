@@ -29,11 +29,11 @@ public class PassDetailModelImpl implements PassDetailModel {
             onUpdateListener.onUpdateError("");
             return;
         }
-        String newTitle = RSAUtils.encrypt(title);
-        String newAccount = RSAUtils.encrypt(account);
+        String newTitle = title;
+        String newAccount = account;
         String newPassword = RSAUtils.encrypt(password);
-        String newWebsite = RSAUtils.encrypt(websiteURL);
-        String newRemark = RSAUtils.encrypt(remark);
+        String newWebsite = websiteURL;
+        String newRemark = remark;
         long stamp = System.currentTimeMillis();
 
         String passUUID = pswd.getUuid();

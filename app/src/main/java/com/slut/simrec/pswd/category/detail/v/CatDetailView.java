@@ -15,7 +15,7 @@ public interface CatDetailView {
 
     void onLoadError(String msg);
 
-    void onDeleteSuccess();
+    void onDeleteSuccess(PassCat passCat,int deleteType);
 
     void onDeleteError(String msg);
 

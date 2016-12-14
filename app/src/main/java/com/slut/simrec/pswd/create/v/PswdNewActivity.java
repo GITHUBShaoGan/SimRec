@@ -76,13 +76,13 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                 //传过来有目录信息
                 originPassCat = intent.getParcelableExtra(EXTRA_DEFAULT_CAT);
                 if (originPassCat != null) {
-                    toolbar.setTitle(RSAUtils.decrypt(originPassCat.getCatTitle()) + "");
-                    tilTitle.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
-                    tilWebSite.getEditText().setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
+                    toolbar.setTitle(originPassCat.getCatTitle() + "");
+                    tilTitle.getEditText().setText(originPassCat.getCatTitle());
+                    tilWebSite.getEditText().setText(originPassCat.getCatUrl());
                     tilAccount.requestFocus();
-                    catTitle.setText(RSAUtils.decrypt(originPassCat.getCatTitle()));
-                    catURL.setText(RSAUtils.decrypt(originPassCat.getCatUrl()));
-                    ImageLoader.getInstance().displayImage(RSAUtils.decrypt(originPassCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
+                    catTitle.setText(originPassCat.getCatTitle());
+                    catURL.setText(originPassCat.getCatUrl());
+                    ImageLoader.getInstance().displayImage(originPassCat.getCatIconUrl(), catAvatar, ImgLoaderOptions.init404Options());
 
                     originPassUUID = originPassCat.getUuid();
                 } else {
@@ -221,9 +221,9 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             builder.setPositiveButton(R.string.action_dialog_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    toolbar.setTitle(RSAUtils.decrypt(passCat.getCatTitle()) + "");
-                                    tilTitle.getEditText().setText(RSAUtils.decrypt(passCat.getCatTitle()));
-                                    tilWebSite.getEditText().setText(RSAUtils.decrypt(passCat.getCatUrl()));
+                                    toolbar.setTitle(passCat.getCatTitle() + "");
+                                    tilTitle.getEditText().setText(passCat.getCatTitle());
+                                    tilWebSite.getEditText().setText(passCat.getCatUrl());
                                     tilAccount.getEditText().requestFocus();
                                 }
                             });
@@ -236,9 +236,9 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
                             builder.show();
                         }
                         originPassUUID = passCat.getUuid();
-                        catTitle.setText(RSAUtils.decrypt(passCat.getCatTitle()));
-                        catURL.setText(RSAUtils.decrypt(passCat.getCatUrl()));
-                        ImageLoader.getInstance().displayImage(RSAUtils.decrypt(passCat.getCatIconUrl()), catAvatar, ImgLoaderOptions.init404Options());
+                        catTitle.setText(passCat.getCatTitle());
+                        catURL.setText(passCat.getCatUrl());
+                        ImageLoader.getInstance().displayImage(passCat.getCatIconUrl(), catAvatar, ImgLoaderOptions.init404Options());
                     }
                     break;
             }

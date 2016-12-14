@@ -40,9 +40,9 @@ public class DefaultCatModelImpl implements DefaultCatModel {
         if (defaultCatBean == null) {
             return;
         }
-        String title = RSAUtils.encrypt(defaultCatBean.getTitle());
-        String url = RSAUtils.encrypt(defaultCatBean.getWebsite());
-        String iconUrl = RSAUtils.encrypt(defaultCatBean.getIconUrl());
+        String title = defaultCatBean.getTitle();
+        String url = defaultCatBean.getWebsite();
+        String iconUrl = defaultCatBean.getIconUrl();
         String uuid = UUID.randomUUID().toString();
         long stamp = System.currentTimeMillis();
         PassCat passCat = new PassCat(uuid, title, url, iconUrl, true, stamp, stamp);

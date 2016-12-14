@@ -48,8 +48,8 @@ public class CatDetailPresenterImpl implements CatDetailPresenter, CatDetailMode
     }
 
     @Override
-    public void onDeleteSuccess() {
-        catDetailView.onDeleteSuccess();
+    public void onDeleteSuccess(PassCat passCat,int deleteType) {
+        catDetailView.onDeleteSuccess(passCat,deleteType);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.slut.simrec.pswd.search.v;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -10,11 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.pswd.detail.v.PassDetailActivity;
 import com.slut.simrec.pswd.search.adapter.PassSearchAdapter;
 import com.slut.simrec.pswd.search.p.PassSearchPresenter;
 import com.slut.simrec.pswd.search.p.PassSearchPresenterImpl;
@@ -24,12 +26,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PassSearchActivity extends AppCompatActivity implements PassSearchView {
+public class PassSearchActivity extends AppCompatActivity implements PassSearchView, PassSearchAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.empty)
+    LinearLayout empty;
 
     private LinearLayoutManager layoutManager;
     private PassSearchAdapter adapter;
@@ -56,6 +60,7 @@ public class PassSearchActivity extends AppCompatActivity implements PassSearchV
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PassSearchAdapter();
+        adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -100,10 +105,40 @@ public class PassSearchActivity extends AppCompatActivity implements PassSearchV
         adapter.setPasswordList(passwordList);
         adapter.setPassCatList(passCatList);
         adapter.notifyDataSetChanged();
+
+        adapter.addFooter();
+
+        switchUI();
+    }
+
+    private void switchUI() {
+        if (adapter != null) {
+            List<Password> passwordList = adapter.getPasswordList();
+            if (passwordList == null || passwordList.isEmpty()) {
+                recyclerView.setVisibility(View.INVISIBLE);
+                empty.setVisibility(View.VISIBLE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            empty.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onSearchError(String msg) {
 
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Password password = adapter.getPasswordList().get(position);
+        PassCat passCat = adapter.getPassCatList().get(position);
+        Intent intentForPassDetail = new Intent(this, PassDetailActivity.class);
+        intentForPassDetail.putExtra(PassDetailActivity.EXTRA_PASSWORD, password);
+        intentForPassDetail.putExtra(PassDetailActivity.EXTRA_CAT, passCat);
+        startActivity(intentForPassDetail);
     }
 }
