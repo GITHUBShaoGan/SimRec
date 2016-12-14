@@ -1,6 +1,7 @@
 package com.slut.simrec.pswd.create.p;
 
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.pswd.create.m.PswdNewModel;
 import com.slut.simrec.pswd.create.m.PswdNewModelImpl;
 import com.slut.simrec.pswd.create.v.PswdNewView;
@@ -41,8 +42,8 @@ public class PswdNewPresenterImpl implements PswdNewPresenter, PswdNewModel.OnBa
     }
 
     @Override
-    public void onPswdSaveSuccess() {
-        pswdNewView.onPswdSaveSuccess();
+    public void onPswdSaveSuccess(Password password) {
+        pswdNewView.onPswdSaveSuccess(password);
     }
 
     @Override

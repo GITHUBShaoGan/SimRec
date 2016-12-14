@@ -271,7 +271,7 @@ public class PassCatDetailActivity extends AppCompatActivity implements CatDetai
             website.setText(passCat.getCatUrl());
             title.setText(passCat.getCatTitle());
         }
-        PswdFragment.getInstances().onRefresh();
+        PswdFragment.getInstances().updateSingleCat(passCat);
     }
 
     @Override

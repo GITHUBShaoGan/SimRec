@@ -1,6 +1,7 @@
 package com.slut.simrec.pswd.create.m;
 
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.pswd.category.defaultcat.bean.DefaultCatBean;
 
 /**
@@ -21,7 +22,7 @@ public interface PswdNewModel {
 
     interface OnSavePswdListener{
 
-        void onPswdSaveSuccess();
+        void onPswdSaveSuccess(Password password);
 
         void onPswdSaveError(String msg);
 

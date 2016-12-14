@@ -198,11 +198,11 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void insertSingleCat(PassCat passCat) {
-        presenter.insertSingleCat(passCat, pswdCatAdapter.getPassCatList(),pswdCatAdapter.getPasswordList());
+        presenter.insertSingleCat(passCat, pswdCatAdapter.getPassCatList(), pswdCatAdapter.getPasswordList());
     }
 
     @Override
-    public void onInsertSingleCatSuccess(List<PassCat> passCatList,List<List<Password>> passwords) {
+    public void onInsertSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords) {
         List<PassCat> passCats = pswdCatAdapter.getPassCatList();
         if (passCats != null && passCatList != null) {
             int count = passCatList.size() - passCats.size();
@@ -248,6 +248,34 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onDeleteSingleCatError(String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    public void updateSingleCat(PassCat passCat) {
+        presenter.updateSingleCat(passCat, pswdCatAdapter.getPassCatList());
+    }
+
+    @Override
+    public void onUpdateSingleCatSuccess(int position) {
+        pswdCatAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onUpdateSingleCatError(String msg) {
+
+    }
+
+    public void updateSinglePass(Password password) {
+        presenter.updateSinglePass(password, pswdCatAdapter.getPassCatList(), pswdCatAdapter.getPasswordList());
+    }
+
+    @Override
+    public void onUpdateSinglePassSuccess() {
+        pswdCatAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onUpdateSinglePassError(String msg) {
+
     }
 
     @Override

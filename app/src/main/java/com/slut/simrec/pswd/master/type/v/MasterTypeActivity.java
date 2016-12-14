@@ -89,7 +89,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
         List<LockType> lockTypes = new ArrayList<>();
         String[] titleArr = ResUtils.getStringArray(R.array.title_lock_type);
         String[] descArr = ResUtils.getStringArray(R.array.description_lock_type);
-        int[] imageArr = {R.drawable.ic_fp_40px, R.drawable.ic_fp_40px, R.drawable.ic_fp_40px, R.drawable.ic_fp_40px};
+        int[] imageArr = {R.drawable.ic_fp_40px, R.drawable.ic_grid, R.drawable.ic_pattern, R.drawable.ic_text};
         for (int i = 0; i < titleArr.length; i++) {
             LockType lockType = new LockType(titleArr[i], descArr[i], imageArr[i]);
             lockTypes.add(lockType);

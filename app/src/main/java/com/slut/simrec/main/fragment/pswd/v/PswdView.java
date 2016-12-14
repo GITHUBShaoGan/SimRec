@@ -23,4 +23,12 @@ public interface PswdView {
 
     void onDeleteSingleCatError(String msg);
 
+    void onUpdateSingleCatSuccess(int position);
+
+    void onUpdateSingleCatError(String msg);
+
+    void onUpdateSinglePassSuccess();
+
+    void onUpdateSinglePassError(String msg);
+
 }

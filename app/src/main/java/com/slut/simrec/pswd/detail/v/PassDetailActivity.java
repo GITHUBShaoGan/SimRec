@@ -23,6 +23,7 @@ import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassDao;
+import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.detail.p.PassDetailPresenter;
@@ -284,6 +285,7 @@ public class PassDetailActivity extends AppCompatActivity implements PassDetailV
 
     @Override
     public void onUpdateSuccess(Password password) {
+        PswdFragment.getInstances().updateSinglePass(password);
         ToastUtils.showShort(R.string.update_success);
     }
 

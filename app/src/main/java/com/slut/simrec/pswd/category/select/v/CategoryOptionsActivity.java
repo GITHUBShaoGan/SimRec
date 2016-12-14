@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.pswd.category.select.adapter.OptionAdapter;
 import com.slut.simrec.pswd.category.select.m.LoadMoreType;
 import com.slut.simrec.pswd.category.select.p.OptionPresenter;
@@ -183,6 +184,7 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
         this.passCatList.add(0, passCat);
         adapter.setPassCatList(this.passCatList);
         adapter.notifyItemInserted(0);
+        PswdFragment.getInstances().insertSingleCat(passCat);
     }
 
     @Override

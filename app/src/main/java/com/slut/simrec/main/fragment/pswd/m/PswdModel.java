@@ -40,4 +40,24 @@ public interface PswdModel {
     }
 
     void deleteSingleCat(PassCat passCat, int deleteType, List<PassCat> passCatList, List<List<Password>> passwords, DeleteSingleCatListener deleteSingleCatListener);
+
+    interface UpdateSingleCatListener {
+
+        void onUpdateSingleCatSuccess(int position);
+
+        void onUpdateSingleCatError(String msg);
+
+    }
+
+    void updateSingleCat(PassCat passCat, List<PassCat> passCatList, UpdateSingleCatListener updateSingleCatListener);
+
+    interface UpdateSinglePassListener {
+
+        void onUpdateSinglePassSuccess();
+
+        void onUpdateSinglePassError(String msg);
+
+    }
+
+    void updateSinglePass(Password password, List<PassCat> passCatList, List<List<Password>> passwordList, UpdateSinglePassListener updateSinglePassListener);
 }

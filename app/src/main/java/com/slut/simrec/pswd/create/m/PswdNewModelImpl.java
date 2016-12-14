@@ -68,7 +68,7 @@ public class PswdNewModelImpl implements PswdNewModel {
         try {
             PassDao.getInstances().insertSingle(pwd);
             PassCatDao.getInstances().updateTime(passCatUUID);
-            onSavePswdListener.onPswdSaveSuccess();
+            onSavePswdListener.onPswdSaveSuccess(pwd);
         } catch (Exception e) {
             if (e != null && !TextUtils.isEmpty(e.getLocalizedMessage())) {
                 onSavePswdListener.onPswdSaveError(e.getLocalizedMessage());

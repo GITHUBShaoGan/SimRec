@@ -116,6 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:inputType="textEmailAddress"
                         android:hint="@string/hint_pswd_new_account" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -183,6 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:inputType="textUri"
                         android:hint="@string/hint_pswd_new_website" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -212,7 +214,6 @@
                     android:hint="@string/hint_pswd_new_remark" />
 
             </android.support.design.widget.TextInputLayout>
-
 
         </LinearLayout>
     </ScrollView>

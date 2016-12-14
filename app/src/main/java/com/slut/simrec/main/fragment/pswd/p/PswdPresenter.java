@@ -16,4 +16,8 @@ public interface PswdPresenter {
     void insertSingleCat(PassCat passCat, List<PassCat> passCatList,List<List<Password>> passwords);
 
     void deleteSingleCat(PassCat passCat, int deleteType, List<PassCat> passCatList, List<List<Password>> passwords);
+
+    void updateSingleCat(PassCat passCat,List<PassCat> passCatList);
+
+    void updateSinglePass(Password password, List<PassCat> passCatList, List<List<Password>> passwordList);
 }

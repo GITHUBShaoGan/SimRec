@@ -12,7 +12,7 @@ import java.util.List;
  * Created by 七月在线科技 on 2016/12/8.
  */
 
-public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoadListener, PswdModel.InsertSingleCatListener, PswdModel.DeleteSingleCatListener {
+public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoadListener, PswdModel.InsertSingleCatListener, PswdModel.DeleteSingleCatListener, PswdModel.UpdateSingleCatListener, PswdModel.UpdateSinglePassListener {
 
     private PswdModel pswdModel;
     private PswdView pswdView;
@@ -48,6 +48,16 @@ public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoad
     }
 
     @Override
+    public void updateSingleCat(PassCat passCat, List<PassCat> passCatList) {
+        pswdModel.updateSingleCat(passCat, passCatList, this);
+    }
+
+    @Override
+    public void updateSinglePass(Password password, List<PassCat> passCatList, List<List<Password>> passwordList) {
+        pswdModel.updateSinglePass(password, passCatList, passwordList, this);
+    }
+
+    @Override
     public void onInsertSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords) {
         pswdView.onInsertSingleCatSuccess(passCatList, passwords);
     }
@@ -65,5 +75,25 @@ public class PswdPresenterImpl implements PswdPresenter, PswdModel.OnPassCatLoad
     @Override
     public void onDeleteSingleCatError(String msg) {
         pswdView.onDeleteSingleCatError(msg);
+    }
+
+    @Override
+    public void onUpdateSingleCatSuccess(int position) {
+        pswdView.onUpdateSingleCatSuccess(position);
+    }
+
+    @Override
+    public void onUpdateSingleCatError(String msg) {
+        pswdView.onUpdateSingleCatError(msg);
+    }
+
+    @Override
+    public void onUpdateSinglePassSuccess() {
+        pswdView.onUpdateSinglePassSuccess();
+    }
+
+    @Override
+    public void onUpdateSinglePassError(String msg) {
+        pswdView.onUpdateSinglePassError(msg);
     }
 }

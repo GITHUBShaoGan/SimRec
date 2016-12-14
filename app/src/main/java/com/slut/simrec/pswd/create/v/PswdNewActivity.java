@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
+import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
@@ -170,13 +171,14 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
     }
 
     @Override
-    public void onPswdSaveSuccess() {
+    public void onPswdSaveSuccess(Password password) {
         Intent intent = getIntent();
         if (intent != null) {
             setResult(RESULT_OK, intent);
             PswdFragment.getInstances().onRefresh();
             finish();
         }
+        PswdFragment.getInstances().updateSinglePass(password);
     }
 
     @Override

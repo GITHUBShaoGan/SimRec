@@ -129,11 +129,71 @@ public class PswdModelImpl implements PswdModel {
             newPasswordList.remove(deletePosition);
             newCatList.remove(deletePosition);
             if (deleteType == CatDeleteType.DELETE_CAT_ONLY) {
-                for (int i = passwords.get(deletePosition).size()-1; i >= 0; i--) {
+                for (int i = passwords.get(deletePosition).size() - 1; i >= 0; i--) {
                     newPasswordList.get(0).add(0, passwords.get(deletePosition).get(i));
                 }
             }
         }
         deleteSingleCatListener.onDeleteSingleCatSuccess(newCatList, newPasswordList, deletePosition);
+    }
+
+    @Override
+    public void updateSingleCat(PassCat passCat, List<PassCat> passCatList, UpdateSingleCatListener updateSingleCatListener) {
+        if (passCat == null || passCatList == null) {
+            return;
+        }
+        int index = -1;
+        for (int i = 0; i < passCatList.size(); i++) {
+            if (passCatList.get(i).getUuid().equals(passCat.getUuid())) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            passCatList.set(index, passCat);
+            updateSingleCatListener.onUpdateSingleCatSuccess(index);
+        }
+    }
+
+    @Override
+    public void updateSinglePass(Password password, List<PassCat> passCatList, List<List<Password>> passwordList, UpdateSinglePassListener updateSinglePassListener) {
+        if (password == null || passCatList == null || passwordList == null) {
+            return;
+        }
+        boolean isFound = false;
+        int oldCatPosition = -1;
+        int oldPassPosition = -1;
+        for (int i = 0; i < passCatList.size() && !isFound; i++) {
+            List<Password> childPassList = passwordList.get(i);
+            for (int j = 0; j < childPassList.size(); j++) {
+                if (childPassList.get(j).getUuid().equals(password.getUuid())) {
+                    oldCatPosition = i;
+                    oldPassPosition = j;
+                    isFound = true;
+                    break;
+                }
+            }
+        }
+         int currentCatPosition = -1;
+        for (int i = 0; i < passCatList.size(); i++) {
+            if (password.getPassCatUUID().equals(passCatList.get(i).getUuid())) {
+                currentCatPosition = i;
+                break;
+            }
+        }
+        if (isFound) {
+            //以前有这个密码，说明只是更新数据
+            if (oldCatPosition != -1 && oldPassPosition != -1) {
+                passwordList.get(oldCatPosition).remove(oldPassPosition);
+                passwordList.get(currentCatPosition).add(0, password);
+                updateSinglePassListener.onUpdateSinglePassSuccess();
+            }
+        } else {
+            //以前没有这个密码，说明新添加的
+            if (currentCatPosition != -1) {
+                passwordList.get(currentCatPosition).add(0, password);
+                updateSinglePassListener.onUpdateSinglePassSuccess();
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
+import com.slut.simrec.pswd.category.CategoryConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,12 @@ public class PassSearchModelImpl implements PassSearchModel {
         List<PassCat> passCatList = new ArrayList<>();
         for (Password password : passwordList) {
             try {
-                PassCat passCat = PassCatDao.getInstances().querySingleByUUID(password.getPassCatUUID());
-                passCatList.add(passCat);
+                if (password.getPassCatUUID().equals(CategoryConst.UUID_UNSPECIFIC)) {
+                    passCatList.add(new PassCat(CategoryConst.UUID_UNSPECIFIC, CategoryConst.TITLE_UNSPECIFIC, CategoryConst.URL_UNSPECIFIC, CategoryConst.ICONURL_UNSPECIFIC, true, System.currentTimeMillis(), System.currentTimeMillis()));
+                } else {
+                    PassCat passCat = PassCatDao.getInstances().querySingleByUUID(password.getPassCatUUID());
+                    passCatList.add(passCat);
+                }
             } catch (Exception e) {
                 passCatList.add(new PassCat());
             }

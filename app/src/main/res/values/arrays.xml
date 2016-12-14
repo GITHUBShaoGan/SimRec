@@ -17,35 +17,38 @@
 
     <string-array name="url_website">
         <item>www.google.com</item>
-        <item>mail.google.com</item>
-        <item>plus.google.com</item>
         <item>www.apple.com</item>
         <item>www.twitter.com</item>
         <item>im.qq.com</item>
         <item>www.wechat.com</item>
         <item>www.alipay.com</item>
+        <item>xxx.xxx.xxx.xxx</item>
+        <item></item>
+        <item>https://www.facebook.com</item>
     </string-array>
 
     <string-array name="title_website">
         <item>Google</item>
-        <item>Gmail</item>
-        <item>Google+</item>
         <item>Apple</item>
         <item>Twitter</item>
         <item>QQ</item>
         <item>WeChat</item>
         <item>Alipay</item>
+        <item>Database</item>
+        <item>Credit</item>
+        <item>Facebook</item>
     </string-array>
 
     <string-array name="icon_website">
         <item>https://dn-8l5l1lef.qbox.me/612346cbb1118a721251.jpg</item>
-        <item>https://dn-8l5l1lef.qbox.me/16bf85838a6307d225c1.jpg</item>
-        <item>https://dn-8l5l1lef.qbox.me/49af9d0abffdbfdb0e43.jpg</item>
-        <item>https://dn-8l5l1lef.qbox.me/59ef6837519cbff774e9.jpg</item>
+        <item>https://dn-8l5l1lef.qbox.me/966f9dde6cf659b71926.png</item>
         <item>https://dn-8l5l1lef.qbox.me/c4f75c451ec2e3a38e87.png</item>
         <item>https://dn-8l5l1lef.qbox.me/0b41db151a856bd558c2.jpg</item>
         <item>https://dn-8l5l1lef.qbox.me/c8bd9e88a0354ec6c90d.png</item>
         <item>https://dn-8l5l1lef.qbox.me/b6123c9729728c9809be.png</item>
+        <item>https://dn-8l5l1lef.qbox.me/23084e66f514e1dcda95.png</item>
+        <item>https://dn-8l5l1lef.qbox.me/95f7770aaab67b838518.png</item>
+        <item>https://dn-8l5l1lef.qbox.me/1bcd1b6e8a875ec99750.png</item>
     </string-array>
 
 </resources>
