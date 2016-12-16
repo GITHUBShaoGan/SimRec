@@ -16,33 +16,33 @@ import java.util.List;
 public class MainModelImpl implements MainModel {
 
     @Override
-    public void onFabPswdClick(OnFabPswdClickCallback onFabPswdClickCallback) {
+    public void onUIClick(OnUIClickListener onUIClickListener) {
         try {
             List<PassConfig> passConfigList = PassConfigDao.getInstances().queryAll();
             if (passConfigList != null) {
                 if (passConfigList.isEmpty()) {
                     //主密码尚未设置
-                    onFabPswdClickCallback.onMasterNotSetBefore();
+                    onUIClickListener.onMasterNotSetBefore();
                 } else if (passConfigList.size() == 1) {
                     //用户密码已经设置了
                     if (App.isPswdFunctionLocked()) {
                         //密码功能被锁定
-                        onFabPswdClickCallback.onPswdFuncLock(passConfigList.get(0));
+                        onUIClickListener.onPswdFuncLock(passConfigList.get(0));
                     } else {
                         //密码功能没被锁定
-                        onFabPswdClickCallback.onPswdFuncUnlock(passConfigList.get(0));
+                        onUIClickListener.onPswdFuncUnlock(passConfigList.get(0));
                     }
                 } else {
                     //数据有可能被篡改
                     PassConfigDao.getInstances().deleteAll();
                     PassDao.getInstances().deleteAll();
-                    onFabPswdClickCallback.onDataTamper();
+                    onUIClickListener.onDataTamper();
                 }
             } else {
-                onFabPswdClickCallback.onPswdClickError(ResUtils.getString(R.string.error_exception_happened));
+                onUIClickListener.onPswdClickError(ResUtils.getString(R.string.error_exception_happened));
             }
         } catch (Exception e) {
-            onFabPswdClickCallback.onPswdClickError(e.getLocalizedMessage());
+            onUIClickListener.onPswdClickError(e.getLocalizedMessage());
         }
     }
 

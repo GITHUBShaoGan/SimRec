@@ -1,6 +1,7 @@
 package com.slut.simrec.fingerprint;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.support.v7.app.AlertDialog;
@@ -20,11 +21,17 @@ public class MyAuthCallback extends FingerprintManager.AuthenticationCallback {
     private TextView dialogMessage;
     private AlertDialog dialog;
 
-    public MyAuthCallback(AlertDialog dialog, TextView textView, OnFingerPrintAuthListener onFingerPrintAuthListener) {
+    public MyAuthCallback(AlertDialog dialog, TextView textView, final OnFingerPrintAuthListener onFingerPrintAuthListener) {
         super();
         this.onFingerPrintAuthListener = onFingerPrintAuthListener;
         this.dialogMessage = textView;
         this.dialog = dialog;
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                onFingerPrintAuthListener.onAuthDialogCancel();
+            }
+        });
     }
 
     @Override

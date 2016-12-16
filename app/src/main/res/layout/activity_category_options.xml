@@ -19,7 +19,7 @@
             app:title="@string/title_activity_category_option"></android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/activity_category_options"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,5 +38,30 @@
                 android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty" />
+
+            <TextView
+                android:text="@string/empty_list"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

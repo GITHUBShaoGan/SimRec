@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
+import com.slut.simrec.pswd.PassFatherActivity;
 import com.slut.simrec.pswd.detail.v.PassDetailActivity;
 import com.slut.simrec.pswd.search.adapter.PassSearchAdapter;
 import com.slut.simrec.pswd.search.p.PassSearchPresenter;
@@ -26,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PassSearchActivity extends AppCompatActivity implements PassSearchView, PassSearchAdapter.OnItemClickListener {
+public class PassSearchActivity extends PassFatherActivity implements PassSearchView, PassSearchAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -71,7 +72,6 @@ public class PassSearchActivity extends AppCompatActivity implements PassSearchV
                 finish();
             }
         });
-
     }
 
     @Override

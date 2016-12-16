@@ -86,6 +86,9 @@
     <string name="error_password_length">length must between 4 and 128</string>
     <string name="error_two_input_notequal">two input not equal</string>
 
+    <!--PatternPassActivity-->
+    <string name="title_activity_pattern_pass">Set Pattern Password</string>
+
     <!--TextUnlockActivity-->
     <string name="title_activity_text_unlock">Text Unlock</string>
     <string name="hint_text_unlock_password">Password</string>
@@ -140,6 +143,8 @@
     <string name="action_menu_search">Search</string>
 
     <string name="copy_success">Copy Success</string>
+
+    <string name="empty_list">Empty List</string>
 
     <string name="toast_master_set_successfully">Master password set successfully</string>
 

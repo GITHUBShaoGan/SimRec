@@ -6,15 +6,16 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true">
         <activity
+            android:theme="@style/AppTheme"
             android:name=".main.v.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -25,48 +26,64 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.master.type.v.MasterTypeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.master.grid.v.GridPassActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.unlock.grid.v.GridUnlockActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.create.v.PswdNewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.category.defaultcat.v.DefaultCatActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.category.select.v.CategoryOptionsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.category.detail.v.PassCatDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".pswd.master.pattern.PatternPassActivity" />
         <activity
+            android:name=".pswd.master.pattern.v.PatternPassActivity"
+            android:label="@string/title_activity_pattern_pass"
+           android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.master.text.v.TextPassActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.unlock.text.v.TextUnlockActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.unlock.pattern.PatternUnlockActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.detail.v.PassDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:theme="@style/AppTheme"
             android:name=".pswd.search.v.PassSearchActivity"
             android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

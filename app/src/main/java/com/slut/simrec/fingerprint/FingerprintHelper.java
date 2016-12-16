@@ -92,6 +92,7 @@ public class FingerprintHelper {
             }
         });
         alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 }

@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
+import com.slut.simrec.pswd.PassFatherActivity;
 import com.slut.simrec.pswd.category.select.adapter.OptionAdapter;
 import com.slut.simrec.pswd.category.select.m.LoadMoreType;
 import com.slut.simrec.pswd.category.select.p.OptionPresenter;
@@ -36,7 +37,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryOptionsActivity extends AppCompatActivity implements OptionView, SwipeRefreshLayout.OnRefreshListener, OptionAdapter.OnItemClickListener {
+public class CategoryOptionsActivity extends PassFatherActivity implements OptionView, SwipeRefreshLayout.OnRefreshListener, OptionAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,6 +45,8 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.empty)
+    LinearLayout empty;
 
     private LinearLayoutManager layoutManager;
     private OptionPresenter presenter;
@@ -54,8 +57,6 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
     private static final long pageSize = 10;
 
     private int lastVisibleItem = 0;
-
-    public static final String EXTRA_ROOT_PATH = "root_path";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +186,8 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
         adapter.setPassCatList(this.passCatList);
         adapter.notifyItemInserted(0);
         PswdFragment.getInstances().insertSingleCat(passCat);
+
+        switchUI();
     }
 
     @Override
@@ -205,6 +208,23 @@ public class CategoryOptionsActivity extends AppCompatActivity implements Option
         adapter.notifyDataSetChanged();
         pageNo++;
         refreshLayout.setRefreshing(false);
+
+        switchUI();
+    }
+
+    private void switchUI() {
+        if (adapter != null) {
+            if (adapter.getItemCount() != 0) {
+                empty.setVisibility(View.INVISIBLE);
+                refreshLayout.setVisibility(View.VISIBLE);
+            } else {
+                empty.setVisibility(View.VISIBLE);
+                refreshLayout.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            empty.setVisibility(View.VISIBLE);
+            refreshLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

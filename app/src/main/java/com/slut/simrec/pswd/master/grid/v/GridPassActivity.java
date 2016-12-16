@@ -71,7 +71,7 @@ public class GridPassActivity extends AppCompatActivity implements GridPassView 
                     if (count == 1) {
                         tips.setText(R.string.tips_grid_pass_confirm_input);
                     }
-                    if (count == 2) {
+                    if (count == 0) {
                         tips.setText(R.string.tips_grid_pass_first_input);
                     }
                 }
@@ -79,14 +79,7 @@ public class GridPassActivity extends AppCompatActivity implements GridPassView 
 
             @Override
             public void onInputFinish(String psw) {
-                count++;
                 if (count == 1) {
-                    firstPsw = psw;
-                    gridPasswordView.clearPassword();
-                    tips.setTextColor(Color.BLACK);
-                    tips.setText(R.string.tips_grid_pass_confirm_input);
-                }
-                if (count == 2) {
                     //第二次输入完成
                     if (psw.equals(firstPsw)) {
                         presenter.createPass(psw);
@@ -94,6 +87,13 @@ public class GridPassActivity extends AppCompatActivity implements GridPassView 
                         tips.setTextColor(Color.RED);
                         tips.setText(R.string.error_pass_not_equal);
                     }
+                }
+                if (count == 0) {
+                    firstPsw = psw;
+                    gridPasswordView.clearPassword();
+                    tips.setTextColor(Color.BLACK);
+                    tips.setText(R.string.tips_grid_pass_confirm_input);
+                    count++;
                 }
             }
         });

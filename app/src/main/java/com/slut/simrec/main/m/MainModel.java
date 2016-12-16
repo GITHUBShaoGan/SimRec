@@ -8,7 +8,7 @@ import com.slut.simrec.database.pswd.bean.PassConfig;
 
 public interface MainModel {
 
-    interface OnFabPswdClickCallback {
+    interface OnUIClickListener {
 
         void onPswdFuncLock(PassConfig passConfig);
 
@@ -22,6 +22,5 @@ public interface MainModel {
 
     }
 
-    void onFabPswdClick(OnFabPswdClickCallback onFabPswdClickCallback);
-
+    void onUIClick(OnUIClickListener onUIClickListener);
 }

@@ -203,21 +203,11 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onInsertSingleCatSuccess(List<PassCat> passCatList, List<List<Password>> passwords) {
-        List<PassCat> passCats = pswdCatAdapter.getPassCatList();
-        if (passCats != null && passCatList != null) {
-            int count = passCatList.size() - passCats.size();
-            this.passCatList = passCatList;
-            pswdCatAdapter.setPassCatList(this.passCatList);
-            switch (count) {
-                case 1:
-                    pswdCatAdapter.notifyItemInserted(1);
-                    break;
-                case 2:
-                    pswdCatAdapter.notifyItemInserted(0);
-                    pswdCatAdapter.notifyItemInserted(1);
-                    break;
-            }
-        }
+        this.passCatList = passCatList;
+        this.passwordLists = passwords;
+        pswdCatAdapter.setPassCatList(passCatList);
+        pswdCatAdapter.setPasswordList(passwords);
+        pswdCatAdapter.notifyDataSetChanged();
         switchUI();
     }
 
@@ -251,6 +241,8 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateSingleCat(PassCat passCat) {
+        this.passCatList = pswdCatAdapter.getPassCatList();
+        this.passwordLists = pswdCatAdapter.getPasswordList();
         presenter.updateSingleCat(passCat, pswdCatAdapter.getPassCatList());
     }
 
@@ -265,6 +257,8 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateSinglePass(Password password) {
+        this.passCatList = pswdCatAdapter.getPassCatList();
+        this.passwordLists = pswdCatAdapter.getPasswordList();
         presenter.updateSinglePass(password, pswdCatAdapter.getPassCatList(), pswdCatAdapter.getPasswordList());
     }
 
@@ -389,6 +383,13 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 startActivity(intentForPassDetail);
                                 break;
                         }
+
+
+                    }
+
+                    @Override
+                    public void onAuthDialogCancel() {
+
                     }
 
                     @Override

@@ -24,6 +24,7 @@ import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
+import com.slut.simrec.pswd.PassFatherActivity;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.detail.p.PassDetailPresenter;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 import static android.webkit.WebSettings.PluginState.ON;
 import static com.slut.simrec.pswd.create.v.PswdNewActivity.EXTRA_DEFAULT_CAT;
 
-public class PassDetailActivity extends AppCompatActivity implements PassDetailView {
+public class PassDetailActivity extends PassFatherActivity implements PassDetailView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

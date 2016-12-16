@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
+import com.slut.simrec.pswd.PassFatherActivity;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.detail.adapter.PswdAdapter;
 import com.slut.simrec.pswd.category.detail.p.CatDetailPresenter;
@@ -44,12 +46,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PassCatDetailActivity extends AppCompatActivity implements CatDetailView, SwipeRefreshLayout.OnRefreshListener, PswdAdapter.OnItemClickListener {
+public class PassCatDetailActivity extends PassFatherActivity implements CatDetailView, SwipeRefreshLayout.OnRefreshListener, PswdAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.avatar)
-    CircleTextImageView avatar;
+    ImageView avatar;
     @BindView(R.id.website)
     TextView website;
     @BindView(R.id.title)

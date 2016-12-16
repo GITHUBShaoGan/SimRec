@@ -1,14 +1,11 @@
 package com.slut.simrec.pswd.master.type.v;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -17,21 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
-import com.slut.simrec.fingerprint.CryptoObjectHelper;
 import com.slut.simrec.fingerprint.FingerprintHelper;
-import com.slut.simrec.fingerprint.MyAuthCallback;
 import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.fingerprint.Status;
 import com.slut.simrec.fingerprint.Utils;
 import com.slut.simrec.pswd.master.grid.v.GridPassActivity;
-import com.slut.simrec.pswd.master.pattern.PatternPassActivity;
+import com.slut.simrec.pswd.master.pattern.v.PatternPassActivity;
 import com.slut.simrec.pswd.master.text.v.TextPassActivity;
 import com.slut.simrec.pswd.master.type.bean.LockType;
 import com.slut.simrec.pswd.master.type.adapter.LockTypeAdapter;
@@ -248,6 +240,11 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
 
     @Override
     public void onAuthenticationFailed() {
+
+    }
+
+    @Override
+    public void onAuthDialogCancel() {
 
     }
 }

@@ -5,13 +5,11 @@ import com.slut.simrec.main.m.MainModel;
 import com.slut.simrec.main.m.MainModelImpl;
 import com.slut.simrec.main.v.MainView;
 
-import static com.slut.simrec.R.menu.main;
-
 /**
  * Created by 七月在线科技 on 2016/12/6.
  */
 
-public class MainPresenterImpl implements MainPresenter, MainModel.OnFabPswdClickCallback {
+public class MainPresenterImpl implements MainPresenter, MainModel.OnUIClickListener {
 
     private MainModel mainModel;
     private MainView mainView;
@@ -48,6 +46,7 @@ public class MainPresenterImpl implements MainPresenter, MainModel.OnFabPswdClic
 
     @Override
     public void onFabPswdClick() {
-        mainModel.onFabPswdClick(this);
+        mainModel.onUIClick(this);
     }
+
 }

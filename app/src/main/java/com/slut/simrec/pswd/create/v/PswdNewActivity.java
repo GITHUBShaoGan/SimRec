@@ -20,6 +20,7 @@ import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
+import com.slut.simrec.pswd.PassFatherActivity;
 import com.slut.simrec.pswd.category.CategoryConst;
 import com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity;
 import com.slut.simrec.pswd.create.p.PswdNewPresenter;
@@ -31,7 +32,7 @@ import com.slut.simrec.utils.ToastUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
+public class PswdNewActivity extends PassFatherActivity implements PswdNewView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -175,7 +176,6 @@ public class PswdNewActivity extends AppCompatActivity implements PswdNewView {
         Intent intent = getIntent();
         if (intent != null) {
             setResult(RESULT_OK, intent);
-            PswdFragment.getInstances().onRefresh();
             finish();
         }
         PswdFragment.getInstances().updateSinglePass(password);

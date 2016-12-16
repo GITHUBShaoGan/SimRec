@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -51,7 +52,11 @@ public class TextUnlockActivity extends AppCompatActivity implements TextUnlockV
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = getIntent();
+                if (intent != null) {
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
+                }
             }
         });
         tilPassword.getEditText().addTextChangedListener(new TextWatcher() {
@@ -93,6 +98,20 @@ public class TextUnlockActivity extends AppCompatActivity implements TextUnlockV
             finish();
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = getIntent();
+            if (intent != null) {
+                setResult(RESULT_CANCELED, intent);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     public void onValidateFailed() {

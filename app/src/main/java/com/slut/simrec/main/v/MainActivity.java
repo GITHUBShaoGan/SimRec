@@ -158,10 +158,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void validateFingerPrint(final TextView message) {
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -178,8 +174,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.search) {
             switch (viewPager.getCurrentItem()) {
                 case 0:
-                    Intent intent = new Intent(this, PassSearchActivity.class);
-                    startActivity(intent);
                     break;
             }
         }
@@ -291,7 +285,7 @@ public class MainActivity extends AppCompatActivity
                     startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
                     break;
                 case REQUEST_CREATE_PASSWORD:
-                    PswdFragment.getInstances().onRefresh();
+//                    PswdFragment.getInstances().onRefresh();
                     break;
             }
         }
@@ -316,6 +310,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAuthenticationFailed() {
+
+    }
+
+    @Override
+    public void onAuthDialogCancel() {
 
     }
 }

@@ -15,4 +15,6 @@ public interface OnFingerPrintAuthListener {
     void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result);
 
     void onAuthenticationFailed();
+
+    void onAuthDialogCancel();
 }

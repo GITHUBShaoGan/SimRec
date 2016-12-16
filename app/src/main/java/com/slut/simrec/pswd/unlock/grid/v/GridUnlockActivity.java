@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,7 +71,11 @@ public class GridUnlockActivity extends AppCompatActivity implements GridUnlockV
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = getIntent();
+                if (intent != null) {
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
+                }
             }
         });
         passwordView.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
@@ -97,6 +102,19 @@ public class GridUnlockActivity extends AppCompatActivity implements GridUnlockV
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = getIntent();
+            if (intent != null) {
+                setResult(RESULT_CANCELED, intent);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
