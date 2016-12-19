@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
@@ -44,6 +45,7 @@ public class DefaultCatActivity extends PassFatherActivity implements DefaultCat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_cat);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

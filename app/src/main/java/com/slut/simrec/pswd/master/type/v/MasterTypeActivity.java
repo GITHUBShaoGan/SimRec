@@ -58,6 +58,7 @@ public class MasterTypeActivity extends AppCompatActivity implements LockTypeAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_type);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

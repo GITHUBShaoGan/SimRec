@@ -18,6 +18,8 @@ import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
 import com.slut.simrec.utils.FileUtils;
 
+import java.util.Stack;
+
 /**
  * Created by 七月在线科技 on 2016/12/6.
  */
@@ -28,6 +30,19 @@ public class App extends Application {
     private static DBHelper dbHelper;
     private static boolean isPswdFunctionLocked = true;
     private static int activityCount = 0;
+    private Stack<Activity> activities = new Stack<>();
+    private static volatile App instances;
+
+    public static App getInstances() {
+        if(instances == null){
+            synchronized (App.class){
+                if(instances == null){
+                    instances = new App();
+                }
+            }
+        }
+        return instances;
+    }
 
     @Override
     public void onCreate() {
@@ -122,6 +137,23 @@ public class App extends Application {
         PassConfigDao.getInstances().init();
         PassDao.getInstances().init();
         PassCatDao.getInstances().init();
+    }
+
+    public void addActivity(Activity activity) {
+        if (activity != null) {
+            activities.add(activity);
+        }
+    }
+
+    public void exit() {
+        if (activities != null) {
+            for (Activity activity : activities) {
+                if (!activity.isFinishing()) {
+                    activity.finish();
+                }
+            }
+        }
+        System.exit(0);
     }
 
 }

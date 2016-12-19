@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/colorCanvas"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
         tools:context="com.slut.simrec.pswd.category.select.v.CategoryOptionsActivity">
 
@@ -61,7 +62,6 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-
     </FrameLayout>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -16,21 +16,21 @@ import java.util.List;
 public class MainModelImpl implements MainModel {
 
     @Override
-    public void onUIClick(OnUIClickListener onUIClickListener) {
+    public void onUIClick(int clickType,OnUIClickListener onUIClickListener) {
         try {
             List<PassConfig> passConfigList = PassConfigDao.getInstances().queryAll();
             if (passConfigList != null) {
                 if (passConfigList.isEmpty()) {
                     //主密码尚未设置
-                    onUIClickListener.onMasterNotSetBefore();
+                    onUIClickListener.onMasterNotSetBefore(clickType);
                 } else if (passConfigList.size() == 1) {
                     //用户密码已经设置了
                     if (App.isPswdFunctionLocked()) {
                         //密码功能被锁定
-                        onUIClickListener.onPswdFuncLock(passConfigList.get(0));
+                        onUIClickListener.onPswdFuncLock(clickType,passConfigList.get(0));
                     } else {
                         //密码功能没被锁定
-                        onUIClickListener.onPswdFuncUnlock(passConfigList.get(0));
+                        onUIClickListener.onPswdFuncUnlock(clickType,passConfigList.get(0));
                     }
                 } else {
                     //数据有可能被篡改
@@ -39,10 +39,10 @@ public class MainModelImpl implements MainModel {
                     onUIClickListener.onDataTamper();
                 }
             } else {
-                onUIClickListener.onPswdClickError(ResUtils.getString(R.string.error_exception_happened));
+                onUIClickListener.onClickError(ResUtils.getString(R.string.error_exception_happened));
             }
         } catch (Exception e) {
-            onUIClickListener.onPswdClickError(e.getLocalizedMessage());
+            onUIClickListener.onClickError(e.getLocalizedMessage());
         }
     }
 

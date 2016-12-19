@@ -9,6 +9,9 @@
     <string name="tab_main_pay">Pay</string>
     <string name="msg_dialog_master_not_set">Your master password have not been set,do you want to set it now?</string>
     <string name="action_menu_sort">Sort</string>
+    <string name="menu_drawer_password">Password</string>
+    <string name="menu_drawer_note">Note</string>
+    <string name="menu_drawer_pay">Pay</string>
 
     <!--MasterTypeActivity-->
     <string name="title_activity_master_type">Choose Lock Type</string>
@@ -88,6 +91,16 @@
 
     <!--PatternPassActivity-->
     <string name="title_activity_pattern_pass">Set Pattern Password</string>
+    <string name="tips_pattern_set_first">Please Draw Your Pattern</string>
+    <string name="tips_pattern_set_second">Please Draw Again</string>
+    <string name="tips_pattern_set_length_error">Please Connect At Least 4 dots</string>
+    <string name="tips_pattern_set_not_equal">Two Entries Do Not Match</string>
+
+    <!--PatternUnlockActivity-->
+    <string name="title_activity_pattern_unlock">Unlock Pattern</string>
+    <string name="tips_pattern_unlock">Please Draw Your Pattern</string>
+    <string name="tips_pattern_unlock_length_error">Please Connect At Least 4 dots</string>
+    <string name="tips_pattern_unlock_error">Pattern Not Match</string>
 
     <!--TextUnlockActivity-->
     <string name="title_activity_text_unlock">Text Unlock</string>

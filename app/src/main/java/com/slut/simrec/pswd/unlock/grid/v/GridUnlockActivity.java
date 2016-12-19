@@ -47,13 +47,12 @@ public class GridUnlockActivity extends AppCompatActivity implements GridUnlockV
 
     private GridUnlockPresenter presenter;
 
-    private static final int REQUEST_GET_FINGERPRINT_PERMISSION = 1000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_unlock);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

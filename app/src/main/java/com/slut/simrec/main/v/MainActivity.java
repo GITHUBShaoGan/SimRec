@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
@@ -30,11 +29,12 @@ import com.slut.simrec.main.fragment.pay.PayFragment;
 import com.slut.simrec.main.fragment.pswd.v.PswdFragment;
 import com.slut.simrec.main.p.MainPresenter;
 import com.slut.simrec.main.p.MainPresenterImpl;
+import com.slut.simrec.note.create.NoteCreateActivity;
 import com.slut.simrec.pswd.category.defaultcat.v.DefaultCatActivity;
 import com.slut.simrec.pswd.master.type.v.MasterTypeActivity;
 import com.slut.simrec.pswd.search.v.PassSearchActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
-import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
+import com.slut.simrec.pswd.unlock.pattern.v.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 import com.slut.simrec.utils.ResUtils;
 import com.slut.simrec.utils.ToastUtils;
@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainView, OnFingerPrintAuthListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -62,22 +62,24 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    private AlertDialog dialog;
-
     private MainPagerAdapter pagerAdapter;
     private MainPresenter presenter;
 
-    private static final int REQUEST_CREATE_MASTER = 1000;
-    private static final int REQUEST_UNLOCK = 2000;
+    private static final int REQUEST_CREATE_MASTER_FOR_ADD = 1000;
+    private static final int REQUEST_CREATE_MASTER_FOR_SEARCH = 6005;
+    private static final int REQUEST_UNLOCK_FOR_ADD = 2000;
+    private static final int REQUEST_UNLOCK_FOR_SEARCH = 5000;
     public static final int REQUEST_CREATE_PASSWORD = 3000;
-
     public static final int REQUEST_UNLOCK_COPY = 4000;
+    //控件点击类，0代表点击添加按钮，1代表点击搜索按菜单
+    private static final int CLICK_ADD = 0, CLICK_SEARCH = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }
@@ -127,7 +129,10 @@ public class MainActivity extends AppCompatActivity
         switch (currentItemId) {
             case 0:
                 //密码
-                presenter.onFabPswdClick();
+                presenter.onUIClick(CLICK_ADD);
+                break;
+            case 1:
+                startActivity(new Intent(this, NoteCreateActivity.class));
                 break;
         }
     }
@@ -174,6 +179,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.search) {
             switch (viewPager.getCurrentItem()) {
                 case 0:
+                    presenter.onUIClick(CLICK_SEARCH);
                     break;
             }
         }
@@ -198,38 +204,83 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPswdFuncLock(PassConfig passConfig) {
+    public void onPswdFuncLock(final int clickType, PassConfig passConfig) {
+        int requestCode = REQUEST_UNLOCK_FOR_ADD;
+        switch (clickType) {
+            case CLICK_ADD:
+                requestCode = REQUEST_UNLOCK_FOR_ADD;
+                break;
+            case CLICK_SEARCH:
+                requestCode = REQUEST_UNLOCK_FOR_SEARCH;
+                break;
+        }
         if (passConfig.isFingerPrintAgreed()) {
-            FingerprintHelper.getInstances().validate(this, this);
+            FingerprintHelper.getInstances().validate(this, new OnFingerPrintAuthListener() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+
+                }
+
+                @Override
+                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                    App.setIsPswdFunctionLocked(false);
+                    if (clickType == CLICK_ADD) {
+                        Intent intent = new Intent(MainActivity.this, DefaultCatActivity.class);
+                        startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
+                    } else if (clickType == CLICK_SEARCH) {
+                        startActivity(new Intent(MainActivity.this, PassSearchActivity.class));
+                    }
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+
+                }
+
+                @Override
+                public void onAuthDialogCancel() {
+
+                }
+            });
         } else {
             //已经锁定
             switch (passConfig.getPreferLockType()) {
                 case PassConfig.LockType.GRID:
                     //网格密码解锁
                     Intent intent = new Intent(this, GridUnlockActivity.class);
-                    startActivityForResult(intent, REQUEST_UNLOCK);
+                    startActivityForResult(intent, requestCode);
                     break;
                 case PassConfig.LockType.TEXT:
                     Intent textUnlock = new Intent(this, TextUnlockActivity.class);
-                    startActivityForResult(textUnlock, REQUEST_UNLOCK);
+                    startActivityForResult(textUnlock, requestCode);
                     break;
                 case PassConfig.LockType.PATTERN:
                     Intent patternUnlock = new Intent(this, PatternUnlockActivity.class);
-                    startActivityForResult(patternUnlock, REQUEST_UNLOCK);
+                    startActivityForResult(patternUnlock, requestCode);
                     break;
             }
         }
     }
 
     @Override
-    public void onPswdFuncUnlock(PassConfig passConfig) {
+    public void onPswdFuncUnlock(int clickType, PassConfig passConfig) {
         //未被锁定
-        Intent intent = new Intent(this, DefaultCatActivity.class);
-        startActivity(intent);
+        if (clickType == CLICK_ADD) {
+            Intent intent = new Intent(this, DefaultCatActivity.class);
+            startActivity(intent);
+        } else if (clickType == CLICK_SEARCH) {
+            Intent intent = new Intent(this, PassSearchActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
-    public void onMasterNotSetBefore() {
+    public void onMasterNotSetBefore(final int clickType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_error_red_24dp);
         builder.setTitle(R.string.title_dialog_tips);
@@ -238,7 +289,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(MainActivity.this, MasterTypeActivity.class);
-                startActivityForResult(intent, REQUEST_CREATE_MASTER);
+                if (clickType == CLICK_ADD) {
+                    startActivityForResult(intent, REQUEST_CREATE_MASTER_FOR_ADD);
+                } else if (clickType == CLICK_SEARCH) {
+                    startActivityForResult(intent, REQUEST_CREATE_MASTER_FOR_SEARCH);
+                }
             }
         });
         builder.setNegativeButton(R.string.action_dialog_no, new DialogInterface.OnClickListener() {
@@ -275,46 +330,22 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_CREATE_MASTER:
-                    //创建成功
-                    Intent intent1 = new Intent(this, DefaultCatActivity.class);
-                    startActivityForResult(intent1, REQUEST_CREATE_PASSWORD);
+                case REQUEST_CREATE_MASTER_FOR_ADD:
+                    startActivityForResult(new Intent(this, DefaultCatActivity.class), REQUEST_CREATE_PASSWORD);
                     break;
-                case REQUEST_UNLOCK:
-                    Intent intent = new Intent(this, DefaultCatActivity.class);
-                    startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
+                case REQUEST_CREATE_MASTER_FOR_SEARCH:
+                    startActivity(new Intent(this, PassSearchActivity.class));
+                    break;
+                case REQUEST_UNLOCK_FOR_ADD:
+                    startActivityForResult(new Intent(this, DefaultCatActivity.class), REQUEST_CREATE_PASSWORD);
+                    break;
+                case REQUEST_UNLOCK_FOR_SEARCH:
+                    startActivity(new Intent(this, PassSearchActivity.class));
                     break;
                 case REQUEST_CREATE_PASSWORD:
-//                    PswdFragment.getInstances().onRefresh();
                     break;
             }
         }
     }
 
-    @Override
-    public void onAuthenticationError(int errorCode, CharSequence errString) {
-
-    }
-
-    @Override
-    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
-
-    }
-
-    @Override
-    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-        App.setIsPswdFunctionLocked(false);
-        Intent intent = new Intent(this, DefaultCatActivity.class);
-        startActivityForResult(intent, REQUEST_CREATE_PASSWORD);
-    }
-
-    @Override
-    public void onAuthenticationFailed() {
-
-    }
-
-    @Override
-    public void onAuthDialogCancel() {
-
-    }
 }

@@ -20,18 +20,18 @@ public class MainPresenterImpl implements MainPresenter, MainModel.OnUIClickList
     }
 
     @Override
-    public void onPswdFuncLock(PassConfig passConfig) {
-        mainView.onPswdFuncLock(passConfig);
+    public void onPswdFuncLock(int clickType,PassConfig passConfig) {
+        mainView.onPswdFuncLock(clickType,passConfig);
     }
 
     @Override
-    public void onPswdFuncUnlock(PassConfig passConfig) {
-        mainView.onPswdFuncUnlock(passConfig);
+    public void onPswdFuncUnlock(int clickType,PassConfig passConfig) {
+        mainView.onPswdFuncUnlock(clickType,passConfig);
     }
 
     @Override
-    public void onMasterNotSetBefore() {
-        mainView.onMasterNotSetBefore();
+    public void onMasterNotSetBefore(int clickType) {
+        mainView.onMasterNotSetBefore(clickType);
     }
 
     @Override
@@ -40,13 +40,13 @@ public class MainPresenterImpl implements MainPresenter, MainModel.OnUIClickList
     }
 
     @Override
-    public void onPswdClickError(String msg) {
+    public void onClickError(String msg) {
         mainView.onPswdClickError(msg);
     }
 
     @Override
-    public void onFabPswdClick() {
-        mainModel.onUIClick(this);
+    public void onUIClick(int clickType) {
+        mainModel.onUIClick(clickType,this);
     }
 
 }

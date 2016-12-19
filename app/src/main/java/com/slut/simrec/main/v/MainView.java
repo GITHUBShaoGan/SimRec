@@ -8,11 +8,11 @@ import com.slut.simrec.database.pswd.bean.PassConfig;
 
 public interface MainView {
 
-    void onPswdFuncLock(PassConfig passConfig);
+    void onPswdFuncLock(int clickType,PassConfig passConfig);
 
-    void onPswdFuncUnlock(PassConfig passConfig);
+    void onPswdFuncUnlock(int clickType,PassConfig passConfig);
 
-    void onMasterNotSetBefore();
+    void onMasterNotSetBefore(int clickType);
 
     void onDataTamper();
 

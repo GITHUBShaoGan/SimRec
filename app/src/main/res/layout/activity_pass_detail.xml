@@ -91,7 +91,7 @@
                 <Button
                     android:id="@+id/title_copy"
                     style="?attr/buttonBarButtonStyle"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/copy" />
@@ -124,7 +124,7 @@
                 <Button
                     android:id="@+id/account_copy"
                     style="?attr/buttonBarButtonStyle"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/copy" />
@@ -159,7 +159,7 @@
                 <Button
                     android:id="@+id/password_copy"
                     style="?attr/buttonBarButtonStyle"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/copy" />

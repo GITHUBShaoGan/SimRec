@@ -21,10 +21,6 @@ public class PatternPassModelImpl implements PatternPassModel {
 
     @Override
     public void setPattern(String password, OnPatternSetListener onPatternSetListener) {
-        if (TextUtils.isEmpty(password)) {
-            onPatternSetListener.onPatternSetError(ResUtils.getString(R.string.error_pass_length));
-            return;
-        }
         PassConfig passConfig = null;
         try {
             passConfig = PassConfigDao.getInstances().querySingleConfig();
@@ -32,12 +28,12 @@ public class PatternPassModelImpl implements PatternPassModel {
             e.printStackTrace();
         }
         String uuid = UUID.randomUUID().toString();
-        String gridPass = password;
+        String patternPass = password;
         String empty = "";
         long stamp = System.currentTimeMillis();
         if (passConfig == null) {
             //以前没有主密码配置
-            PassConfig config = new PassConfig(uuid, gridPass, empty, empty, false, PassConfig.LockType.PATTERN, stamp, stamp);
+            PassConfig config = new PassConfig(uuid, empty, patternPass, empty, false, PassConfig.LockType.PATTERN, stamp, stamp);
             try {
                 PassConfigDao.getInstances().insertSingle(config);
                 onPatternSetListener.onPatternSetSuccess();
@@ -51,7 +47,7 @@ public class PatternPassModelImpl implements PatternPassModel {
             }
         } else {
             //以前有主密码配置
-            passConfig.setGridPass(gridPass);
+            passConfig.setPatternPass(patternPass);
             passConfig.setUpdateStamp(stamp);
             passConfig.setPreferLockType(PassConfig.LockType.PATTERN);
             try {

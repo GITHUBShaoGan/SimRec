@@ -31,7 +31,7 @@ import com.slut.simrec.pswd.category.detail.v.PassCatDetailActivity;
 import com.slut.simrec.pswd.create.v.PswdNewActivity;
 import com.slut.simrec.pswd.detail.v.PassDetailActivity;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
-import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
+import com.slut.simrec.pswd.unlock.pattern.v.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 import com.slut.simrec.utils.ToastUtils;
 

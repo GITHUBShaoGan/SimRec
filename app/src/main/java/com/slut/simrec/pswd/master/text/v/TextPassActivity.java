@@ -41,6 +41,7 @@ public class TextPassActivity extends AppCompatActivity implements TextPassView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_pass);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

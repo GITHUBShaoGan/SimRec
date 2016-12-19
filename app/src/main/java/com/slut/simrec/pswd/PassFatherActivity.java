@@ -10,7 +10,7 @@ import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.fingerprint.FingerprintHelper;
 import com.slut.simrec.fingerprint.OnFingerPrintAuthListener;
 import com.slut.simrec.pswd.unlock.grid.v.GridUnlockActivity;
-import com.slut.simrec.pswd.unlock.pattern.PatternUnlockActivity;
+import com.slut.simrec.pswd.unlock.pattern.v.PatternUnlockActivity;
 import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 
 /**
@@ -19,14 +19,14 @@ import com.slut.simrec.pswd.unlock.text.v.TextUnlockActivity;
 
 public class PassFatherActivity extends CommonFatherActivity {
 
-    public static final int REQUEST_UNLOCK_GRID = 1000;
-    public static final int REQUEST_UNLOCK_PATTERN = 2000;
-    public static final int REQUEST_UNLOCK_TEXT = 3000;
+    public static final int REQUEST_UNLOCK_GRID = 1050;
+    public static final int REQUEST_UNLOCK_PATTERN = 2050;
+    public static final int REQUEST_UNLOCK_TEXT = 3050;
 
     @Override
     protected void onStart() {
         super.onStart();
-        check();
+            check();
     }
 
     private void check() {
@@ -59,7 +59,7 @@ public class PassFatherActivity extends CommonFatherActivity {
 
                             @Override
                             public void onAuthDialogCancel() {
-
+                                finish();
                             }
                         });
                     } else {
@@ -71,11 +71,11 @@ public class PassFatherActivity extends CommonFatherActivity {
                                 break;
                             case PassConfig.LockType.PATTERN:
                                 Intent openPatternUnlock = new Intent(this, PatternUnlockActivity.class);
-                                startActivityForResult(openPatternUnlock, REQUEST_UNLOCK_GRID);
+                                startActivityForResult(openPatternUnlock, REQUEST_UNLOCK_PATTERN);
                                 break;
                             case PassConfig.LockType.TEXT:
                                 Intent openTextUnlock = new Intent(this, TextUnlockActivity.class);
-                                startActivityForResult(openTextUnlock, REQUEST_UNLOCK_GRID);
+                                startActivityForResult(openTextUnlock, REQUEST_UNLOCK_TEXT);
                                 break;
                         }
                     }

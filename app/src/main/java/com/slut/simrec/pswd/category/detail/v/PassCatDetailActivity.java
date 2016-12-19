@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
@@ -77,7 +78,7 @@ public class PassCatDetailActivity extends PassFatherActivity implements CatDeta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_cat_detail);
         ButterKnife.bind(this);
-
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

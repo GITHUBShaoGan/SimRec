@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.slut.simrec.App;
 import com.slut.simrec.R;
 import com.slut.simrec.database.pswd.bean.PassCat;
 import com.slut.simrec.database.pswd.bean.Password;
@@ -48,6 +49,7 @@ public class PassSearchActivity extends PassFatherActivity implements PassSearch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_search);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

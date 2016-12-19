@@ -7,6 +7,7 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
+* ant.properties
 * build.xml
 
 Moved Files:
@@ -14,11 +15,13 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => androidlockpattern\src\main\AndroidManifest.xml
-* assets\ => androidlockpattern\src\main\assets
-* proguard.cfg => androidlockpattern\proguard.cfg
-* res\ => androidlockpattern\src\main\res\
-* src\ => androidlockpattern\src\main\java\
+* AndroidManifest.xml => crosswalkwebview22525614arm\src\main\AndroidManifest.xml
+* libs\armeabi-v7a\libxwalkcore.so => crosswalkwebview22525614arm\src\main\jniLibs\armeabi-v7a\libxwalkcore.so
+* libs\armeabi-v7a\libxwalkdummy.so => crosswalkwebview22525614arm\src\main\jniLibs\armeabi-v7a\libxwalkdummy.so
+* libs\xwalk_core_library_java.jar => crosswalkwebview22525614arm\libs\xwalk_core_library_java.jar
+* res\ => crosswalkwebview22525614arm\src\main\res\
+* src\ => crosswalkwebview22525614arm\src\main\java
+* src\README.md => crosswalkwebview22525614arm\src\main\resources\README.md
 
 Next Steps:
 -----------

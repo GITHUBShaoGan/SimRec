@@ -43,6 +43,7 @@ public class GridPassActivity extends AppCompatActivity implements GridPassView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_pass);
         ButterKnife.bind(this);
+        App.getInstances().addActivity(this);
         initView();
         initListener();
     }

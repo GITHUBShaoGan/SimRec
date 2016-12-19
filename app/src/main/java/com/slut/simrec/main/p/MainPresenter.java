@@ -6,6 +6,6 @@ package com.slut.simrec.main.p;
 
 public interface MainPresenter {
 
-    void onFabPswdClick();
+    void onUIClick(int clickType);
 
 }

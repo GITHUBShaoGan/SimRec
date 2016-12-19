@@ -10,17 +10,17 @@ public interface MainModel {
 
     interface OnUIClickListener {
 
-        void onPswdFuncLock(PassConfig passConfig);
+        void onPswdFuncLock(int clickType,PassConfig passConfig);
 
-        void onPswdFuncUnlock(PassConfig passConfig);
+        void onPswdFuncUnlock(int clickType,PassConfig passConfig);
 
-        void onMasterNotSetBefore();
+        void onMasterNotSetBefore(int clickType);
 
         void onDataTamper();
 
-        void onPswdClickError(String msg);
+        void onClickError(String msg);
 
     }
 
-    void onUIClick(OnUIClickListener onUIClickListener);
+    void onUIClick(int clickType,OnUIClickListener onUIClickListener);
 }

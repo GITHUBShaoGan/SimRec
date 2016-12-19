@@ -1,41 +1,41 @@
-package com.slut.simrec.pswd.unlock.text.v;
+package com.slut.simrec.pswd.unlock.pattern.v;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.slut.simrec.App;
 import com.slut.simrec.R;
-import com.slut.simrec.pswd.unlock.text.p.TextUnlockPresenter;
-import com.slut.simrec.pswd.unlock.text.p.TextUnlockPresenterImpl;
-import com.slut.simrec.utils.ToastUtils;
+import com.slut.simrec.pswd.unlock.pattern.p.PatternUnlockPresenter;
+import com.slut.simrec.pswd.unlock.pattern.p.PatternUnlockPresenterImpl;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import me.zhanghai.android.patternlock.ConfirmPatternActivity;
+import me.zhanghai.android.patternlock.PatternView;
 
-public class TextUnlockActivity extends AppCompatActivity implements TextUnlockView {
+public class PatternUnlockActivity extends AppCompatActivity implements PatternUnlockView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.submit)
-    Button submit;
-    @BindView(R.id.til_password)
-    TextInputLayout tilPassword;
+    @BindView(R.id.patternView)
+    PatternView patternView;
+    @BindView(R.id.tips)
+    TextView tips;
 
-    private TextUnlockPresenter presenter;
+    private PatternUnlockPresenter patternUnlockPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_unlock);
+        setContentView(R.layout.activity_pattern_unlock);
         ButterKnife.bind(this);
         App.getInstances().addActivity(this);
         initView();
@@ -46,7 +46,7 @@ public class TextUnlockActivity extends AppCompatActivity implements TextUnlockV
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        presenter = new TextUnlockPresenterImpl(this);
+        patternUnlockPresenter = new PatternUnlockPresenterImpl(this);
     }
 
     private void initListener() {
@@ -60,44 +60,51 @@ public class TextUnlockActivity extends AppCompatActivity implements TextUnlockV
                 }
             }
         });
-        tilPassword.getEditText().addTextChangedListener(new TextWatcher() {
+        patternView.setOnPatternListener(new PatternView.OnPatternListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onPatternStart() {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onPatternCleared() {
 
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() >= 4 && editable.length() <= 128) {
-                    submit.setClickable(true);
-                    submit.setEnabled(true);
-                } else {
-                    submit.setClickable(false);
-                    submit.setEnabled(false);
+            public void onPatternCellAdded(List<PatternView.Cell> pattern) {
+                if (pattern.size() < 4) {
+                    tips.setText(R.string.tips_pattern_unlock_length_error);
+                    tips.setTextColor(Color.parseColor("#FF0042"));
+                }else{
+                    tips.setText(R.string.tips_pattern_unlock);
+                    tips.setTextColor(Color.parseColor("#2A3245"));
                 }
+            }
+
+            @Override
+            public void onPatternDetected(List<PatternView.Cell> pattern) {
+                patternUnlockPresenter.validate(pattern);
+                patternView.clearPattern();
             }
         });
     }
 
-    @OnClick(R.id.submit)
-    void onSubmitClick() {
-        String password = tilPassword.getEditText().getText().toString().trim();
-        presenter.validate(password);
-    }
 
     @Override
     public void onValidateSuccess() {
-        App.setIsPswdFunctionLocked(false);
         Intent intent = getIntent();
+        App.setIsPswdFunctionLocked(false);
         if (intent != null) {
             setResult(RESULT_OK, intent);
             finish();
         }
+    }
+
+    @Override
+    public void onValidateError(String msg) {
+        tips.setText(msg);
+        tips.setTextColor(Color.parseColor("#FF0042"));
     }
 
     @Override
@@ -111,16 +118,5 @@ public class TextUnlockActivity extends AppCompatActivity implements TextUnlockV
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-
-    @Override
-    public void onValidateFailed() {
-        ToastUtils.showShort("failed");
-    }
-
-    @Override
-    public void onValidateError(String msg) {
-        ToastUtils.showShort(msg);
     }
 }

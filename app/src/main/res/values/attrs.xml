@@ -12,6 +12,4 @@
         <attr name="citv_text_padding" format="dimension"/>
     </declare-styleable>
 
-
-
 </resources>
