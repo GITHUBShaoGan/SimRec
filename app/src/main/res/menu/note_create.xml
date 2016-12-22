@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/label"
+        android:icon="@drawable/label"
+        android:title="@string/action_menu_label"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/help"
+        android:title="@string/action_menu_markdown_help"
+        app:showAsAction="never" />
+</menu>

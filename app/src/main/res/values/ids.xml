@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="ids_operate_markdown_h1" type="id" />
+    <item name="ids_operate_markdown_h2" type="id" />
+    <item name="ids_operate_markdown_h3" type="id" />
+    <item name="ids_operate_markdown_h4" type="id" />
+    <item name="ids_operate_markdown_h5" type="id" />
+    <item name="ids_operate_markdown_h6" type="id" />
+    <item name="ids_operate_markdown_unsortlist" type="id" />
+    <item name="ids_operate_markdown_sortlist" type="id" />
+    <item name="ids_operate_markdown_pics" type="id" />
+    <item name="ids_operate_markdown_enter" type="id" />
+    <item name="ids_operate_markdown_bold" type="id" />
+    <item name="ids_operate_markdown_italic" type="id" />
+    <item name="ids_operate_markdown_console" type="id" />
+    <item name="ids_operate_markdown_codeblock" type="id" />
+    <item name="ids_operate_markdown_quote" type="id" />
+    <item name="ids_operate_markdown_divider" type="id" />
+    <item name="ids_operate_markdown_mediumline" type="id" />
+    <item name="ids_operate_markdown_table" type="id" />
+
+</resources>

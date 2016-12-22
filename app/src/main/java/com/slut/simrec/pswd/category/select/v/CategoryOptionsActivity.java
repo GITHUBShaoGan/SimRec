@@ -154,6 +154,7 @@ public class CategoryOptionsActivity extends PassFatherActivity implements Optio
                     }
                 });
                 Dialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 final Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
                 positiveButton.setEnabled(false);

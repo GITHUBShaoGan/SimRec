@@ -44,7 +44,7 @@
     <string name="tips_grid_unlock">Please input your password to unlock</string>
 
     <!--DefaultCatActivity-->
-    <string name="title_activity_default_cat">Select A Website</string>
+    <string name="title_activity_default_cat">Select A Category</string>
     <string name="action_menu_skip">SKIP</string>
 
     <!--PswdNewActivity-->
@@ -111,6 +111,25 @@
     <!--PassDetailActivity-->
     <string name="msg_pass_detail_delete">Are you sure to delete this password?</string>
 
+    <!--NoteCreateActivity-->
+    <string name="title_activity_note_create">Note Create</string>
+    <string name="hint_note_create_title">Title</string>
+    <string name="hint_note_create_content">Content</string>
+    <string name="hint_note_create_link_show">Link Title</string>
+    <string name="hint_note_create_link_url">Link URL</string>
+    <string name="title_dialog_new_link">New Link</string>
+    <string name="note_create_link_url">https://</string>
+    <string name="title_dialog_table">Table Setting</string>
+    <string name="hint_note_create_rows">Rows</string>
+    <string name="hint_note_create_columns">Columns</string>
+    <string name="action_menu_label">Label</string>
+
+    <!--LabelOptionActivity-->
+    <string name="title_activity_label_option">Choose Labels</string>
+    <string name="title_dialog_new_label">New Label</string>
+    <string name="hint_dialog_name">Name</string>
+    <string name="action_menu_markdown_help">Markdown Help</string>
+
     <string name="delete_success">Delete success</string>
     <string name="delete_failed">Delete failed</string>
     <string name="update_success">Update Successfully</string>
@@ -169,9 +188,12 @@
     <string name="action_dialog_ok">OK</string>
     <string name="action_dialog_yes">YES</string>
     <string name="action_dialog_no">NO</string>
+    <string name="action_dialog_add">ADD</string>
     <string name="action_dialog_cancel">CANCEL</string>
     <string name="action_dialog_getit">OK,I got it</string>
     <string name="action_settings">Settings</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Coming Soon!!!</string>

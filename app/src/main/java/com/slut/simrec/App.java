@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.slut.simrec.database.DBHelper;
+import com.slut.simrec.database.note.dao.NoteLabelDao;
 import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassConfigDao;
 import com.slut.simrec.database.pswd.dao.PassDao;
@@ -137,6 +138,7 @@ public class App extends Application {
         PassConfigDao.getInstances().init();
         PassDao.getInstances().init();
         PassCatDao.getInstances().init();
+        NoteLabelDao.getInstances().init();
     }
 
     public void addActivity(Activity activity) {

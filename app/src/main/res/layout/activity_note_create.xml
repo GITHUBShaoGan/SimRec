@@ -8,48 +8,38 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         app:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"></android.support.v7.widget.Toolbar>
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/title_activity_note_create"></android.support.v7.widget.Toolbar>
+
+        <com.slut.simrec.widget.TabIconView
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"></com.slut.simrec.widget.TabIconView>
+
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
-        <LinearLayout
-            android:id="@+id/activity_note_create"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            tools:context="com.slut.simrec.note.create.NoteCreateActivity">
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
-
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-
-
-
-                <com.yydcdut.rxmarkdown.RxMDEditText
-                    android:id="@+id/edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
