@@ -12,4 +12,12 @@ public interface NoteCreateView {
 
     void onCreateError(String msg);
 
+    void onUIChanged();
+
+    void onUINotChanged();
+
+    void onUpdateSuccess(Note note);
+
+    void onUpdateError(String msg);
+
 }

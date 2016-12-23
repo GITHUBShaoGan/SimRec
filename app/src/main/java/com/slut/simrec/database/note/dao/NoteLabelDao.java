@@ -53,4 +53,10 @@ public class NoteLabelDao {
         return builder.queryForFirst();
     }
 
+    public NoteLabel queryByUUID(String uuid)throws SQLException{
+        QueryBuilder<NoteLabel,Integer> builder = dao.queryBuilder();
+        builder.where().eq("uuid",uuid);
+        return builder.queryForFirst();
+    }
+
 }

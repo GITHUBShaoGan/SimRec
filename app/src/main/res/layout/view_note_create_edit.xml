@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/box_edit"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/editTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:hint="@string/hint_note_create_title"
+        android:lines="1"
+        android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/editTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@null"
-            android:hint="@string/hint_note_create_title"
-            android:lines="1"
-            android:textSize="16sp" />
+    <include layout="@layout/divider_specific" />
 
-        <include layout="@layout/divider_specific" />
+    <EditText
+        android:id="@+id/editContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:hint="@string/hint_note_create_content"
+        android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/editContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@null"
-            android:hint="@string/hint_note_create_content"
-            android:textSize="14sp" />
+    <org.apmem.tools.layouts.FlowLayout
+        android:id="@+id/flowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingLeft="8dp"
+        app:layoutDirection="rtl"
+        android:gravity="right"
+        android:paddingRight="8dp"></org.apmem.tools.layouts.FlowLayout>
+</LinearLayout>
 
-        <org.apmem.tools.layouts.FlowLayout
-            android:paddingLeft="12dp"
-            android:layout_marginTop="8dp"
-            android:paddingRight="12dp"
-            android:id="@+id/flowLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></org.apmem.tools.layouts.FlowLayout>
-    </LinearLayout>
-
-</ScrollView>

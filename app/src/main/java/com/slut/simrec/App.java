@@ -13,6 +13,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.slut.simrec.database.DBHelper;
+import com.slut.simrec.database.note.bean.NoteLabel;
+import com.slut.simrec.database.note.dao.LabelBindDao;
+import com.slut.simrec.database.note.dao.NoteDao;
 import com.slut.simrec.database.note.dao.NoteLabelDao;
 import com.slut.simrec.database.pswd.dao.PassCatDao;
 import com.slut.simrec.database.pswd.dao.PassConfigDao;
@@ -139,6 +142,8 @@ public class App extends Application {
         PassDao.getInstances().init();
         PassCatDao.getInstances().init();
         NoteLabelDao.getInstances().init();
+        NoteDao.getInstances().init();
+        LabelBindDao.getInstances().init();
     }
 
     public void addActivity(Activity activity) {

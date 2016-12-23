@@ -1,5 +1,8 @@
 package com.slut.simrec.database.note.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -7,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by 七月在线科技 on 2016/12/22.
  */
 @DatabaseTable
-public class Note {
+public class Note implements Parcelable{
 
     @DatabaseField(id = true)
     private String uuid;
@@ -30,6 +33,26 @@ public class Note {
         this.createStamp = createStamp;
         this.updateStamp = updateStamp;
     }
+
+    protected Note(Parcel in) {
+        uuid = in.readString();
+        title = in.readString();
+        content = in.readString();
+        createStamp = in.readLong();
+        updateStamp = in.readLong();
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     public String getUuid() {
         return uuid;
@@ -80,5 +103,19 @@ public class Note {
                 ", createStamp=" + createStamp +
                 ", updateStamp=" + updateStamp +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(uuid);
+        parcel.writeString(title);
+        parcel.writeString(content);
+        parcel.writeLong(createStamp);
+        parcel.writeLong(updateStamp);
     }
 }

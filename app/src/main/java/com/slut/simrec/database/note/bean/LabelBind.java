@@ -4,11 +4,14 @@ package com.slut.simrec.database.note.bean;
  * Created by 七月在线科技 on 2016/12/22.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class LabelBind {
+public class LabelBind implements Parcelable{
 
     @DatabaseField(id = true)
     private String uuid;
@@ -25,6 +28,24 @@ public class LabelBind {
         this.noteUUID = noteUUID;
         this.labelUUID = labelUUID;
     }
+
+    protected LabelBind(Parcel in) {
+        uuid = in.readString();
+        noteUUID = in.readString();
+        labelUUID = in.readString();
+    }
+
+    public static final Creator<LabelBind> CREATOR = new Creator<LabelBind>() {
+        @Override
+        public LabelBind createFromParcel(Parcel in) {
+            return new LabelBind(in);
+        }
+
+        @Override
+        public LabelBind[] newArray(int size) {
+            return new LabelBind[size];
+        }
+    };
 
     public String getUuid() {
         return uuid;
@@ -48,5 +69,17 @@ public class LabelBind {
 
     public void setLabelUUID(String labelUUID) {
         this.labelUUID = labelUUID;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(uuid);
+        parcel.writeString(noteUUID);
+        parcel.writeString(labelUUID);
     }
 }

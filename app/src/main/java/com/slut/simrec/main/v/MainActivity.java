@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
 
         pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), initTitles(), initFragments());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
 
         presenter = new MainPresenterImpl(this);

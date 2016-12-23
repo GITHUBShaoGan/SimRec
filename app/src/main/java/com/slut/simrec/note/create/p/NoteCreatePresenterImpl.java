@@ -8,13 +8,14 @@ import com.slut.simrec.note.create.v.NoteCreateView;
 
 import java.util.ArrayList;
 
+import static android.R.string.no;
 import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Created by 七月在线科技 on 2016/12/23.
  */
 
-public class NoteCreatePresenterImpl implements NoteCreatePresenter, NoteCreateModel.OnCreateListener {
+public class NoteCreatePresenterImpl implements NoteCreatePresenter, NoteCreateModel.OnCreateListener, NoteCreateModel.OnCheckUIListener, NoteCreateModel.OnUpdateListener {
 
     private NoteCreateModel noteCreateModel;
     private NoteCreateView noteCreateView;
@@ -37,5 +38,35 @@ public class NoteCreatePresenterImpl implements NoteCreatePresenter, NoteCreateM
     @Override
     public void create(String title, String content, ArrayList<NoteLabel> noteLabels) {
         noteCreateModel.create(title, content, noteLabels, this);
+    }
+
+    @Override
+    public void checkUI(String title, String content, Note primaryNote, ArrayList<NoteLabel> primaryLabelList, ArrayList<NoteLabel> extraLabelList) {
+        noteCreateModel.checkUI(title, content, primaryNote, primaryLabelList, extraLabelList, this);
+    }
+
+    @Override
+    public void update(Note note, String title, String content, ArrayList<NoteLabel> noteLabels) {
+        noteCreateModel.update(note, title, content, noteLabels, this);
+    }
+
+    @Override
+    public void onUIChanged() {
+        noteCreateView.onUIChanged();
+    }
+
+    @Override
+    public void onUINotChanged() {
+        noteCreateView.onUINotChanged();
+    }
+
+    @Override
+    public void onUpdateSuccess(Note note) {
+        noteCreateView.onUpdateSuccess(note);
+    }
+
+    @Override
+    public void onUpdateError(String msg) {
+        noteCreateView.onUpdateError(msg);
     }
 }

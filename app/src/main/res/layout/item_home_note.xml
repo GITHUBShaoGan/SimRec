@@ -2,65 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/click"
     android:clickable="true"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
     android:orientation="vertical">
+
+    <include layout="@layout/divider_4dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/avatar"
+        <com.slut.simrec.widget.RoundedLetterView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rlv_name_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerInside" />
+            app:rlv_backgroundColorValue="@color/colorPrimaryGreen"
+            app:rlv_titleColor="@android:color/white"
+            app:rlv_titleSize="24dp"
+            app:rlv_titleText="A" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryBlack"
+                android:layout_marginLeft="16dp"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/website"
+                android:id="@+id/letters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
                 android:textColor="@android:color/secondary_text_dark"
                 android:textSize="14sp" />
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/add"
+        <TextView
+            android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="8dp"
-            android:src="@drawable/ic_add_grey600_24dp" />
-
-        <ImageView
-            android:id="@+id/lessormore"
-            android:paddingLeft="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_expand_more_grey600_24dp" />
+            android:textColor="@android:color/secondary_text_dark" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <org.apmem.tools.layouts.FlowLayout
+        android:id="@+id/flowLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        app:layoutDirection="rtl"
+        android:gravity="right"
+        android:paddingRight="12dp"></org.apmem.tools.layouts.FlowLayout>
 
+    <include layout="@layout/divider_4dp" />
 </LinearLayout>

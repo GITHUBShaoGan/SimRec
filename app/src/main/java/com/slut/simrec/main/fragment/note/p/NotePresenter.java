@@ -5,4 +5,7 @@ package com.slut.simrec.main.fragment.note.p;
  */
 
 public interface NotePresenter {
+
+    void load(long pageNo,long pageSize);
+
 }

@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -20,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,6 +101,13 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     private static final int REQUEST_SET_LABELS = 1030;
     private ArrayList<NoteLabel> noteLabels;
 
+    private Note primaryNote;
+    private List<NoteLabel> primaryLabelList;
+    private boolean isInsertMode = false;
+
+    public static final String EXTRA_NOTE = "note";
+    public static final String EXTRA_NOTE_LABEL = "note_label";
+
     private NoteCreatePresenter presenter;
 
     @Override
@@ -116,6 +121,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initView() {
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -141,6 +147,39 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         viewPager.setOffscreenPageLimit(2);
 
         noteLabels = new ArrayList<>();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(EXTRA_NOTE)) {
+                primaryNote = intent.getParcelableExtra(EXTRA_NOTE);
+                if (primaryNote != null) {
+                    title.setText(primaryNote.getTitle());
+                    content.setText(primaryNote.getContent());
+                    showTitle.setText(primaryNote.getTitle());
+                    showContent.parseMarkdown(primaryNote.getContent(), true);
+                    isInsertMode = false;
+                }
+            }
+            if (intent.hasExtra(EXTRA_NOTE_LABEL)) {
+                primaryLabelList = intent.getParcelableArrayListExtra(EXTRA_NOTE_LABEL);
+                if (primaryLabelList != null) {
+                    flowLayout.removeAllViews();
+                    for (NoteLabel noteLabel : primaryLabelList) {
+                        View view = LayoutInflater.from(this).inflate(R.layout.label, new LinearLayout(this), false);
+                        TextView textView = (TextView) view.findViewById(R.id.label);
+                        textView.setText(noteLabel.getName() + "");
+                        flowLayout.addView(view);
+                    }
+                    noteLabels = (ArrayList<NoteLabel>) primaryLabelList;
+                    viewPager.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewPager.setCurrentItem(1);
+                        }
+                    },100);
+                }
+            }
+        }
     }
 
     private void initTab() {
@@ -168,7 +207,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save();
+                checkUI();
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -607,10 +646,20 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void save() {
+    private void createOrUpdate() {
         String t = title.getText().toString().trim();
         String c = content.getText().toString();
-        presenter.create(t, c, noteLabels);
+        if (isInsertMode) {
+            presenter.create(t, c, noteLabels);
+        } else {
+            presenter.update(primaryNote, t, c, noteLabels);
+        }
+    }
+
+    private void checkUI() {
+        String t = title.getText().toString().trim();
+        String c = content.getText().toString();
+        presenter.checkUI(t, c, primaryNote, (ArrayList) primaryLabelList, noteLabels);
     }
 
     @Override
@@ -634,7 +683,8 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            save();
+            checkUI();
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -646,6 +696,26 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onCreateError(String msg) {
+        ToastUtils.showShort(msg);
+    }
+
+    @Override
+    public void onUIChanged() {
+        createOrUpdate();
+    }
+
+    @Override
+    public void onUINotChanged() {
+        finish();
+    }
+
+    @Override
+    public void onUpdateSuccess(Note note) {
+        finish();
+    }
+
+    @Override
+    public void onUpdateError(String msg) {
         ToastUtils.showShort(msg);
     }
 }

@@ -11,7 +11,17 @@ import java.util.ArrayList;
 
 public interface NoteCreateModel {
 
-    interface OnCreateListener{
+    interface OnCheckUIListener {
+
+        void onUIChanged();
+
+        void onUINotChanged();
+
+    }
+
+    void checkUI(String title, String content, Note primaryNote, ArrayList<NoteLabel> primaryLabelList, ArrayList<NoteLabel> extraLabelList, OnCheckUIListener onCheckUIListener);
+
+    interface OnCreateListener {
 
         void onCreateSuccess(Note note);
 
@@ -19,6 +29,15 @@ public interface NoteCreateModel {
 
     }
 
-    void create(String title, String content, ArrayList<NoteLabel> noteLabels,OnCreateListener onCreateListener);
+    void create(String title, String content, ArrayList<NoteLabel> noteLabels, OnCreateListener onCreateListener);
 
+    interface OnUpdateListener {
+
+        void onUpdateSuccess(Note note);
+
+        void onUpdateError(String msg);
+
+    }
+
+    void update(Note note, String title, String content, ArrayList<NoteLabel> noteLabels, OnUpdateListener onUpdateListener);
 }

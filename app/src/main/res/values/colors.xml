@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2A3245</color>
-    <color name="colorPrimaryDark">#2A3245</color>
+    <color name="colorPrimary">#2e7d32</color>
+    <color name="colorPrimaryDark">#43a047</color>
     <color name="colorAccent">#FF0042</color>
 
     <color name="colorCanvas">#F4F4F4</color>
@@ -11,6 +11,7 @@
     <color name="colorPrimaryGreen">#1dc988</color>
     <color name="colorDividerNormal">#dddddd</color>
     <color name="colorDividerSpecific">#cccccc</color>
+    <color name="colorPrimaryBlack">#333333</color>
 
     <color name="warning_color">#f4511e</color>
     <color name="hint_color">#42000000</color>
