@@ -129,6 +129,8 @@
     <string name="title_dialog_new_label">New Label</string>
     <string name="hint_dialog_name">Name</string>
     <string name="action_menu_markdown_help">Markdown Help</string>
+    <string name="error_note_create_already_exists">Label Already Exists</string>
+    <string name="error_label_create_name_empty">Label Name Cannot Be Empty</string>
 
     <string name="delete_success">Delete success</string>
     <string name="delete_failed">Delete failed</string>

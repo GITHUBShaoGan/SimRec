@@ -54,14 +54,14 @@ public class DefaultCatModelImpl implements DefaultCatModel {
         }
         if (passCatList != null && !passCatList.isEmpty()) {
             //存在
-            onItemClickListener.onItemClick(passCatList.get(0), position);
+            onItemClickListener.onItemClick(true, passCatList.get(0), position);
         } else {
             //不存在
             try {
                 //管他娘的存不存在，删了再说
                 PassCatDao.getInstances().deleteByTitle(title);
                 PassCatDao.getInstances().insertSingle(passCat);
-                onItemClickListener.onItemClick(passCat, position);
+                onItemClickListener.onItemClick(false, passCat, position);
             } catch (Exception e) {
 
             }

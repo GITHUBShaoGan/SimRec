@@ -1,6 +1,7 @@
 package com.slut.simrec.note.label.option.m;
 
 import com.slut.simrec.database.note.bean.NoteLabel;
+import com.slut.simrec.note.label.option.adapter.LabelOptionAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,4 +32,5 @@ public interface LabelOptionModel {
     }
 
     void create(String name, OnCreateListener onCreateListener);
+
 }

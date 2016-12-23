@@ -93,8 +93,10 @@ public class DefaultCatActivity extends PassFatherActivity implements DefaultCat
      * @param position
      */
     @Override
-    public void onItemClick(PassCat passCat, int position) {
-        PswdFragment.getInstances().insertSingleCat(passCat);
+    public void onItemClick(boolean isExists, PassCat passCat, int position) {
+        if (!isExists) {
+            PswdFragment.getInstances().insertSingleCat(passCat);
+        }
         Intent intent = new Intent(this, PswdNewActivity.class);
         intent.putExtra(PswdNewActivity.EXTRA_DEFAULT_CAT, passCat);
         startActivityForResult(intent, REQUEST_CREATE_PSWD);

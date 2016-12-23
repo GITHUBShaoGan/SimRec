@@ -4,6 +4,8 @@ import com.j256.ormlite.dao.Dao;
 import com.slut.simrec.App;
 import com.slut.simrec.database.note.bean.Note;
 
+import java.sql.SQLException;
+
 /**
  * Created by 七月在线科技 on 2016/12/22.
  */
@@ -32,4 +34,7 @@ public class NoteDao {
         dao = App.getDbHelper().getDao(Note.class);
     }
 
+    public void insertSingle(Note note) throws SQLException {
+        dao.create(note);
+    }
 }

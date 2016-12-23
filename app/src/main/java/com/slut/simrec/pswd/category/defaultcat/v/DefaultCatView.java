@@ -15,6 +15,6 @@ public interface DefaultCatView {
 
     void onDataLoadError(String msg);
 
-    void onItemClick(PassCat passCat, int position);
+    void onItemClick(boolean isExists,PassCat passCat, int position);
 
 }

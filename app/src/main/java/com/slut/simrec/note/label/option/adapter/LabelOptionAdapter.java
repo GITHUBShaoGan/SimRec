@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,11 @@ public class LabelOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_ITEM = 0, TYPE_FOOTER = 1;
     private List<NoteLabel> noteLabelList;
     private List<Boolean> isCheckedList;
+    private OnCheckChangedListener onCheckChangedListener;
+
+    public void setOnCheckChangedListener(OnCheckChangedListener onCheckChangedListener) {
+        this.onCheckChangedListener = onCheckChangedListener;
+    }
 
     public LabelOptionAdapter() {
     }
@@ -65,13 +71,20 @@ public class LabelOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (noteLabelList != null && position < noteLabelList.size()) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (noteLabelList != null && isCheckedList != null && position < isCheckedList.size() && position < noteLabelList.size()) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             NoteLabel noteLabel = noteLabelList.get(position);
             if (noteLabel != null) {
-                itemViewHolder.name.setText(noteLabel.getName()+"");
+                itemViewHolder.name.setText(noteLabel.getName() + "");
             }
+            itemViewHolder.checkStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    onCheckChangedListener.onCheckChanged(compoundButton, position, b);
+                }
+            });
+            itemViewHolder.checkStatus.setChecked(isCheckedList.get(position));
         }
     }
 
@@ -110,5 +123,11 @@ public class LabelOptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface OnCheckChangedListener {
+
+        void onCheckChanged(View view, int position, boolean flag);
+
     }
 }

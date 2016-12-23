@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.slut.simrec.database.note.bean.NoteLabel;
 import com.slut.simrec.note.label.option.adapter.LabelOptionAdapter;
 import com.slut.simrec.note.label.option.p.LabelOptionPresenter;
 import com.slut.simrec.note.label.option.p.LabelOptionPresenterImpl;
+import com.slut.simrec.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LabelOptionsActivity extends AppCompatActivity implements LabelOptionView {
+public class LabelOptionsActivity extends AppCompatActivity implements LabelOptionView, LabelOptionAdapter.OnCheckChangedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -64,7 +66,6 @@ public class LabelOptionsActivity extends AppCompatActivity implements LabelOpti
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        extraNoteLabels = new ArrayList<>();
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -72,10 +73,14 @@ public class LabelOptionsActivity extends AppCompatActivity implements LabelOpti
                 extraNoteLabels = intent.getParcelableArrayListExtra(EXTRA_LIST);
             }
         }
+        if (extraNoteLabels == null) {
+            extraNoteLabels = new ArrayList<>();
+        }
 
         noteLabelList = new ArrayList<>();
         isCheckList = new ArrayList<>();
         adapter = new LabelOptionAdapter();
+        adapter.setOnCheckChangedListener(this);
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -89,7 +94,12 @@ public class LabelOptionsActivity extends AppCompatActivity implements LabelOpti
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = getIntent();
+                if (intent != null) {
+                    intent.putParcelableArrayListExtra(EXTRA_LIST, extraNoteLabels);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
     }
@@ -171,14 +181,18 @@ public class LabelOptionsActivity extends AppCompatActivity implements LabelOpti
     @Override
     public void onCreateSuccess(NoteLabel noteLabel) {
         this.noteLabelList.add(0, noteLabel);
+        this.isCheckList.add(0, true);
         adapter.setNoteLabelList(this.noteLabelList);
+        adapter.setIsCheckedList(this.isCheckList);
         adapter.notifyItemInserted(0);
 
+        recyclerView.smoothScrollToPosition(0);
         showOrHide();
     }
 
     @Override
     public void onCreateError(String msg) {
+        ToastUtils.showShort(msg);
         showOrHide();
     }
 
@@ -196,5 +210,56 @@ public class LabelOptionsActivity extends AppCompatActivity implements LabelOpti
             empty.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onCheckChanged(View view, int position, boolean flag) {
+        if (this.isCheckList != null && position < this.isCheckList.size()) {
+            this.isCheckList.set(position, flag);
+            adapter.getIsCheckedList().set(position, flag);
+        }
+        if (flag) {
+            //选中
+            boolean b = false;
+            if (this.noteLabelList != null && position < this.noteLabelList.size()) {
+                for (NoteLabel noteLabel : extraNoteLabels) {
+                    if (this.noteLabelList.get(position).getUuid().equals(noteLabel.getUuid())) {
+                        b = true;
+                        break;
+                    }
+                }
+            }
+            if (!b) {
+                extraNoteLabels.add(this.noteLabelList.get(position));
+            }
+        } else {
+            //取消选中
+            int index = -1;
+            if (this.noteLabelList != null && position < this.noteLabelList.size()) {
+                for (int i = 0; i < extraNoteLabels.size(); i++) {
+                    if (this.noteLabelList.get(position).getUuid().equals(extraNoteLabels.get(i).getUuid())) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            if (index != -1) {
+                extraNoteLabels.remove(index);
+            }
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = getIntent();
+            if (intent != null) {
+                intent.putParcelableArrayListExtra(EXTRA_LIST, extraNoteLabels);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

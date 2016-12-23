@@ -5,6 +5,8 @@ import com.slut.simrec.App;
 import com.slut.simrec.database.note.bean.LabelBind;
 import com.slut.simrec.database.note.bean.Note;
 
+import java.sql.SQLException;
+
 /**
  * Created by 七月在线科技 on 2016/12/22.
  */
@@ -31,6 +33,10 @@ public class LabelBindDao {
 
     public void init() {
         dao = App.getDbHelper().getDao(LabelBind.class);
+    }
+
+    public void insertSingle(LabelBind labelBind)throws SQLException{
+        dao.create(labelBind);
     }
 
 }

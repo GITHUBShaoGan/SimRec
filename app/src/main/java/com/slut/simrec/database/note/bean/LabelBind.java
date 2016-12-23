@@ -20,6 +20,12 @@ public class LabelBind {
     public LabelBind() {
     }
 
+    public LabelBind(String uuid, String noteUUID, String labelUUID) {
+        this.uuid = uuid;
+        this.noteUUID = noteUUID;
+        this.labelUUID = labelUUID;
+    }
+
     public String getUuid() {
         return uuid;
     }

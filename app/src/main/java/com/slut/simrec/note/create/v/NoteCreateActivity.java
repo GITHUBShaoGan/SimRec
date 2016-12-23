@@ -1,4 +1,4 @@
-package com.slut.simrec.note.create;
+package com.slut.simrec.note.create.v;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,12 +12,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,13 +28,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.slut.simrec.R;
+import com.slut.simrec.database.note.bean.Note;
 import com.slut.simrec.database.note.bean.NoteLabel;
 import com.slut.simrec.note.create.adapter.MyPagerAdapter;
+import com.slut.simrec.note.create.p.NoteCreatePresenter;
+import com.slut.simrec.note.create.p.NoteCreatePresenterImpl;
 import com.slut.simrec.note.label.option.v.LabelOptionsActivity;
 import com.slut.simrec.utils.StringUtils;
 import com.slut.simrec.utils.SystemUtils;
+import com.slut.simrec.utils.ToastUtils;
 import com.slut.simrec.widget.MarkdownPreviewView;
 import com.slut.simrec.widget.TabIconView;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +48,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NoteCreateActivity extends AppCompatActivity implements View.OnClickListener {
+public class NoteCreateActivity extends AppCompatActivity implements View.OnClickListener, NoteCreateView {
 
     @BindView(R.id.viewpager)
     ViewPager viewPager;
@@ -52,6 +61,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     private TextView showTitle;
     private EditText content;
     private MarkdownPreviewView showContent;
+    private FlowLayout flowLayout;
 
     private InputMethodManager inputMethodManager;
 
@@ -93,6 +103,8 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     private static final int REQUEST_SET_LABELS = 1030;
     private ArrayList<NoteLabel> noteLabels;
 
+    private NoteCreatePresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,12 +119,15 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        presenter = new NoteCreatePresenterImpl(this);
+
         View editFather = LayoutInflater.from(this).inflate(R.layout.view_note_create_edit, new LinearLayout(this), false);
         View showFather = LayoutInflater.from(this).inflate(R.layout.view_note_create_show, new LinearLayout(this), false);
         title = (EditText) editFather.findViewById(R.id.editTitle);
         content = (EditText) editFather.findViewById(R.id.editContent);
         showTitle = (TextView) showFather.findViewById(R.id.showTitle);
         showContent = (MarkdownPreviewView) showFather.findViewById(R.id.showContent);
+        flowLayout = (FlowLayout) editFather.findViewById(R.id.flowLayout);
 
         inputMethodManager =
                 (InputMethodManager) content.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -153,7 +168,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                save();
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -167,7 +182,6 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 switch (position) {
                     case 0:
                         //编辑状态
-                        inputMethodManager.showSoftInput(content, InputMethodManager.SHOW_FORCED);
                         break;
                     case 1:
                         //预览状态
@@ -206,6 +220,20 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                     }
                     break;
                 case REQUEST_SELECT_PIC:
+                    break;
+                case REQUEST_SET_LABELS:
+                    if (data != null) {
+                        if (data.hasExtra(LabelOptionsActivity.EXTRA_LIST)) {
+                            noteLabels = data.getParcelableArrayListExtra(LabelOptionsActivity.EXTRA_LIST);
+                            flowLayout.removeAllViews();
+                            for (NoteLabel noteLabel : noteLabels) {
+                                View view = LayoutInflater.from(this).inflate(R.layout.label, new LinearLayout(this), false);
+                                TextView textView = (TextView) view.findViewById(R.id.label);
+                                textView.setText(noteLabel.getName() + "");
+                                flowLayout.addView(view);
+                            }
+                        }
+                    }
                     break;
             }
         }
@@ -579,6 +607,12 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void save() {
+        String t = title.getText().toString().trim();
+        String c = content.getText().toString();
+        presenter.create(t, c, noteLabels);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.note_create, menu);
@@ -595,5 +629,23 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            save();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onCreateSuccess(Note note) {
+        finish();
+    }
+
+    @Override
+    public void onCreateError(String msg) {
+        ToastUtils.showShort(msg);
     }
 }

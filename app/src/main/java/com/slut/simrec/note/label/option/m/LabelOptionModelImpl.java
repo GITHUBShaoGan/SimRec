@@ -2,8 +2,10 @@ package com.slut.simrec.note.label.option.m;
 
 import android.text.TextUtils;
 
+import com.slut.simrec.R;
 import com.slut.simrec.database.note.bean.NoteLabel;
 import com.slut.simrec.database.note.dao.NoteLabelDao;
+import com.slut.simrec.utils.ResUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class LabelOptionModelImpl implements LabelOptionModel {
     @Override
     public void create(String name, OnCreateListener onCreateListener) {
         if (TextUtils.isEmpty(name)) {
-            onCreateListener.onCreateError("");
+            onCreateListener.onCreateError(ResUtils.getString(R.string.error_label_create_name_empty));
             return;
         }
         NoteLabel noteLabel = null;
@@ -59,13 +61,13 @@ public class LabelOptionModelImpl implements LabelOptionModel {
             try {
                 NoteLabelDao.getInstances().insertSingle(label);
                 onCreateListener.onCreateSuccess(label);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                onCreateListener.onCreateError("");
+                onCreateListener.onCreateError(ResUtils.getString(R.string.error_label_create_name_empty));
             }
         } else {
             //存在
-            onCreateListener.onCreateError("");
+            onCreateListener.onCreateError(ResUtils.getString(R.string.error_note_create_already_exists));
             return;
         }
     }

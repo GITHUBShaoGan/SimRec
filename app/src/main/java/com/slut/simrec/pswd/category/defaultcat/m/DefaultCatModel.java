@@ -23,7 +23,7 @@ public interface DefaultCatModel {
 
     interface OnItemClickListener {
 
-        void onItemClick(PassCat passCat, int position);
+        void onItemClick(boolean isExists,PassCat passCat, int position);
 
     }
 

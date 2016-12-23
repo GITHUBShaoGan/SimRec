@@ -43,7 +43,7 @@ public class DefaultCatPresenterImpl implements DefaultCatPresenter, DefaultCatM
     }
 
     @Override
-    public void onItemClick(PassCat passCat, int position) {
-        defaultCatView.onItemClick(passCat,position);
+    public void onItemClick(boolean isExists,PassCat passCat, int position) {
+        defaultCatView.onItemClick(isExists,passCat,position);
     }
 }
