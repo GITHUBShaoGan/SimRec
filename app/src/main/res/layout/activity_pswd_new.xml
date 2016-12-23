@@ -58,7 +58,7 @@
                             android:id="@+id/cat_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/colorPrimaryBlack"
                             android:textSize="16sp" />
 
                         <TextView

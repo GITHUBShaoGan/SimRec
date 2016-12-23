@@ -112,7 +112,7 @@
     <string name="msg_pass_detail_delete">Are you sure to delete this password?</string>
 
     <!--NoteCreateActivity-->
-    <string name="title_activity_note_create">Note Create</string>
+    <string name="title_activity_note_create">Note Edit</string>
     <string name="hint_note_create_title">Title</string>
     <string name="hint_note_create_content">Content</string>
     <string name="hint_note_create_link_show">Link Title</string>

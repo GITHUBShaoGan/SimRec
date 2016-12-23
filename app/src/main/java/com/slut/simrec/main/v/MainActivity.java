@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity
                     case 0:
                         break;
                 }
+                fab.show();
             }
 
             @Override

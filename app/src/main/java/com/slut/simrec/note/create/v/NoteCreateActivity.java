@@ -121,7 +121,6 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initView() {
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -176,7 +175,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                         public void run() {
                             viewPager.setCurrentItem(1);
                         }
-                    },100);
+                    },200);
                 }
             }
         }
