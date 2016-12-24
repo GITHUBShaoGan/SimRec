@@ -101,6 +101,13 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     onItemClickListener.onItemClick(view, position);
                 }
             });
+            itemViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    onItemClickListener.onItemLongClick(view, position);
+                    return true;
+                }
+            });
         }
     }
 
@@ -140,6 +147,8 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnItemClickListener {
 
         void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
 
     }
 }

@@ -8,7 +8,37 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/switcher"
+        android:icon="@drawable/edit_mode_switch"
+        android:title="@string/action_menu_switch"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/share"
+        android:title="@string/action_menu_share"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/shareonlytext"
+                android:title="@string/action_menu_share">
+            </item>
+            <item
+                android:id="@+id/shareonlyimage"
+                android:title="@string/action_menu_share">
+            </item>
+            <item
+                android:id="@+id/shareboth"
+                android:title="@string/action_menu_share">
+            </item>
+        </menu>
+
+    </item>
+
+    <item
         android:id="@+id/help"
+        android:icon="@drawable/markdown"
         android:title="@string/action_menu_markdown_help"
         app:showAsAction="never" />
 </menu>

@@ -2,14 +2,15 @@ package com.slut.simrec.main.fragment.note.v;
 
 
 import android.content.Intent;
-import android.content.pm.ProviderInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,7 +21,8 @@ import com.slut.simrec.database.note.bean.NoteLabel;
 import com.slut.simrec.main.fragment.note.adapter.NoteAdapter;
 import com.slut.simrec.main.fragment.note.p.NotePresenter;
 import com.slut.simrec.main.fragment.note.p.NotePresenterImpl;
-import com.slut.simrec.note.create.v.NoteCreateActivity;
+import com.slut.simrec.main.v.MainActivity;
+import com.slut.simrec.note.edit.v.NoteCreateActivity;
 import com.slut.simrec.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -29,13 +31,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.attr.y;
-import static android.os.Build.VERSION_CODES.N;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, NoteView, NoteAdapter.OnItemClickListener {
+public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, NoteView, NoteAdapter.OnItemClickListener, ActionMode.Callback {
 
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
@@ -43,6 +42,8 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     RecyclerView recyclerView;
     @BindView(R.id.empty)
     LinearLayout empty;
+
+    private int lastVisibleItem = 0;
 
     private int pageNo = 1;
     private static final int PAGE_SIZE = 10;
@@ -82,6 +83,7 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         ButterKnife.bind(this, rootView);
         initView();
+        initListener();
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
@@ -108,6 +110,27 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
+    private void initListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (lastVisibleItem + 1 == noteAdapter.getItemCount()) {
+                        refresh.setRefreshing(true);
+                        notePresenter.load(pageNo, PAGE_SIZE);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
     /**
      * 刷新界面
      */
@@ -128,13 +151,16 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         noteAdapter.setNoteList(this.noteList);
         noteAdapter.notifyDataSetChanged();
 
+        pageNo++;
         refresh.setRefreshing(false);
+        switchUI();
     }
 
     @Override
     public void onLoadError(String msg) {
         ToastUtils.showShort(msg);
         refresh.setRefreshing(false);
+        switchUI();
     }
 
     @Override
@@ -143,5 +169,46 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         intent.putExtra(NoteCreateActivity.EXTRA_NOTE, this.noteList.get(position));
         intent.putParcelableArrayListExtra(NoteCreateActivity.EXTRA_NOTE_LABEL, (ArrayList) this.noteLabelList.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        ((MainActivity)getActivity()).startSupportActionMode(this);
+    }
+
+    private void switchUI() {
+        if (noteAdapter == null) {
+            empty.setVisibility(View.VISIBLE);
+            refresh.setVisibility(View.INVISIBLE);
+        } else {
+            if (noteAdapter.getItemCount() == 0) {
+                empty.setVisibility(View.VISIBLE);
+                refresh.setVisibility(View.INVISIBLE);
+            } else {
+                empty.setVisibility(View.INVISIBLE);
+                refresh.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        mode.getMenuInflater().inflate(R.menu.note_detail,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+
     }
 }

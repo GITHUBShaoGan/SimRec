@@ -124,6 +124,8 @@
     <string name="hint_note_create_columns">Columns</string>
     <string name="action_menu_label">Label</string>
     <string name="action_menu_color">Color</string>
+    <string name="action_menu_switch">Switch Mode</string>
+    <string name="action_menu_share">Share</string>
     <string name="error_note_update_null_note">Can not update a null Note</string>
 
     <!--LabelOptionActivity-->

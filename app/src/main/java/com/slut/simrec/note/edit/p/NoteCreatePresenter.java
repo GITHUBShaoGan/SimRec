@@ -1,4 +1,4 @@
-package com.slut.simrec.note.create.p;
+package com.slut.simrec.note.edit.p;
 
 import com.slut.simrec.database.note.bean.Note;
 import com.slut.simrec.database.note.bean.NoteLabel;

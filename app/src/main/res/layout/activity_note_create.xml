@@ -23,9 +23,7 @@
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:paddingBottom="12dp"
-            android:paddingTop="8dp"></com.slut.simrec.widget.TabIconView>
+            android:background="@color/colorPrimary"></com.slut.simrec.widget.TabIconView>
 
     </android.support.design.widget.AppBarLayout>
 

@@ -21,6 +21,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -68,11 +69,12 @@ public class TabIconView extends HorizontalScrollView {
 
 
     public void addTab(@DrawableRes int iconId, @IdRes int id, OnClickListener onClickListener) {
-        ImageButton view = (ImageButton) mInflater.inflate(R.layout.item_tab_icon, mLayout, false);
+        View v = mInflater.inflate(R.layout.item_tab_icon, mLayout, false);
+        ImageButton view = (ImageButton) v.findViewById(R.id.icon);
         view.setImageResource(iconId);
         view.setId(id);
         view.setOnClickListener(onClickListener);
-        mLayout.addView(view, mLayout.getChildCount());
+        mLayout.addView(v, mLayout.getChildCount());
     }
 
 

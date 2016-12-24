@@ -1,4 +1,4 @@
-package com.slut.simrec.note.create.adapter;
+package com.slut.simrec.note.edit.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

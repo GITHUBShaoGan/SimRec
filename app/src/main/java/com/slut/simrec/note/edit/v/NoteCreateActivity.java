@@ -1,4 +1,4 @@
-package com.slut.simrec.note.create.v;
+package com.slut.simrec.note.edit.v;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -25,13 +25,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.slut.simrec.R;
 import com.slut.simrec.database.note.bean.Note;
 import com.slut.simrec.database.note.bean.NoteLabel;
-import com.slut.simrec.note.create.adapter.MyPagerAdapter;
-import com.slut.simrec.note.create.p.NoteCreatePresenter;
-import com.slut.simrec.note.create.p.NoteCreatePresenterImpl;
+import com.slut.simrec.note.edit.adapter.MyPagerAdapter;
+import com.slut.simrec.note.edit.p.NoteCreatePresenter;
+import com.slut.simrec.note.edit.p.NoteCreatePresenterImpl;
 import com.slut.simrec.note.label.option.v.LabelOptionsActivity;
+import com.slut.simrec.utils.DensityUtils;
 import com.slut.simrec.utils.StringUtils;
 import com.slut.simrec.utils.SystemUtils;
 import com.slut.simrec.utils.ToastUtils;
@@ -103,7 +105,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
 
     private Note primaryNote;
     private List<NoteLabel> primaryLabelList;
-    private boolean isInsertMode = false;
+    private boolean isInsertMode = true;
 
     public static final String EXTRA_NOTE = "note";
     public static final String EXTRA_NOTE_LABEL = "note_label";
@@ -154,8 +156,12 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 if (primaryNote != null) {
                     title.setText(primaryNote.getTitle());
                     content.setText(primaryNote.getContent());
-                    showTitle.setText(primaryNote.getTitle());
-                    showContent.parseMarkdown(primaryNote.getContent(), true);
+                    viewPager.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewPager.setCurrentItem(1);
+                        }
+                    }, 300);
                     isInsertMode = false;
                 }
             }
@@ -170,12 +176,6 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                         flowLayout.addView(view);
                     }
                     noteLabels = (ArrayList<NoteLabel>) primaryLabelList;
-                    viewPager.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewPager.setCurrentItem(1);
-                        }
-                    },200);
                 }
             }
         }
@@ -220,8 +220,10 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 switch (position) {
                     case 0:
                         //编辑状态
+                        setBarVisibility(View.VISIBLE);
                         break;
                     case 1:
+                        setBarVisibility(View.INVISIBLE);
                         //预览状态
                         String t = title.getText().toString();
                         showTitle.setText(t);
@@ -675,6 +677,13 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 intent.putExtra(LabelOptionsActivity.EXTRA_LIST, noteLabels);
                 startActivityForResult(intent, REQUEST_SET_LABELS);
                 break;
+            case R.id.switcher:
+                if (viewPager.getCurrentItem() == 0) {
+                    viewPager.setCurrentItem(1);
+                } else if (viewPager.getCurrentItem() == 1) {
+                    viewPager.setCurrentItem(0);
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -686,6 +695,16 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void setBarVisibility(int visibility) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tabIconView.getLayoutParams();
+        if (visibility == View.VISIBLE) {
+            layoutParams.height = DensityUtils.dip2px(50.f);
+        } else {
+            layoutParams.height = 0;
+        }
+        tabIconView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -717,4 +736,5 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     public void onUpdateError(String msg) {
         ToastUtils.showShort(msg);
     }
+
 }

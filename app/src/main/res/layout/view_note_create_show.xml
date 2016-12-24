@@ -24,7 +24,7 @@
         <com.slut.simrec.widget.MarkdownPreviewView
             android:id="@+id/showContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
     </LinearLayout>

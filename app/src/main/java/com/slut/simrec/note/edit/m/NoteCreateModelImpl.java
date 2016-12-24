@@ -1,4 +1,4 @@
-package com.slut.simrec.note.create.m;
+package com.slut.simrec.note.edit.m;
 
 import android.text.TextUtils;
 
@@ -12,8 +12,6 @@ import com.slut.simrec.utils.ResUtils;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static com.google.android.gms.internal.zzapz.boo;
 
 /**
  * Created by 七月在线科技 on 2016/12/23.

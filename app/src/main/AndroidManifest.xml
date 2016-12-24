@@ -72,14 +72,17 @@
             android:name=".pswd.search.v.PassSearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".note.create.v.NoteCreateActivity"
+            android:name=".note.edit.v.NoteCreateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".welcome.WelcomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".note.label.option.v.LabelOptionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".note.detail.NoteDetailActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
