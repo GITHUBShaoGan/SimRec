@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/box_show"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,8 +25,17 @@
         <com.slut.simrec.widget.MarkdownPreviewView
             android:id="@+id/showContent"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/flowLayoutShow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:gravity="right"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layoutDirection="rtl"></org.apmem.tools.layouts.FlowLayout>
 
     </LinearLayout>
 </ScrollView>

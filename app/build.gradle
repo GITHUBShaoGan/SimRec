@@ -3,6 +3,14 @@ apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'xiaojiangaga'
+            keyPassword 'lovezen1314'
+            storeFile file('G:/SimRec/resource/shijianan.jks')
+            storePassword 'lovezen1314'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -17,6 +25,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -45,4 +57,5 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:9.6.1'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 }

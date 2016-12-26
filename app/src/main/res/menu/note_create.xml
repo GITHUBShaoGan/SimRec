@@ -21,17 +21,14 @@
 
         <menu>
             <item
-                android:id="@+id/shareonlytext"
-                android:title="@string/action_menu_share">
-            </item>
+                android:id="@+id/share2FB"
+                android:title="@string/action_menu_share_fb"></item>
             <item
-                android:id="@+id/shareonlyimage"
-                android:title="@string/action_menu_share">
-            </item>
+                android:id="@+id/share2gpus"
+                android:title="@string/action_menu_share_gplus"></item>
             <item
-                android:id="@+id/shareboth"
-                android:title="@string/action_menu_share">
-            </item>
+                android:id="@+id/share2other"
+                android:title="@string/action_menu_share_others"></item>
         </menu>
 
     </item>

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -25,6 +26,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareMediaContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.slut.simrec.R;
 import com.slut.simrec.database.note.bean.Note;
@@ -42,11 +48,14 @@ import com.slut.simrec.widget.TabIconView;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.R.attr.bitmap;
 
 public class NoteCreateActivity extends AppCompatActivity implements View.OnClickListener, NoteCreateView {
 
@@ -62,6 +71,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     private EditText content;
     private MarkdownPreviewView showContent;
     private FlowLayout flowLayout;
+    private FlowLayout flowLayoutShow;
 
     private InputMethodManager inputMethodManager;
 
@@ -103,6 +113,8 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     private static final int REQUEST_SET_LABELS = 1030;
     private ArrayList<NoteLabel> noteLabels;
 
+    private Bitmap shareBitmap;
+
     private Note primaryNote;
     private List<NoteLabel> primaryLabelList;
     private boolean isInsertMode = true;
@@ -135,6 +147,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         showTitle = (TextView) showFather.findViewById(R.id.showTitle);
         showContent = (MarkdownPreviewView) showFather.findViewById(R.id.showContent);
         flowLayout = (FlowLayout) editFather.findViewById(R.id.flowLayout);
+        flowLayoutShow = (FlowLayout) showFather.findViewById(R.id.flowLayoutShow);
 
         inputMethodManager =
                 (InputMethodManager) content.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -168,13 +181,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
             if (intent.hasExtra(EXTRA_NOTE_LABEL)) {
                 primaryLabelList = intent.getParcelableArrayListExtra(EXTRA_NOTE_LABEL);
                 if (primaryLabelList != null) {
-                    flowLayout.removeAllViews();
-                    for (NoteLabel noteLabel : primaryLabelList) {
-                        View view = LayoutInflater.from(this).inflate(R.layout.label, new LinearLayout(this), false);
-                        TextView textView = (TextView) view.findViewById(R.id.label);
-                        textView.setText(noteLabel.getName() + "");
-                        flowLayout.addView(view);
-                    }
+                    fillLabelBox(flowLayout, (ArrayList) primaryLabelList);
                     noteLabels = (ArrayList<NoteLabel>) primaryLabelList;
                 }
             }
@@ -230,6 +237,8 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                         String c = content.getText().toString();
                         showContent.parseMarkdown(c, true);
 
+                        fillLabelBox(flowLayoutShow, noteLabels);
+
                         // 得到InputMethodManager的实例
                         inputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         break;
@@ -264,14 +273,9 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 case REQUEST_SET_LABELS:
                     if (data != null) {
                         if (data.hasExtra(LabelOptionsActivity.EXTRA_LIST)) {
+                            viewPager.setCurrentItem(0);
                             noteLabels = data.getParcelableArrayListExtra(LabelOptionsActivity.EXTRA_LIST);
-                            flowLayout.removeAllViews();
-                            for (NoteLabel noteLabel : noteLabels) {
-                                View view = LayoutInflater.from(this).inflate(R.layout.label, new LinearLayout(this), false);
-                                TextView textView = (TextView) view.findViewById(R.id.label);
-                                textView.setText(noteLabel.getName() + "");
-                                flowLayout.addView(view);
-                            }
+                            fillLabelBox(flowLayout, noteLabels);
                         }
                     }
                     break;
@@ -641,7 +645,7 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
         if (lineCount == 1 && TextUtils.isEmpty(textBefore)) {
             content.setText(PICS_MD_PREFIX_START + path + PICS_MD_PREFIX_END);
         } else {
-            String text = startText + "\n" + PICS_MD_PREFIX_START + path + PICS_MD_PREFIX_END + "\n";
+            String text = "\n"+startText + "\n" + PICS_MD_PREFIX_START + path + PICS_MD_PREFIX_END + "\n";
             content.setText(text + endText);
             content.setSelection(text.length());
         }
@@ -683,6 +687,21 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
                 } else if (viewPager.getCurrentItem() == 1) {
                     viewPager.setCurrentItem(0);
                 }
+                break;
+            case R.id.share2FB:
+                if (shareBitmap != null && !shareBitmap.isRecycled()) {
+                    shareBitmap.recycle();
+                    shareBitmap = null;
+                }
+                shareBitmap = showContent.getScreen();
+                SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(shareBitmap).build();
+                SharePhotoContent shareContent = new SharePhotoContent.Builder().addPhoto(sharePhoto).build();
+                ShareDialog shareDialog = new ShareDialog(this);
+                shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                break;
+            case R.id.share2gpus:
+                break;
+            case R.id.share2other:
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -735,6 +754,16 @@ public class NoteCreateActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onUpdateError(String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    private void fillLabelBox(FlowLayout flowLayout, ArrayList<NoteLabel> noteLabels) {
+        flowLayout.removeAllViews();
+        for (NoteLabel noteLabel : noteLabels) {
+            View view = LayoutInflater.from(this).inflate(R.layout.label, new LinearLayout(this), false);
+            TextView textView = (TextView) view.findViewById(R.id.label);
+            textView.setText(noteLabel.getName() + "");
+            flowLayout.addView(view);
+        }
     }
 
 }

@@ -105,6 +105,7 @@ public class PassCatDetailActivity extends PassFatherActivity implements CatDeta
         pswdAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(pswdAdapter);
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent,R.color.colorPrimaryOrange,R.color.colorPrimaryYellow,R.color.colorPrimaryGreen);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.postDelayed(new Runnable() {
             @Override

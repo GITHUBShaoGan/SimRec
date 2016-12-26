@@ -127,6 +127,9 @@
     <string name="action_menu_switch">Switch Mode</string>
     <string name="action_menu_share">Share</string>
     <string name="error_note_update_null_note">Can not update a null Note</string>
+    <string name="action_menu_share_fb">Share To Facebook</string>
+    <string name="action_menu_share_gplus">Share To Google+</string>
+    <string name="action_menu_share_others">Others</string>
 
     <!--LabelOptionActivity-->
     <string name="title_activity_label_option">Choose Labels</string>
@@ -200,6 +203,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="facebook_app_id">1622699564700755</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Coming Soon!!!</string>

@@ -126,6 +126,7 @@ public class PswdFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initView() {
         recyclerView.setAdapter(pswdCatAdapter);
         recyclerView.setLayoutManager(layoutManager);
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent,R.color.colorPrimaryOrange,R.color.colorPrimaryYellow,R.color.colorPrimaryGreen);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.postDelayed(new Runnable() {
             @Override

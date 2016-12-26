@@ -85,6 +85,7 @@ public class CategoryOptionsActivity extends PassFatherActivity implements Optio
 
         presenter = new OptionPresenterImpl(this);
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent,R.color.colorPrimaryOrange,R.color.colorPrimaryYellow,R.color.colorPrimaryGreen);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.postDelayed(new Runnable() {
             @Override

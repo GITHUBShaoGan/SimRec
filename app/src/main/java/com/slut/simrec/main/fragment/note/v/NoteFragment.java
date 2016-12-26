@@ -100,6 +100,7 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         noteAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(noteAdapter);
 
+        refresh.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent,R.color.colorPrimaryOrange,R.color.colorPrimaryYellow,R.color.colorPrimaryGreen);
         refresh.setOnRefreshListener(this);
         refresh.post(new Runnable() {
             @Override
@@ -193,7 +194,7 @@ public class NoteFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        mode.getMenuInflater().inflate(R.menu.note_detail,menu);
+        mode.getMenuInflater().inflate(R.menu.action_mode_note,menu);
         return true;
     }
 
